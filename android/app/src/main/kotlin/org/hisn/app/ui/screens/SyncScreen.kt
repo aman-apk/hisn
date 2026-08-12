@@ -43,6 +43,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.hisn.app.R
+import org.hisn.app.sync.LocalBackup
 import org.hisn.app.sync.PairedDevice
 import org.hisn.app.sync.SyncProgress
 import org.hisn.app.ui.VaultViewModel
@@ -71,19 +72,18 @@ fun SyncScreen(
     val devices by viewModel.pairedDevices.collectAsState()
     val progress by viewModel.syncProgress.collectAsState()
     val busy by viewModel.busy.collectAsState()
-    val status by viewModel.status.collectAsState()
 
     var showPairDialog by remember { mutableStateOf(false) }
     var deviceToForget by remember { mutableStateOf<PairedDevice?>(null) }
     var confirmImport by remember { mutableStateOf(false) }
 
     val exportBackup = rememberLauncherForActivityResult(
-        ActivityResultContracts.CreateDocument("application/octet-stream")
+        ActivityResultContracts.CreateDocument(LocalBackup.MIME_TYPE)
     ) { uri -> uri?.let(viewModel::exportBackup) }
 
     val importBackup = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocument()
-    ) { uri -> uri?.let(viewModel::importDatabase) }
+    ) { uri -> uri?.let(viewModel::importBackup) }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -160,7 +160,7 @@ fun SyncScreen(
             Spacer(Modifier.height(12.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 OutlinedButton(
-                    onClick = { exportBackup.launch(backupFileName(status.databaseName)) },
+                    onClick = { exportBackup.launch(viewModel.suggestedBackupName()) },
                     modifier = Modifier.weight(1f),
                 ) {
                     Icon(HisnIcons.Export, contentDescription = null, modifier = Modifier.size(18.dp))
@@ -222,7 +222,7 @@ fun SyncScreen(
             confirmButton = {
                 TextButton(onClick = {
                     confirmImport = false
-                    importBackup.launch(arrayOf("*/*"))
+                    importBackup.launch(LocalBackup.OPEN_MIME_TYPES)
                 }) {
                     Text(stringResource(R.string.action_continue))
                 }
@@ -433,11 +433,6 @@ private fun SectionLabel(text: String) {
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(top = 24.dp, bottom = 8.dp),
     )
-}
-
-private fun backupFileName(databaseName: String?): String {
-    val base = databaseName?.takeIf { it.isNotBlank() }?.replace(Regex("[\\\\/:*?\"<>|]"), "-") ?: "hisn"
-    return "$base-backup.kdbx"
 }
 
 /** Reads the pairing payload the user copied from the desktop app. */

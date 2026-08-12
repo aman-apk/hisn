@@ -1,3 +1,39 @@
+###########################################################################################
+# ACTION REQUIRED — 13 keys are referenced by the UI but are NOT yet in strings.xml.
+# Everything else in this file already exists in both values/ and values-ar/ and matches
+# (placeholders included). Paste these in and the UI compiles.
+#
+# values/strings.xml
+#   <string name="settings_lock_on_screen_off">Lock when the screen turns off</string>
+#   <string name="settings_lock_on_screen_off_hint">Hisn locks the moment the screen goes dark, without waiting for the timeout.</string>
+#   <string name="settings_hide_passwords_hint">A password stays masked until you ask to see it.</string>
+#   <string name="settings_block_screenshots">Block screenshots</string>
+#   <string name="settings_block_screenshots_hint">Blocks screenshots, screen recording and the recents thumbnail.</string>
+#   <string name="settings_section_search">Search</string>
+#   <string name="settings_search_recycle_bin">Include the recycle bin</string>
+#   <string name="settings_search_recycle_bin_hint">Search also returns deleted entries that have not been purged yet.</string>
+#   <string name="settings_autolock_15m">After fifteen minutes</string>
+#   <string name="clipboard_15">After 15 seconds</string>
+#   <string name="biometric_disable_title">Turn off biometric unlock?</string>
+#   <string name="biometric_disable_message">The password kept in the keystore is erased; after that the vault only opens with the master password.</string>
+#   <string name="action_turn_off">Turn off</string>
+#
+# values-ar/strings.xml
+#   <string name="settings_lock_on_screen_off">الإقفال عند إطفاء الشاشة</string>
+#   <string name="settings_lock_on_screen_off_hint">يُقفل حصن فور انطفاء الشاشة دون انتظار المهلة.</string>
+#   <string name="settings_hide_passwords_hint">تظهر كلمة المرور مخفيّة حتى تطلب إظهارها.</string>
+#   <string name="settings_block_screenshots">منع لقطات الشاشة</string>
+#   <string name="settings_block_screenshots_hint">يمنع اللقطات والتسجيل وصورة التطبيق في قائمة التطبيقات الأخيرة.</string>
+#   <string name="settings_section_search">البحث</string>
+#   <string name="settings_search_recycle_bin">تضمين سلة المهملات</string>
+#   <string name="settings_search_recycle_bin_hint">يُظهر البحث الإدخالات المحذوفة التي لم تُمسح نهائيًا بعد.</string>
+#   <string name="settings_autolock_15m">بعد خمس عشرة دقيقة</string>
+#   <string name="clipboard_15">بعد ١٥ ثانية</string>
+#   <string name="biometric_disable_title">إيقاف الفتح بالبصمة؟</string>
+#   <string name="biometric_disable_message">ستُمحى كلمة المرور المحفوظة في مخزن المفاتيح، ولن تُفتح القاعدة بعدها إلا بكلمة المرور الرئيسية.</string>
+#   <string name="action_turn_off">إيقاف</string>
+###########################################################################################
+
 # Hisn — string resources required by the UI layer
 #
 # Every key below is referenced from Kotlin as R.string.<key>.
@@ -455,6 +491,42 @@ settings_clipboard_hint
   ar: تُمسح الأسرار المنسوخة بعد هذه المدة.
   en: Copied secrets are wiped after this long.
 
+settings_lock_on_screen_off
+  ar: الإقفال عند إطفاء الشاشة
+  en: Lock when the screen turns off
+
+settings_lock_on_screen_off_hint
+  ar: يُقفل حصن فور انطفاء الشاشة دون انتظار المهلة.
+  en: Hisn locks the moment the screen goes dark, without waiting for the timeout.
+
+settings_hide_passwords
+  ar: إخفاء كلمات المرور
+  en: Hide passwords
+
+settings_hide_passwords_hint
+  ar: تظهر كلمة المرور مخفيّة حتى تطلب إظهارها.
+  en: A password stays masked until you ask to see it.
+
+settings_block_screenshots
+  ar: منع لقطات الشاشة
+  en: Block screenshots
+
+settings_block_screenshots_hint
+  ar: يمنع اللقطات والتسجيل وصورة التطبيق في قائمة التطبيقات الأخيرة.
+  en: Blocks screenshots, screen recording and the recents thumbnail.
+
+settings_section_search
+  ar: البحث
+  en: Search
+
+settings_search_recycle_bin
+  ar: تضمين سلة المهملات
+  en: Include the recycle bin
+
+settings_search_recycle_bin_hint
+  ar: يُظهر البحث الإدخالات المحذوفة التي لم تُمسح نهائيًا بعد.
+  en: Search also returns deleted entries that have not been purged yet.
+
 settings_biometric
   ar: الفتح ببصمة الإصبع
   en: Biometric unlock
@@ -479,33 +551,36 @@ settings_export_hint
   ar: يحفظ نسخة مشفّرة من قاعدة البيانات حيث تختار.
   en: Saves an encrypted copy of the vault wherever you choose.
 
-autolock_immediately
-  ar: فورًا
-  en: Immediately
+# The auto-lock choices are Prefs.AUTO_LOCK_CHOICES, in seconds: 0, 30, 60, 300, 900, -1.
+# Five of these six keys already exist in strings.xml; only settings_autolock_15m is new.
 
-autolock_1
+settings_autolock_immediately
+  ar: فور مغادرة التطبيق
+  en: As soon as I leave the app
+
+settings_autolock_30s
+  ar: بعد ٣٠ ثانية
+  en: After 30 seconds
+
+settings_autolock_1m
   ar: بعد دقيقة
-  en: After 1 minute
+  en: After a minute
 
-autolock_5
-  ar: بعد ٥ دقائق
-  en: After 5 minutes
+settings_autolock_5m
+  ar: بعد خمس دقائق
+  en: After five minutes
 
-autolock_15
-  ar: بعد ١٥ دقيقة
-  en: After 15 minutes
+settings_autolock_15m
+  ar: بعد خمس عشرة دقيقة
+  en: After fifteen minutes
 
-autolock_30
-  ar: بعد ٣٠ دقيقة
-  en: After 30 minutes
-
-autolock_never
+settings_autolock_never
   ar: أبدًا
   en: Never
 
-clipboard_10
-  ar: ١٠ ثوانٍ
-  en: 10 seconds
+clipboard_15
+  ar: ١٥ ثانية
+  en: 15 seconds
 
 clipboard_30
   ar: ٣٠ ثانية
@@ -546,6 +621,18 @@ biometric_enable_message
 action_enable
   ar: تفعيل
   en: Turn on
+
+biometric_disable_title
+  ar: إيقاف الفتح بالبصمة؟
+  en: Turn off biometric unlock?
+
+biometric_disable_message
+  ar: ستُمحى كلمة المرور المحفوظة في مخزن المفاتيح، ولن تُفتح القاعدة بعدها إلا بكلمة المرور الرئيسية.
+  en: The password kept in the keystore is erased; after that the vault only opens with the master password.
+
+action_turn_off
+  ar: إيقاف
+  en: Turn off
 
 ## About ---------------------------------------------------------------------------------
 
@@ -648,12 +735,12 @@ sync_import
   en: Import
 
 sync_import_title
-  ar: استيراد نسخة احتياطية؟
-  en: Import a backup?
+  ar: دمج نسخة احتياطية؟
+  en: Merge a backup?
 
 sync_import_message
-  ar: ستحلّ النسخة المستوردة محلّ القاعدة الحالية على هذا الجهاز، وسيُطلب منك فتحها من جديد.
-  en: The imported file replaces the current vault on this device, and you will be asked to unlock it again.
+  ar: يُدمج الملف المختار مع قاعدتك الحالية؛ لا يُحذف شيء، وتُبقى النسخة الأحدث من كل إدخال. يجب أن يُفتح الملف بالمفتاح نفسه.
+  en: The chosen file is merged into your vault: nothing is deleted, and the newer version of each entry wins. The file must open with the same key.
 
 action_continue
   ar: متابعة
@@ -729,6 +816,14 @@ msg_biometric_enabled
   ar: فُعّل الفتح بالبصمة
   en: Biometric unlock is on
 
+msg_biometric_disabled
+  ar: أُوقف الفتح بالبصمة
+  en: Biometric unlock is off
+
+msg_backup_merged   [FORMAT: %1$s added, %2$s updated, %3$s deleted]
+  ar: دُمجت النسخة: %1$s مُضاف، %2$s مُحدَّث، %3$s محذوف
+  en: Backup merged: %1$s added, %2$s updated, %3$s deleted
+
 msg_device_paired   [FORMAT: %1$s = device name]
   ar: تمّ الاقتران بـ %1$s
   en: Paired with %1$s
@@ -780,6 +875,14 @@ error_no_database
 error_export_failed
   ar: تعذّر تصدير النسخة الاحتياطية
   en: The backup could not be exported
+
+error_import_merge_failed
+  ar: تعذّر دمج النسخة الاحتياطية
+  en: The backup could not be merged
+
+error_settings_write_failed
+  ar: تعذّر حفظ الإعداد
+  en: The setting could not be saved
 
 error_nothing_to_copy
   ar: لا شيء لنسخه

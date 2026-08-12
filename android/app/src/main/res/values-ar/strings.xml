@@ -461,4 +461,25 @@
     <string name="label_pairing_code">رمز الإقران</string>
     <string name="msg_clipboard_clears_in">تُمسح خلال %1$s ثانية</string>
 
+    <string name="msg_backup_merged">تمّ الدمج — أُضيف %1$s، وعُدِّل %2$s، وحُذف %3$s</string>
+    <string name="msg_biometric_disabled">أُوقف الفتح بالبصمة</string>
+    <string name="error_import_merge_failed">تعذّر دمج الملف المستورد</string>
+    <string name="error_settings_write_failed">تعذّر حفظ الإعداد</string>
+
+
+    <!-- إعدادات إضافية -->
+    <string name="action_turn_off">إيقاف</string>
+    <string name="biometric_disable_message">ستُحذف كلمة السرّ المحفوظة، وستحتاج إلى كتابتها في كل مرة.</string>
+    <string name="biometric_disable_title">إيقاف الفتح بالبصمة؟</string>
+    <string name="clipboard_15">بعد ١٥ ثانية</string>
+    <string name="settings_autolock_15m">بعد ١٥ دقيقة</string>
+    <string name="settings_block_screenshots">منع لقطات الشاشة</string>
+    <string name="settings_block_screenshots_hint">يمنع تصوير الشاشة وتسجيلها ويخفي التطبيق من قائمة التطبيقات الأخيرة</string>
+    <string name="settings_hide_passwords_hint">تُعرض كلمات السرّ منقّطة حتى تختار إظهارها</string>
+    <string name="settings_lock_on_screen_off">القفل عند إطفاء الشاشة</string>
+    <string name="settings_lock_on_screen_off_hint">يُقفل الخزنة فور انطفاء شاشة الجهاز</string>
+    <string name="settings_search_recycle_bin">البحث في سلّة المهملات</string>
+    <string name="settings_search_recycle_bin_hint">يشمل البحثُ المُدخَلات المحذوفة</string>
+    <string name="settings_section_search">البحث</string>
+
 </resources>

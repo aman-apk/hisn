@@ -49,6 +49,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import org.hisn.app.R
 import org.hisn.app.data.VaultState
+import org.hisn.app.sync.LocalBackup
 import org.hisn.app.ui.VaultViewModel
 import org.hisn.app.ui.components.EmptyState
 import org.hisn.app.ui.components.FingerprintGlyph
@@ -83,7 +84,7 @@ fun UnlockScreen(viewModel: VaultViewModel) {
 
     val pickKeyFile = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocument()
-    ) { uri ->
+    ) { uri: Uri? ->
         if (uri != null) {
             keyFileUri = uri
             keyFileName = context.displayNameOf(uri)
@@ -136,7 +137,7 @@ fun UnlockScreen(viewModel: VaultViewModel) {
                 title = stringResource(R.string.unlock_no_database_title),
                 message = stringResource(R.string.unlock_no_database_message),
                 actionLabel = stringResource(R.string.action_open_database),
-                onAction = { pickDatabase.launch(arrayOf("*/*")) },
+                onAction = { pickDatabase.launch(LocalBackup.OPEN_MIME_TYPES) },
             )
         } else {
             Text(
@@ -220,7 +221,7 @@ fun UnlockScreen(viewModel: VaultViewModel) {
 
             Spacer(Modifier.height(18.dp))
             TextButton(
-                onClick = { pickDatabase.launch(arrayOf("*/*")) },
+                onClick = { pickDatabase.launch(LocalBackup.OPEN_MIME_TYPES) },
                 enabled = !busy,
             ) {
                 Text(
@@ -319,11 +320,11 @@ private fun Context.canUseBiometrics(): Boolean =
         BiometricManager.BIOMETRIC_SUCCESS
 
 /**
- * Runs the system biometric prompt.
+ * Runs the system biometric prompt over the keystore Cipher that seals the master password.
  *
- * No CryptoObject is attached: the repository holds the keystore-wrapped master password
- * and only needs to know the OS authenticated the user, so the payload we hand back is the
- * prompt's crypto payload when there is one and empty otherwise.
+ * The Cipher is bound to a key that requires a fresh strong-biometric authentication for a
+ * single operation, so the sealed password is only ever unwrapped by [BiometricPrompt]
+ * handing back the very Cipher it authorised.
  */
 private fun Context.promptForBiometrics(viewModel: VaultViewModel) {
     val activity = findFragmentActivity()
@@ -331,12 +332,24 @@ private fun Context.promptForBiometrics(viewModel: VaultViewModel) {
         viewModel.biometricFailed(null)
         return
     }
+    val cipher = viewModel.biometricCipher().getOrElse { cause ->
+        // Typically a new fingerprint enrolment invalidated the key; the enrolment has been
+        // dropped, so the user has to re-enable biometric unlock with their password.
+        viewModel.biometricFailed(cause.message)
+        return
+    }
+
     val prompt = BiometricPrompt(
         activity,
         ContextCompat.getMainExecutor(this),
         object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                viewModel.unlockWithBiometric(result.cryptoObject?.cipher?.iv ?: ByteArray(0))
+                val authorised = result.cryptoObject?.cipher
+                if (authorised == null) {
+                    viewModel.biometricFailed(null)
+                    return
+                }
+                viewModel.unlockWithBiometric(authorised)
             }
 
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
@@ -357,7 +370,7 @@ private fun Context.promptForBiometrics(viewModel: VaultViewModel) {
         .setNegativeButtonText(getString(R.string.action_cancel))
         .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
         .build()
-    prompt.authenticate(info)
+    prompt.authenticate(info, BiometricPrompt.CryptoObject(cipher))
 }
 
 internal fun Context.findFragmentActivity(): FragmentActivity? {

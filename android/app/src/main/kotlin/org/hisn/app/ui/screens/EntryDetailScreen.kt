@@ -166,7 +166,10 @@ private fun DetailBody(
 ) {
     val palette = HisnTheme.palette
     val context = LocalContext.current
-    var passwordRevealed by remember(detail.uuid) { mutableStateOf(false) }
+    val settings by viewModel.settings.collectAsState()
+    var passwordRevealed by remember(detail.uuid, settings.hidePasswords) {
+        mutableStateOf(!settings.hidePasswords)
+    }
 
     Column(
         modifier = modifier

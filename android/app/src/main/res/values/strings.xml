@@ -465,4 +465,25 @@
     <string name="label_pairing_code">Pairing code</string>
     <string name="msg_clipboard_clears_in">clears in %1$s seconds</string>
 
+    <string name="msg_backup_merged">Merged — %1$s added, %2$s updated, %3$s deleted</string>
+    <string name="msg_biometric_disabled">Fingerprint unlock is off</string>
+    <string name="error_import_merge_failed">The imported file could not be merged</string>
+    <string name="error_settings_write_failed">The setting could not be saved</string>
+
+
+    <!-- additional settings -->
+    <string name="action_turn_off">Turn off</string>
+    <string name="biometric_disable_message">The stored password will be deleted and you will need to type it every time.</string>
+    <string name="biometric_disable_title">Turn off biometric unlock?</string>
+    <string name="clipboard_15">After 15 seconds</string>
+    <string name="settings_autolock_15m">After 15 minutes</string>
+    <string name="settings_block_screenshots">Block screenshots</string>
+    <string name="settings_block_screenshots_hint">Blocks screenshots and recording, and hides the app from the recents list</string>
+    <string name="settings_hide_passwords_hint">Passwords stay dotted out until you choose to reveal them</string>
+    <string name="settings_lock_on_screen_off">Lock when the screen turns off</string>
+    <string name="settings_lock_on_screen_off_hint">Locks the vault as soon as the screen goes dark</string>
+    <string name="settings_search_recycle_bin">Search the recycle bin</string>
+    <string name="settings_search_recycle_bin_hint">Include deleted entries in search results</string>
+    <string name="settings_section_search">Search</string>
+
 </resources>

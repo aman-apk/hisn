@@ -51,12 +51,13 @@ fun ShieldLogo(
         endY = 216f,
     )
 
+    val description = contentDescription
     Canvas(
         modifier = modifier
             .aspectRatio(1f)
             .then(
-                if (contentDescription != null) {
-                    Modifier.semantics { this.contentDescription = contentDescription }
+                if (description != null) {
+                    Modifier.semantics { this.contentDescription = description }
                 } else {
                     Modifier
                 }

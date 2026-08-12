@@ -193,6 +193,9 @@ set(gui_SOURCES
         gui/reports/ReportsPageHibp.cpp
         gui/reports/ReportsWidgetStatistics.cpp
         gui/reports/ReportsPageStatistics.cpp
+        gui/sync/SyncPairingDialog.cpp
+        sync/SyncCrypto.cpp
+        sync/SyncServer.cpp
         gui/osutils/DeviceListener.cpp
         gui/osutils/OSUtilsBase.cpp
         gui/osutils/ScreenLockListener.cpp

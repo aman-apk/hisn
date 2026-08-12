@@ -48,17 +48,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.hisn.app.R
-import org.hisn.app.ui.AUTO_LOCK_CHOICES
-import org.hisn.app.ui.CLIPBOARD_CHOICES
+import org.hisn.app.data.Prefs
+import org.hisn.app.data.ThemeMode
+import org.hisn.app.sync.LocalBackup
 import org.hisn.app.ui.VaultViewModel
 import org.hisn.app.ui.components.HisnIcons
 import org.hisn.app.ui.components.PasswordField
 import org.hisn.app.ui.components.ShieldLogo
 import org.hisn.app.ui.theme.HisnTheme
-import org.hisn.app.ui.theme.ThemeMode
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,10 +66,10 @@ fun SettingsScreen(
     val context = LocalContext.current
     val palette = HisnTheme.palette
     val settings by viewModel.settings.collectAsState()
-    val status by viewModel.status.collectAsState()
     val biometricEnabled by viewModel.biometricEnabled.collectAsState()
 
     var askForMasterPassword by remember { mutableStateOf(false) }
+    var confirmDisableBiometric by remember { mutableStateOf(false) }
 
     val deviceSupportsBiometrics = remember {
         BiometricManager.from(context)
@@ -81,7 +78,7 @@ fun SettingsScreen(
     }
 
     val exportBackup = rememberLauncherForActivityResult(
-        ActivityResultContracts.CreateDocument("application/octet-stream")
+        ActivityResultContracts.CreateDocument(LocalBackup.MIME_TYPE)
     ) { uri -> uri?.let(viewModel::exportBackup) }
 
     Scaffold(
@@ -116,18 +113,42 @@ fun SettingsScreen(
                 icon = HisnIcons.Lock,
                 title = stringResource(R.string.settings_auto_lock),
                 subtitle = stringResource(R.string.settings_auto_lock_hint),
-                value = stringResource(autoLockLabel(settings.autoLockMinutes)),
-                options = AUTO_LOCK_CHOICES.map { it to stringResource(autoLockLabel(it)) },
-                onSelect = viewModel::setAutoLockMinutes,
+                value = stringResource(autoLockLabel(settings.autoLockSeconds)),
+                options = Prefs.AUTO_LOCK_CHOICES.map { it to stringResource(autoLockLabel(it)) },
+                onSelect = viewModel::setAutoLockSeconds,
+            )
+
+            SwitchRow(
+                icon = HisnIcons.Timer,
+                title = stringResource(R.string.settings_lock_on_screen_off),
+                subtitle = stringResource(R.string.settings_lock_on_screen_off_hint),
+                checked = settings.lockOnScreenOff,
+                onCheckedChange = viewModel::setLockOnScreenOff,
             )
 
             ChoiceRow(
-                icon = HisnIcons.Timer,
+                icon = HisnIcons.Copy,
                 title = stringResource(R.string.settings_clipboard),
                 subtitle = stringResource(R.string.settings_clipboard_hint),
-                value = stringResource(clipboardLabel(settings.clipboardSeconds)),
-                options = CLIPBOARD_CHOICES.map { it to stringResource(clipboardLabel(it)) },
-                onSelect = viewModel::setClipboardSeconds,
+                value = stringResource(clipboardLabel(settings.clipboardClearSeconds)),
+                options = Prefs.CLIPBOARD_CLEAR_CHOICES.map { it to stringResource(clipboardLabel(it)) },
+                onSelect = viewModel::setClipboardClearSeconds,
+            )
+
+            SwitchRow(
+                icon = HisnIcons.Hide,
+                title = stringResource(R.string.settings_hide_passwords),
+                subtitle = stringResource(R.string.settings_hide_passwords_hint),
+                checked = settings.hidePasswords,
+                onCheckedChange = viewModel::setHidePasswords,
+            )
+
+            SwitchRow(
+                icon = HisnIcons.Shield,
+                title = stringResource(R.string.settings_block_screenshots),
+                subtitle = stringResource(R.string.settings_block_screenshots_hint),
+                checked = settings.blockScreenshots,
+                onCheckedChange = viewModel::setBlockScreenshots,
             )
 
             SettingRow(
@@ -141,17 +162,26 @@ fun SettingsScreen(
                 trailing = {
                     Switch(
                         checked = biometricEnabled,
-                        // Turning it back off means deleting the wrapped key, which only the
-                        // repository can do; until it exposes that, the switch is one-way.
-                        enabled = deviceSupportsBiometrics && !biometricEnabled,
-                        onCheckedChange = { wanted -> if (wanted) askForMasterPassword = true },
+                        enabled = deviceSupportsBiometrics || biometricEnabled,
+                        onCheckedChange = { wanted ->
+                            if (wanted) askForMasterPassword = true else confirmDisableBiometric = true
+                        },
                     )
                 },
             )
 
+            SectionLabel(stringResource(R.string.settings_section_search))
+            SwitchRow(
+                icon = HisnIcons.Search,
+                title = stringResource(R.string.settings_search_recycle_bin),
+                subtitle = stringResource(R.string.settings_search_recycle_bin_hint),
+                checked = settings.searchIncludesRecycleBin,
+                onCheckedChange = viewModel::setSearchIncludesRecycleBin,
+            )
+
             SectionLabel(stringResource(R.string.settings_section_appearance))
             ThemePicker(
-                selected = settings.themeMode,
+                selected = settings.theme,
                 onSelect = viewModel::setThemeMode,
             )
 
@@ -160,9 +190,7 @@ fun SettingsScreen(
                 icon = HisnIcons.Export,
                 title = stringResource(R.string.settings_export),
                 subtitle = stringResource(R.string.settings_export_hint),
-                onClick = {
-                    exportBackup.launch(suggestedBackupName(status.databaseName))
-                },
+                onClick = { exportBackup.launch(viewModel.suggestedBackupName()) },
             )
 
             SectionLabel(stringResource(R.string.settings_section_about))
@@ -185,6 +213,28 @@ fun SettingsScreen(
             onConfirm = { password ->
                 askForMasterPassword = false
                 viewModel.enableBiometricUnlock(password)
+            },
+        )
+    }
+
+    if (confirmDisableBiometric) {
+        AlertDialog(
+            onDismissRequest = { confirmDisableBiometric = false },
+            icon = { Icon(HisnIcons.Warning, contentDescription = null, tint = palette.weak) },
+            title = { Text(stringResource(R.string.biometric_disable_title)) },
+            text = { Text(stringResource(R.string.biometric_disable_message)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    confirmDisableBiometric = false
+                    viewModel.disableBiometricUnlock()
+                }) {
+                    Text(stringResource(R.string.action_turn_off), color = palette.weak)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { confirmDisableBiometric = false }) {
+                    Text(stringResource(R.string.action_cancel))
+                }
             },
         )
     }
@@ -357,6 +407,23 @@ private fun SettingRow(
     }
 }
 
+@Composable
+private fun SwitchRow(
+    icon: ImageVector,
+    title: String,
+    subtitle: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    SettingRow(
+        icon = icon,
+        title = title,
+        subtitle = subtitle,
+        onClick = { onCheckedChange(!checked) },
+        trailing = { Switch(checked = checked, onCheckedChange = onCheckedChange) },
+    )
+}
+
 /** A setting whose value is picked from a short, fixed list. */
 @Composable
 private fun ChoiceRow(
@@ -403,17 +470,17 @@ private fun ChoiceRow(
     }
 }
 
-private fun autoLockLabel(minutes: Int): Int = when (minutes) {
-    0 -> R.string.autolock_immediately
-    1 -> R.string.autolock_1
-    5 -> R.string.autolock_5
-    15 -> R.string.autolock_15
-    30 -> R.string.autolock_30
-    else -> R.string.autolock_never
+private fun autoLockLabel(seconds: Int): Int = when (seconds) {
+    0 -> R.string.settings_autolock_immediately
+    30 -> R.string.settings_autolock_30s
+    60 -> R.string.settings_autolock_1m
+    300 -> R.string.settings_autolock_5m
+    900 -> R.string.settings_autolock_15m
+    else -> R.string.settings_autolock_never
 }
 
 private fun clipboardLabel(seconds: Int): Int = when (seconds) {
-    10 -> R.string.clipboard_10
+    15 -> R.string.clipboard_15
     30 -> R.string.clipboard_30
     60 -> R.string.clipboard_60
     120 -> R.string.clipboard_120
@@ -424,12 +491,6 @@ private fun themeLabel(mode: ThemeMode): Int = when (mode) {
     ThemeMode.System -> R.string.theme_system
     ThemeMode.Light -> R.string.theme_light
     ThemeMode.Dark -> R.string.theme_dark
-}
-
-private fun suggestedBackupName(databaseName: String?): String {
-    val stamp = SimpleDateFormat("yyyyMMdd-HHmm", Locale.US).format(Date())
-    val base = databaseName?.takeIf { it.isNotBlank() }?.replace(Regex("[\\\\/:*?\"<>|]"), "-") ?: "hisn"
-    return "$base-$stamp.kdbx"
 }
 
 private fun Context.versionName(): String = try {

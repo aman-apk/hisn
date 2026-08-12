@@ -1,7 +1,6 @@
 package org.hisn.app.ui
 
 import android.app.Application
-import android.content.Context
 import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
@@ -22,6 +21,9 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.hisn.app.R
+import org.hisn.app.data.HisnSettings
+import org.hisn.app.data.Prefs
+import org.hisn.app.data.ThemeMode
 import org.hisn.app.data.VaultRepository
 import org.hisn.app.data.VaultState
 import org.hisn.app.data.VaultStatus
@@ -30,13 +32,14 @@ import org.hisn.app.kdbx.KdbxDatabase
 import org.hisn.app.kdbx.Times
 import org.hisn.app.kdbx.Totp
 import org.hisn.app.kdbx.TotpSettings
+import org.hisn.app.sync.LocalBackup
 import org.hisn.app.sync.PairedDevice
 import org.hisn.app.sync.SyncClient
 import org.hisn.app.sync.SyncProgress
 import org.hisn.app.ui.components.SecretClipboard
-import org.hisn.app.ui.theme.ThemeMode
 import java.text.Collator
 import java.util.UUID
+import javax.crypto.Cipher
 
 // ---------------------------------------------------------------------------------------
 // Immutable snapshots the UI renders.
@@ -101,20 +104,13 @@ data class EntryDraft(
 @Immutable
 data class GroupOption(val uuid: UUID, val name: String, val path: String, val count: Int)
 
-@Immutable
-data class UiSettings(
-    val autoLockMinutes: Int = 5,
-    val clipboardSeconds: Int = 30,
-    val themeMode: ThemeMode = ThemeMode.System,
-)
-
 /** Why an unlock attempt failed, ready to render on the unlock screen. */
 @Immutable
 data class UnlockError(@StringRes val message: Int, val detail: String?)
 
 /** One-shot feedback: a snackbar, never a silently swallowed failure. */
 sealed interface UiEvent {
-    data class Message(@StringRes val message: Int, val arg: String? = null) : UiEvent
+    data class Message(@StringRes val message: Int, val args: List<String> = emptyList()) : UiEvent
 
     /** A copy confirmation that also tells the user when the clipboard will be wiped. */
     data class CopiedWithTimer(@StringRes val message: Int, val seconds: Int) : UiEvent
@@ -122,18 +118,13 @@ sealed interface UiEvent {
     data class Failure(@StringRes val message: Int, val detail: String?) : UiEvent
 }
 
-/** Auto-lock choices in minutes; -1 means never, 0 means as soon as the app is hidden. */
-val AUTO_LOCK_CHOICES = listOf(0, 1, 5, 15, 30, -1)
-
-/** Clipboard-clear choices in seconds; 0 means never clear automatically. */
-val CLIPBOARD_CHOICES = listOf(10, 30, 60, 120, 0)
-
 class VaultViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repo = VaultRepository(application)
     private val syncClient = SyncClient(application, repo)
+    private val localBackup = LocalBackup(application, repo)
     private val clipboard = SecretClipboard(application, viewModelScope)
-    private val prefs = application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private val prefs = repo.prefs
 
     /** Locale-aware ordering: Arabic titles must not sort by UTF-16 code unit. */
     private val collator: Collator = Collator.getInstance().apply { strength = Collator.PRIMARY }
@@ -162,8 +153,8 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
     private val _busy = MutableStateFlow(false)
     val busy: StateFlow<Boolean> = _busy.asStateFlow()
 
-    private val _settings = MutableStateFlow(readSettings())
-    val settings: StateFlow<UiSettings> = _settings.asStateFlow()
+    private val _settings = MutableStateFlow(HisnSettings())
+    val settings: StateFlow<HisnSettings> = _settings.asStateFlow()
 
     private val _biometricEnabled = MutableStateFlow(repo.biometricEnabled)
     val biometricEnabled: StateFlow<Boolean> = _biometricEnabled.asStateFlow()
@@ -175,7 +166,11 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
     val syncProgress: StateFlow<SyncProgress> = syncClient.progress
     val pairedDevices: StateFlow<List<PairedDevice>> = syncClient.pairedDevices
 
+    /** Countdown started when the app leaves the foreground. */
     private var autoLockJob: Job? = null
+
+    /** Watchdog that locks after the configured idle time while the app is on screen. */
+    private var idleWatchJob: Job? = null
 
     val sections: StateFlow<List<EntrySection>> =
         combine(repo.database, _query, _groupFilter, revision) { db, query, group, _ ->
@@ -193,6 +188,18 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
         combine(repo.database, revision) { db, _ -> db?.visibleEntries()?.size ?: 0 }
             .flowOn(Dispatchers.Default)
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)
+
+    init {
+        viewModelScope.launch {
+            prefs.settings.collect { loaded ->
+                _settings.value = loaded
+                // search() is synchronous and cannot read DataStore, so the repository keeps a
+                // mirror of this one flag; this collector is what keeps it current.
+                repo.searchIncludesRecycleBin = loaded.searchIncludesRecycleBin
+                bump()
+            }
+        }
+    }
 
     // -- Database lifecycle ---------------------------------------------------------------
 
@@ -229,31 +236,42 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
-     * @param payload the crypto payload from the biometric prompt. The repository owns the
-     *   KeyStore-wrapped master password, so this is empty when the prompt was run without a
-     *   CryptoObject and the OS authentication itself is the proof.
+     * A Cipher for the biometric prompt's CryptoObject, or a failure explaining why biometric
+     * unlock is not usable right now (a new fingerprint enrolment invalidates the key).
      */
-    fun unlockWithBiometric(payload: ByteArray) {
+    fun biometricCipher(): Result<Cipher> = repo.secureStore.decryptCipher()
+
+    /**
+     * @param authenticatedCipher the Cipher BiometricPrompt just authorised. The wrapped master
+     *   password is unsealed here and handed straight to the repository, which wipes it.
+     */
+    fun unlockWithBiometric(authenticatedCipher: Cipher) {
         viewModelScope.launch {
             _busy.value = true
             _unlockError.value = null
-            val result = repo.unlockWithBiometric(payload)
+            val unwrapped = repo.secureStore.unwrap(authenticatedCipher)
+            val result = unwrapped.mapCatching { repo.unlockWithBiometric(it).getOrThrow() }
             _busy.value = false
             result.onSuccess {
+                _biometricEnabled.value = repo.biometricEnabled
                 bump()
             }.onFailure {
+                _biometricEnabled.value = repo.biometricEnabled
                 _unlockError.value = UnlockError(R.string.error_biometric_unlock_failed, it.message)
             }
         }
     }
 
     fun biometricFailed(detail: String?) {
+        _biometricEnabled.value = repo.biometricEnabled
         _unlockError.value = UnlockError(R.string.error_biometric_unlock_failed, detail)
     }
 
     fun lock() {
         autoLockJob?.cancel()
         autoLockJob = null
+        idleWatchJob?.cancel()
+        idleWatchJob = null
         // A locked vault that left a password on the clipboard is not locked.
         clipboard.clearNow()
         repo.lock()
@@ -270,7 +288,7 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
     fun exportBackup(uri: Uri) {
         viewModelScope.launch {
             _busy.value = true
-            val result = repo.exportBackup(uri)
+            val result = localBackup.export(uri)
             _busy.value = false
             result.onSuccess {
                 emit(UiEvent.Message(R.string.msg_backup_exported))
@@ -280,23 +298,78 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    /**
+     * Merges a .kdbx the user picked into the open vault. Merging rather than replacing is what
+     * makes the file the offline equivalent of a sync: edits made on either side survive.
+     */
+    fun importBackup(uri: Uri) {
+        viewModelScope.launch {
+            _busy.value = true
+            val result = localBackup.importAndMerge(uri)
+            _busy.value = false
+            bump()
+            result.onSuccess { (added, updated, deleted) ->
+                emit(
+                    UiEvent.Message(
+                        R.string.msg_backup_merged,
+                        listOf(added.toString(), updated.toString(), deleted.toString()),
+                    )
+                )
+            }.onFailure {
+                emit(UiEvent.Failure(R.string.error_import_merge_failed, it.message))
+            }
+        }
+    }
+
+    /** Name to pre-fill in the "save a copy" picker. */
+    fun suggestedBackupName(): String = localBackup.suggestedFileName()
+
     // -- Auto-lock ------------------------------------------------------------------------
 
-    /** Called when the activity stops: start the countdown that locks the vault. */
+    /**
+     * Called when the activity stops. The idle clock keeps running while the app is hidden, so
+     * the countdown is the remainder of the configured timeout rather than the whole of it.
+     */
     fun onAppBackgrounded() {
-        val minutes = _settings.value.autoLockMinutes
-        if (minutes < 0) return
+        idleWatchJob?.cancel()
+        idleWatchJob = null
         autoLockJob?.cancel()
         autoLockJob = viewModelScope.launch {
-            delay(minutes * 60_000L)
+            val timeout = prefs.current().autoLockSeconds
+            if (timeout == Prefs.AUTO_LOCK_NEVER) return@launch
+            val remaining = (timeout - repo.idleSeconds()).coerceAtLeast(0L)
+            delay(remaining * 1000L)
             if (repo.status.value.state == VaultState.Unlocked) lock()
         }
     }
 
-    /** Called when the activity starts again: the user is back, so cancel the countdown. */
+    /** Called when the activity starts again: the user is back, so restart the idle clock. */
     fun onAppForegrounded() {
         autoLockJob?.cancel()
         autoLockJob = null
+        repo.noteActivity()
+        if (idleWatchJob?.isActive == true) return
+        idleWatchJob = viewModelScope.launch {
+            while (true) {
+                delay(IDLE_POLL_MILLIS)
+                if (repo.lockIfIdle()) {
+                    clipboard.clearNow()
+                    _query.value = ""
+                    _groupFilter.value = null
+                    bump()
+                }
+            }
+        }
+    }
+
+    /** The screen went off; some users want that to close the vault immediately. */
+    fun onScreenOff() {
+        if (_settings.value.lockOnScreenOff && repo.status.value.state == VaultState.Unlocked) lock()
+    }
+
+    /** Any touch anywhere in the app; feeds the idle timer. */
+    fun noteActivity() {
+        repo.noteActivity()
     }
 
     // -- Browsing -------------------------------------------------------------------------
@@ -437,7 +510,7 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
             emit(UiEvent.Failure(R.string.error_nothing_to_copy, null))
             return
         }
-        val seconds = if (sensitive) _settings.value.clipboardSeconds else 0
+        val seconds = if (sensitive) _settings.value.clipboardClearSeconds else 0
         if (!clipboard.copy(CLIP_LABEL, value, seconds)) {
             emit(UiEvent.Failure(R.string.error_clipboard_unavailable, null))
             return
@@ -451,20 +524,20 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
 
     // -- Settings -------------------------------------------------------------------------
 
-    fun setAutoLockMinutes(minutes: Int) {
-        _settings.value = _settings.value.copy(autoLockMinutes = minutes)
-        prefs.edit().putInt(KEY_AUTO_LOCK, minutes).apply()
-    }
+    fun setAutoLockSeconds(seconds: Int) = editSettings { prefs.setAutoLockSeconds(seconds) }
 
-    fun setClipboardSeconds(seconds: Int) {
-        _settings.value = _settings.value.copy(clipboardSeconds = seconds)
-        prefs.edit().putInt(KEY_CLIPBOARD, seconds).apply()
-    }
+    fun setClipboardClearSeconds(seconds: Int) = editSettings { prefs.setClipboardClearSeconds(seconds) }
 
-    fun setThemeMode(mode: ThemeMode) {
-        _settings.value = _settings.value.copy(themeMode = mode)
-        prefs.edit().putString(KEY_THEME, mode.name).apply()
-    }
+    fun setThemeMode(mode: ThemeMode) = editSettings { prefs.setTheme(mode) }
+
+    fun setLockOnScreenOff(enabled: Boolean) = editSettings { prefs.setLockOnScreenOff(enabled) }
+
+    fun setHidePasswords(hide: Boolean) = editSettings { prefs.setHidePasswords(hide) }
+
+    fun setBlockScreenshots(block: Boolean) = editSettings { prefs.setBlockScreenshots(block) }
+
+    fun setSearchIncludesRecycleBin(include: Boolean) =
+        editSettings { prefs.setSearchIncludesRecycleBin(include) }
 
     /** Wraps the master password with the device keystore so a fingerprint can unlock. */
     fun enableBiometricUnlock(masterPassword: String) {
@@ -475,11 +548,28 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
         repo.enableBiometricUnlock(masterPassword)
             .onSuccess {
                 _biometricEnabled.value = repo.biometricEnabled
+                editSettings { prefs.setBiometricUnlock(true) }
                 emit(UiEvent.Message(R.string.msg_biometric_enabled))
             }
             .onFailure {
                 emit(UiEvent.Failure(R.string.error_biometric_enable_failed, it.message))
             }
+    }
+
+    /** Forgets the wrapped master password; the vault then only opens with the password. */
+    fun disableBiometricUnlock() {
+        repo.disableBiometricUnlock()
+        _biometricEnabled.value = repo.biometricEnabled
+        editSettings { prefs.setBiometricUnlock(false) }
+        emit(UiEvent.Message(R.string.msg_biometric_disabled))
+    }
+
+    private fun editSettings(block: suspend () -> Unit) {
+        viewModelScope.launch {
+            runCatching { block() }.onFailure {
+                emit(UiEvent.Failure(R.string.error_settings_write_failed, it.message))
+            }
+        }
     }
 
     // -- Sync -----------------------------------------------------------------------------
@@ -494,7 +584,7 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
             _busy.value = true
             val result = syncClient.pairFromQrPayload(trimmed)
             _busy.value = false
-            result.onSuccess { emit(UiEvent.Message(R.string.msg_device_paired, it.name)) }
+            result.onSuccess { emit(UiEvent.Message(R.string.msg_device_paired, listOf(it.name))) }
                 .onFailure { emit(UiEvent.Failure(R.string.error_pairing_failed, it.message)) }
         }
     }
@@ -509,7 +599,7 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
 
     fun forgetDevice(device: PairedDevice) {
         syncClient.forget(device)
-        emit(UiEvent.Message(R.string.msg_device_forgotten, device.name))
+        emit(UiEvent.Message(R.string.msg_device_forgotten, listOf(device.name)))
     }
 
     // -- Internals ------------------------------------------------------------------------
@@ -530,21 +620,13 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
         return result.isSuccess
     }
 
-    private fun readSettings(): UiSettings {
-        val theme = prefs.getString(KEY_THEME, ThemeMode.System.name)
-        return UiSettings(
-            autoLockMinutes = prefs.getInt(KEY_AUTO_LOCK, 5),
-            clipboardSeconds = prefs.getInt(KEY_CLIPBOARD, 30),
-            themeMode = ThemeMode.entries.firstOrNull { it.name == theme } ?: ThemeMode.System,
-        )
-    }
-
     private fun buildSections(db: KdbxDatabase?, query: String, group: UUID?): List<EntrySection> {
         if (db == null) return emptyList()
         val matches = if (query.isBlank()) {
-            db.visibleEntries()
+            if (repo.searchIncludesRecycleBin) db.allEntries() else db.visibleEntries()
         } else {
-            repo.search(query).filterNot { db.isInRecycleBin(it) }
+            // search() already applies the same recycle-bin preference.
+            repo.search(query)
         }
         val filtered = if (group == null) matches else matches.filter { it.parent?.uuid == group }
         val cards = filtered.map { it.toCard(db) }.sortedWith(cardOrder)
@@ -649,10 +731,8 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private companion object {
-        const val PREFS_NAME = "hisn_ui_settings"
-        const val KEY_AUTO_LOCK = "auto_lock_minutes"
-        const val KEY_CLIPBOARD = "clipboard_seconds"
-        const val KEY_THEME = "theme_mode"
+        /** How often the foreground watchdog checks the idle clock. */
+        const val IDLE_POLL_MILLIS = 5_000L
 
         /** Some launchers surface the clip label; the brand name says nothing secret. */
         const val CLIP_LABEL = "Hisn"

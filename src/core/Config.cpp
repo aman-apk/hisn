@@ -237,7 +237,12 @@ static const QHash<Config::ConfigKey, ConfigDirective> configStrings = {
 
     // Messages
     {Config::Messages_NoLegacyKeyFileWarning, {QS("Messages/NoLegacyKeyFileWarning"), Roaming, false}},
-    {Config::Messages_HidePreReleaseWarning, {QS("Messages/HidePreReleaseWarning"), Local, {}}}};
+    {Config::Messages_HidePreReleaseWarning, {QS("Messages/HidePreReleaseWarning"), Local, {}}},
+
+    // Local Sync (base64 encoded, see src/sync/SyncServer.cpp)
+    {Config::Sync_StaticPrivateKey, {QS("Sync/StaticPrivateKey"), Local, {}}},
+    {Config::Sync_StaticPublicKey, {QS("Sync/StaticPublicKey"), Local, {}}},
+    {Config::Sync_PairingSecret, {QS("Sync/PairingSecret"), Local, {}}}};
 
 // clang-format on
 

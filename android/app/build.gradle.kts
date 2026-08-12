@@ -6,6 +6,14 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+
+// Forwards the live-sync payload to the test JVM so LiveDesktopSyncTest can reach a running
+// desktop server; without it that test skips itself and the suite stays hermetic.
+tasks.withType<Test>().configureEach {
+    System.getProperty("hisn.sync.payload")?.let { systemProperty("hisn.sync.payload", it) }
+    testLogging { showStandardStreams = true }
+}
+
 android {
     namespace = "org.hisn.app"
     compileSdk = libs.versions.compileSdk.get().toInt()

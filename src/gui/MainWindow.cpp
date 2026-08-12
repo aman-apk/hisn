@@ -338,6 +338,7 @@ MainWindow::MainWindow()
     m_ui->actionLockAllDatabases->setIcon(icons()->icon("database-lock-all"));
     m_ui->actionQuit->setIcon(icons()->icon("application-exit"));
     m_ui->actionDatabaseMerge->setIcon(icons()->icon("database-merge"));
+    m_ui->actionDatabaseLocalSync->setIcon(icons()->icon("remote-sync"));
     m_ui->menuRemoteSync->setIcon(icons()->icon("remote-sync"));
     m_ui->actionImport->setIcon(icons()->icon("document-import"));
     m_ui->menuExport->setIcon(icons()->icon("document-export"));
@@ -452,6 +453,7 @@ MainWindow::MainWindow()
     connect(m_ui->actionDatabaseSaveBackup, SIGNAL(triggered()), m_ui->tabWidget, SLOT(saveDatabaseBackup()));
     connect(m_ui->actionDatabaseClose, SIGNAL(triggered()), m_ui->tabWidget, SLOT(closeCurrentDatabaseTab()));
     connect(m_ui->actionDatabaseMerge, SIGNAL(triggered()), m_ui->tabWidget, SLOT(mergeDatabase()));
+    connect(m_ui->actionDatabaseLocalSync, SIGNAL(triggered()), m_ui->tabWidget, SLOT(showLocalSync()));
     connect(m_ui->actionDatabaseSettings, SIGNAL(toggled(bool)), m_ui->tabWidget, SLOT(showDatabaseSettings(bool)));
     connect(m_ui->actionDatabaseSecurity, SIGNAL(triggered()), m_ui->tabWidget, SLOT(showDatabaseSecurity()));
     connect(m_ui->actionReports, SIGNAL(toggled(bool)), m_ui->tabWidget, SLOT(showDatabaseReports(bool)));
@@ -1001,6 +1003,7 @@ void MainWindow::updateMenuActionState()
     m_ui->menuRemoteSync->setEnabled(inDatabase || inDatabaseSettings);
     m_ui->menuExport->setEnabled(inDatabase);
     m_ui->actionDatabaseMerge->setEnabled(inDatabase);
+    m_ui->actionDatabaseLocalSync->setEnabled(inDatabase && databaseUnlocked);
 #ifdef KPXC_FEATURE_BROWSER
     m_ui->actionPasskeys->setEnabled(inDatabase || inReports);
     m_ui->actionImportPasskey->setEnabled(inDatabase);
@@ -2058,6 +2061,7 @@ void MainWindow::initActionCollection()
                     m_ui->actionReports,
                     m_ui->actionPasskeys,
                     m_ui->actionDatabaseMerge,
+                    m_ui->actionDatabaseLocalSync,
                     m_ui->actionImportPasskey,
                     m_ui->actionImportCsv,
                     m_ui->actionImportOpVault,

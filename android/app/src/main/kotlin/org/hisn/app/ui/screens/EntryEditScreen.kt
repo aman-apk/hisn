@@ -68,9 +68,12 @@ fun EntryEditScreen(
     val palette = HisnTheme.palette
     val groups by viewModel.groups.collectAsState()
     val busy by viewModel.busy.collectAsState()
+    val settings by viewModel.settings.collectAsState()
 
     var draft by remember(entryUuid) { mutableStateOf(viewModel.draftFor(entryUuid)) }
-    var revealPassword by remember { mutableStateOf(entryUuid == null) }
+    // A brand-new password is being typed, so hiding it helps nobody; an existing one is
+    // masked unless the user has turned that off.
+    var revealPassword by remember { mutableStateOf(entryUuid == null || !settings.hidePasswords) }
     var showGenerator by remember { mutableStateOf(false) }
     var groupMenuOpen by remember { mutableStateOf(false) }
 

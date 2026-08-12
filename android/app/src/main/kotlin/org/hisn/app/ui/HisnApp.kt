@@ -13,6 +13,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -56,10 +58,10 @@ fun HisnApp(viewModel: VaultViewModel) {
         viewModel.events.collect { event ->
             val text = when (event) {
                 is UiEvent.Message ->
-                    if (event.arg != null) {
-                        context.getString(event.message, event.arg)
-                    } else {
+                    if (event.args.isEmpty()) {
                         context.getString(event.message)
+                    } else {
+                        context.getString(event.message, *event.args.toTypedArray())
                     }
 
                 is UiEvent.CopiedWithTimer -> {
@@ -97,7 +99,20 @@ fun HisnApp(viewModel: VaultViewModel) {
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            // Feeds the idle timer from anywhere in the app. The Initial pass is used and the
+            // event is never consumed, so this observes touches without stealing any.
+            .pointerInput(Unit) {
+                awaitPointerEventScope {
+                    while (true) {
+                        awaitPointerEvent(PointerEventPass.Initial)
+                        viewModel.noteActivity()
+                    }
+                }
+            }
+    ) {
         NavHost(
             navController = navController,
             startDestination = Routes.UNLOCK,

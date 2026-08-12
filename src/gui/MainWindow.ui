@@ -264,6 +264,7 @@
     <addaction name="actionImportPasskey"/>
     <addaction name="separator"/>
     <addaction name="actionDatabaseMerge"/>
+    <addaction name="actionDatabaseLocalSync"/>
     <addaction name="menuRemoteSync"/>
     <addaction name="actionImport"/>
     <addaction name="menuExport"/>
@@ -525,6 +526,14 @@
    </property>
    <property name="toolTip">
     <string>Merge From Database</string>
+   </property>
+  </action>
+  <action name="actionDatabaseLocalSync">
+   <property name="text">
+    <string>المزامنة المحلية…</string>
+   </property>
+   <property name="toolTip">
+    <string>Local Sync</string>
    </property>
   </action>
   <action name="actionEntryNew">

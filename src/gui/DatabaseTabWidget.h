@@ -86,6 +86,7 @@ public slots:
     void showDatabaseReports(bool state);
     void showDatabaseSettings(bool state);
     void showDatabaseSecurity();
+    void showLocalSync();
 #ifdef KPXC_FEATURE_BROWSER
     void showPasskeys();
     void importPasskey();

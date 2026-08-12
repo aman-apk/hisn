@@ -35,6 +35,7 @@
 #ifdef Q_OS_MACOS
 #include "gui/osutils/macutils/MacUtils.h"
 #endif
+#include "gui/sync/SyncPairingDialog.h"
 #include "gui/wizard/NewDatabaseWizard.h"
 
 DatabaseTabWidget::DatabaseTabWidget(QWidget* parent)
@@ -574,6 +575,18 @@ void DatabaseTabWidget::showDatabaseSettings(bool state)
 void DatabaseTabWidget::showDatabaseSecurity()
 {
     currentDatabaseWidget()->switchToDatabaseSecurity();
+}
+
+void DatabaseTabWidget::showLocalSync()
+{
+    auto dbWidget = currentDatabaseWidget();
+    if (!dbWidget || dbWidget->isLocked()) {
+        return;
+    }
+
+    // The dialog owns the listening socket and deletes itself when it is closed.
+    auto* dialog = new SyncPairingDialog(dbWidget, this);
+    dialog->show();
 }
 
 #ifdef KPXC_FEATURE_BROWSER

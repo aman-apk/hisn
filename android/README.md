@@ -108,6 +108,7 @@ All tests are plain JVM unit tests — no device, no emulator:
 | --- | --- |
 | `KdbxRoundTripTest` | كتابة قاعدة بيانات كاملة ثم قراءتها ومطابقة كل حقل — لصيغتَي KDBX 4.1 (Argon2d/AES-256، وChaCha20/Argon2id) وKDBX 3.1 (AES-KDF)، مع رفض كلمة السرّ الخاطئة وملف المفتاح الخاطئ. <br> Full write/read/compare round trip for KDBX 4.1 and 3.1, plus wrong-password and wrong-key-file rejection. |
 | `TotpTest` | متجهات RFC 6238 لخوارزميات SHA1 وSHA256 وSHA512، ومتجه Steam Guard، وتحليل روابط `otpauth://` وصيغ `key=value` والصيغة القديمة `[step];[digits]`. <br> RFC 6238 vectors for SHA1/SHA256/SHA512, a Steam Guard vector, and parsing of `otpauth://` URIs, `key=value` strings and the legacy settings pair. |
+| `DesktopCompatTest` | فتح ملف ‏`.kdbx`‏ كتبه KeePassXC نفسه (‏`app/src/test/resources/`‏) وإعادة كتابته دون فقدان. <br> Opens a `.kdbx` written by KeePassXC itself (`app/src/test/resources/`) and rewrites it without loss. |
 
 <div dir="rtl">
 

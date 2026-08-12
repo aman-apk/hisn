@@ -212,6 +212,10 @@ public:
         Messages_NoLegacyKeyFileWarning,
         Messages_HidePreReleaseWarning,
 
+        Sync_StaticPrivateKey,
+        Sync_StaticPublicKey,
+        Sync_PairingSecret,
+
         // Special internal value
         Deleted
     };
