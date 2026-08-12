@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+      Hisn is an offline vault: nothing is ever uploaded to a server we run, and there is no
+      analytics, telemetry or crash reporting. INTERNET is nevertheless required because the
+      optional "sync over the local network" feature opens a socket directly to another device
+      on the same Wi-Fi (peer to peer, no intermediary), and Android gates every socket —
+      including a purely local one — behind this permission.
+    -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--
+      Used to tell the user *why* LAN sync is unavailable ("you are not on Wi-Fi") instead of
+      failing with a bare timeout, and to pick the Wi-Fi interface to advertise on.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!--
+      Only for scanning the pairing QR code shown by the other device. No photo is stored and
+      no frame leaves the process; the analyser decodes in memory and the frame is discarded.
+    -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Unlocking the vault with a fingerprint / face / device PIN. -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <!-- API 26–27 predates USE_BIOMETRIC; BiometricPrompt falls back to this there. -->
+    <uses-permission
+        android:name="android.permission.USE_FINGERPRINT"
+        android:maxSdkVersion="27" />
+
+    <!-- A device with no camera can still use every feature except QR pairing. -->
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
+
+    <application
+        android:name=".HisnApplication"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Hisn"
+        tools:targetApi="33">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|layoutDirection|locale"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.Hisn">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Opening a .kdbx from a file manager or an email attachment. -->
+            <intent-filter android:label="@string/open_database">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+                <data android:host="*" />
+                <data android:pathPattern=".*\\.kdbx" />
+            </intent-filter>
+        </activity>
+
+        <!--
+          Hands attachments and exported databases to another app as a short-lived content:// URI
+          so no file ever has to be written to shared storage.
+        -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>

@@ -569,7 +569,7 @@ QPair<QString, QString> Config::defaultConfigFiles()
 {
     // Check if we are running in portable mode, if so store the config files local to the app
     if (isPortable()) {
-        return {portableConfigDir().append("/hisn.ini"), portableConfigDir().append("/keepassxc_local.ini")};
+        return {portableConfigDir().append("/hisn.ini"), portableConfigDir().append("/hisn_local.ini")};
     }
 
     QString configPath;

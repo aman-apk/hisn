@@ -1,0 +1,80 @@
+#
+# Version catalogue for Hisn (حصن).
+#
+# Every version here is one that already sits in this machine's Gradle cache, so a clean
+# build works without a network round trip. The pairs that matter:
+#   AGP 8.13.2 refuses to run on Gradle older than 8.13 (VersionCheckPlugin), so the wrapper
+#   is pinned to 9.3.1; Kotlin 2.3.20 is the Kotlin line that supports Gradle 9.
+#   Compose BOM 2026.03.01 resolves Compose to 1.10.6 and Material 3 to 1.4.0.
+#
+
+[versions]
+agp = "8.13.2"
+kotlin = "2.3.20"
+
+compileSdk = "36"
+minSdk = "26"
+targetSdk = "35"
+
+activityCompose = "1.13.0"
+appcompat = "1.7.1"
+biometric = "1.1.0"
+bouncycastle = "1.79"
+camerax = "1.4.2"
+composeBom = "2026.03.01"
+coreKtx = "1.18.0"
+coroutines = "1.10.2"
+datastore = "1.1.1"
+documentfile = "1.1.0"
+fragment = "1.8.9"
+junit = "4.13.2"
+lifecycle = "2.11.0"
+materialComponents = "1.13.0"
+navigation = "2.9.7"
+okio = "3.16.4"
+serializationJson = "1.11.0"
+zxing = "3.5.3"
+
+[libraries]
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "biometric" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "documentfile" }
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment" }
+androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "camerax" }
+androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "camerax" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "camerax" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "camerax" }
+
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+
+google-material = { module = "com.google.android.material:material", version.ref = "materialComponents" }
+
+bouncycastle-prov = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationJson" }
+okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
+zxing-core = { module = "com.google.zxing:core", version.ref = "zxing" }
+
+junit = { module = "junit:junit", version.ref = "junit" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
