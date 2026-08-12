@@ -56,7 +56,7 @@ bool CompositeKey::isEmpty() const
  * Get raw key hash as bytes.
  *
  * The key hash does not contain contributions by challenge-response components for
- * backwards compatibility with KeePassXC's pre-KDBX4 challenge-response
+ * backwards compatibility with Hisn's pre-KDBX4 challenge-response
  * implementation. To include challenge-response in the raw key,
  * use \link CompositeKey::rawKey(const QByteArray*, bool*) instead.
  *
@@ -111,7 +111,7 @@ QByteArray CompositeKey::rawKey(const QByteArray* transformSeed, bool* ok, QStri
  *
  * If using AES-KDF as transform function, the transformed key will not include
  * any challenge-response components. Only static key components will be hashed
- * for backwards-compatibility with KeePassXC's KDBX3 implementation, which added
+ * for backwards-compatibility with Hisn's KDBX3 implementation, which added
  * challenge response key components after key transformation.
  * KDBX4+ KDFs transform the whole key including challenge-response components.
  *

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2021 Team KeePassXC <team@keepassxc.org>
+ *  Copyright (C) 2021 Team Hisn <team@keepassxc.org>
  *  Copyright (C) 2012 Felix Geyer <debfx@fobos.de>
  *
  *  This program is free software: you can redistribute it and/or modify

@@ -526,7 +526,7 @@ class Check(Command):
 
     @staticmethod
     def check_app_stream_info(version, cwd=None):
-        appstream = Path('share/linux/org.keepassxc.KeePassXC.appdata.xml')
+        appstream = Path('share/linux/org.hisn.Hisn.appdata.xml')
         if cwd:
             appstream = Path(cwd) / appstream
         if not appstream.is_file():
@@ -824,9 +824,9 @@ class Build(Command):
             logger.info('Packaging application...')
             _run(['cpack', '-G', 'DragNDrop'], cwd=build_dir, capture_output=False)
 
-            output_file = Path(build_dir) / f'KeePassXC-{version}.dmg'
+            output_file = Path(build_dir) / f'Hisn-{version}.dmg'
             unsigned_suffix = '-unsigned' if not sign else ''
-            output_file.rename(output_dir / f'KeePassXC-{version}-{platform_target}{unsigned_suffix}.dmg')
+            output_file.rename(output_dir / f'Hisn-{version}-{platform_target}{unsigned_suffix}.dmg')
 
         if sign:
             logger.info('All done!')
@@ -873,7 +873,7 @@ class Build(Command):
                 self._run_tests(cwd=build_dir, parallelism=parallelism)
 
             logger.info('Bundling AppDir...')
-            app_dir = Path(build_dir) / f'KeePassXC-{version}-{platform_target}.AppDir'
+            app_dir = Path(build_dir) / f'Hisn-{version}-{platform_target}.AppDir'
             _run(['cmake', '--install', '.', '--strip',
                   '--prefix', (app_dir.absolute() / install_prefix.lstrip('/')).as_posix()],
                  cwd=build_dir, capture_output=False, **docker_args)
@@ -908,9 +908,9 @@ class Build(Command):
 
         env_path = ':'.join([bin_dir.as_posix(), _get_bin_path()])
         install_prefix = app_dir / install_prefix.lstrip('/')
-        desktop_file = install_prefix / 'share/applications/org.keepassxc.KeePassXC.desktop'
-        icon_file = install_prefix / 'share/icons/hicolor/256x256/apps/keepassxc.png'
-        executables = (install_prefix / 'bin').glob('keepassxc*')
+        desktop_file = install_prefix / 'share/applications/org.hisn.Hisn.desktop'
+        icon_file = install_prefix / 'share/icons/hicolor/256x256/apps/hisn.png'
+        executables = (install_prefix / 'bin').glob('hisn*')
         app_run = src_dir / 'share/linux/appimage-apprun.sh'
 
         # Ensure QMAKE points to qmake6 for linuxdeploy-plugin-qt to find Qt6
@@ -924,10 +924,10 @@ class Build(Command):
              cwd=build_dir, capture_output=False, path=env_path, env=env, **docker_args, docker_privileged=True)
 
         logger.debug('Running appimagetool...')
-        appimage_name = f'KeePassXC-{version}-{platform_target}.AppImage'
+        appimage_name = f'Hisn-{version}-{platform_target}.AppImage'
         desktop_file.write_text(desktop_file.read_text().strip() + f'\nX-AppImage-Version={version}\n')
-        _run(['appimagetool', '--updateinformation=gh-releases-zsync|keepassxreboot|keepassxc|latest|' +
-              f'KeePassXC-*-{platform_target}.AppImage.zsync',
+        _run(['appimagetool', '--updateinformation=gh-releases-zsync|keepassxreboot|hisn|latest|' +
+              f'Hisn-*-{platform_target}.AppImage.zsync',
               app_dir.as_posix(), (output_dir.absolute() / appimage_name).as_posix()],
              cwd=build_dir, capture_output=False, path=env_path, env=env, **docker_args, docker_privileged=True)
         # Move appimage zsync file to output dir
@@ -958,7 +958,7 @@ class BuildSrc(Command):
                 raise Error('Build aborted!')
 
         logger.info('Exporting sources...')
-        prefix = f'keepassxc-{version}'
+        prefix = f'hisn-{version}'
         output_file = Path(output_dir) / f'{prefix}-src.tar.xz'
         tag_name = tag_name or version
 
@@ -1082,7 +1082,7 @@ class GPGSign(Command):
 class I18N(Command):
     """Update translation files and pull from or push to Transifex."""
 
-    TRANSIFEX_RESOURCE = 'share-translations-keepassxc-en-ts--{}'
+    TRANSIFEX_RESOURCE = 'share-translations-hisn-en-ts--{}'
     TRANSIFEX_PULL_PERC = 60
 
     @classmethod
@@ -1106,8 +1106,8 @@ class I18N(Command):
 
         list_translators = subparsers.add_parser('tx-list-translators',
                                                  help='Print a HTML-formatted list of translation contributors.')
-        list_translators.add_argument('-o', '--org', help='Transifex org name.', default='keepassxc')
-        list_translators.add_argument('-p', '--project', help='Transifex project name.', default='keepassxc')
+        list_translators.add_argument('-o', '--org', help='Transifex org name.', default='hisn')
+        list_translators.add_argument('-p', '--project', help='Transifex project name.', default='hisn')
         list_translators.add_argument('-r', '--resource', help='Transifex resource name.',
                                       choices=['master', 'develop'])
         list_translators.add_argument('-b', '--member-blacklist', nargs='+', help='Transifex users to ignore',
@@ -1183,7 +1183,7 @@ class I18N(Command):
 
     # noinspection PyMethodMayBeStatic
     def run_tx_push(self, src_dir, resource, yes, tx_args):
-        resource = 'keepassxc.' + self.derive_resource_name(resource, cwd=src_dir)
+        resource = 'hisn.' + self.derive_resource_name(resource, cwd=src_dir)
         sys.stderr.write('\nAbout to push the ' + fmt.bold('"en"') +
                          ' source file from the current branch to Transifex:\n')
         sys.stderr.write(f'    {fmt.bold(_git_get_branch(cwd=src_dir))}'
@@ -1198,7 +1198,7 @@ class I18N(Command):
 
     # noinspection PyMethodMayBeStatic
     def run_tx_pull(self, src_dir, resource, min_perc, commit=False, yes=False, tx_args=None):
-        resource = 'keepassxc.' + self.derive_resource_name(resource, cwd=src_dir)
+        resource = 'hisn.' + self.derive_resource_name(resource, cwd=src_dir)
         sys.stderr.write('\nAbout to pull translations for ' + fmt.bold(f'"{resource}"') + '.\n')
         if not yes and not _yes_no_prompt('Continue?'):
             logger.error('Pull aborted.')
@@ -1302,7 +1302,7 @@ def main():
         # noinspection PyUnresolvedReferences
         ctypes.windll.kernel32.SetConsoleMode(ctypes.windll.kernel32.GetStdHandle(-11), 7)
 
-    sys.stderr.write(fmt.bold(f'{fmt.green("KeePassXC")} Release Preparation Tool\n'))
+    sys.stderr.write(fmt.bold(f'{fmt.green("Hisn")} Release Preparation Tool\n'))
     sys.stderr.write(f'Copyright (C) 2016-{datetime.now().year} KeePassXC Team <https://keepassxc.org/>\n\n')
 
     parser = argparse.ArgumentParser(add_help=True)

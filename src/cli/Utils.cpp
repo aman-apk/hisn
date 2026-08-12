@@ -76,7 +76,7 @@ namespace Utils
         origCodePage = GetConsoleCP();
         origOutputCodePage = GetConsoleOutputCP();
 
-        // On Windows, we ask via keepassxc-cli.exe.manifest to use UTF-8,
+        // On Windows, we ask via hisn-cli.exe.manifest to use UTF-8,
         // but the console code-page isn't automatically changed to match.
         SetConsoleCP(GetACP());
         SetConsoleOutputCP(GetACP());
@@ -164,7 +164,7 @@ namespace Utils
             }
 
             if (fileKey->type() != FileKey::KeePass2XMLv2 && fileKey->type() != FileKey::Hashed) {
-                err << QObject::tr("WARNING: You are using an old key file format which KeePassXC may\n"
+                err << QObject::tr("WARNING: You are using an old key file format which Hisn may\n"
                                    "stop supporting in the future.\n\n"
                                    "Please consider generating a new key file.")
                     << Qt::endl;

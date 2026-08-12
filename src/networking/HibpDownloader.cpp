@@ -102,9 +102,9 @@ void HibpDownloader::validate()
         // HIBP requires clients to specify a user agent in the request
         // (https://haveibeenpwned.com/API/v3#UserAgent); however, in order
         // to minimize the amount of information we expose about ourselves,
-        // we don't add the KeePassXC version number or platform.
+        // we don't add the Hisn version number or platform.
         auto request = QNetworkRequest(url);
-        request.setRawHeader("User-Agent", "KeePassXC");
+        request.setRawHeader("User-Agent", "Hisn");
 
         // Finally, submit the request to HIBP.
         auto reply = getNetMgr()->get(request);

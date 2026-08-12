@@ -16,32 +16,32 @@
 if(KPXC_FEATURE_BROWSER)
     set(proxy_SOURCES
         ../browser/BrowserShared.cpp
-        keepassxc-proxy.cpp
+        hisn-proxy.cpp
         NativeMessagingProxy.cpp)
 
     # Alloc must be defined in a static library to prevent clashing with clang ASAN definitions
     add_library(proxy_alloc STATIC ../core/Alloc.cpp)
     target_link_libraries(proxy_alloc PRIVATE Qt6::Core ${BOTAN_LIBRARIES})
 
-    add_executable(keepassxc-proxy ${proxy_SOURCES})
-    target_link_libraries(keepassxc-proxy proxy_alloc Qt6::Core Qt6::Network)
-    install(TARGETS keepassxc-proxy
+    add_executable(hisn-proxy ${proxy_SOURCES})
+    target_link_libraries(hisn-proxy proxy_alloc Qt6::Core Qt6::Network)
+    install(TARGETS hisn-proxy
             BUNDLE DESTINATION . COMPONENT Runtime
             RUNTIME DESTINATION ${PROXY_INSTALL_DIR} COMPONENT Runtime)
 
     if(APPLE AND WITH_APP_BUNDLE)
         set(PROXY_APP_DIR "${CMAKE_BINARY_DIR}/src/${PROXY_INSTALL_DIR}")
-        add_custom_command(TARGET keepassxc-proxy
+        add_custom_command(TARGET hisn-proxy
                 POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/keepassxc-proxy ${PROXY_APP_DIR}/keepassxc-proxy
+                COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/hisn-proxy ${PROXY_APP_DIR}/hisn-proxy
                 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/src
-                COMMENT "Copying keepassxc-proxy into app bundle")
+                COMMENT "Copying hisn-proxy into app bundle")
 
         set_property(GLOBAL APPEND PROPERTY
-            _MACDEPLOYQT_EXTRA_BINARIES "${PROXY_INSTALL_DIR}/keepassxc-proxy")
+            _MACDEPLOYQT_EXTRA_BINARIES "${PROXY_INSTALL_DIR}/hisn-proxy")
     endif()
 
     if(WIN32)
-      target_link_libraries(keepassxc-proxy Wtsapi32.lib Ws2_32.lib)
+      target_link_libraries(hisn-proxy Wtsapi32.lib Ws2_32.lib)
     endif()
 endif()

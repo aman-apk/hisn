@@ -28,7 +28,7 @@
 #include "core/Resources.h"
 
 /**
- * Install all KeePassXC and Qt translators.
+ * Install all Hisn and Qt translators.
  */
 void Translator::installTranslators(const QString& uiLanguage)
 {
@@ -55,7 +55,7 @@ void Translator::installTranslators(const QString& uiLanguage)
 }
 
 /**
- * Install KeePassXC translator.
+ * Install Hisn translator.
  *
  * @param languages priority-ordered list of languages
  * @param path absolute search path

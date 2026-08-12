@@ -277,7 +277,7 @@ void EditEntryWidget::setupIcon()
 void EditEntryWidget::openAutotypeHelp()
 {
     QDesktopServices::openUrl(
-        QUrl("https://keepassxc.org/docs/KeePassXC_UserGuide.html#_configure_auto_type_sequences"));
+        QUrl("https://keepassxc.org/docs/Hisn_UserGuide.html#_configure_auto_type_sequences"));
 }
 
 void EditEntryWidget::setupAutoType()

@@ -164,7 +164,7 @@ void NixUtils::setLaunchAtStartup(bool enable)
                << QStringLiteral("Exec=") << executablePathOrName << '\n'
                << QStringLiteral("TryExec=") << executablePathOrName << '\n'
                << QStringLiteral("Icon=") << QApplication::applicationName().toLower() << '\n'
-               << QStringLiteral("StartupWMClass=keepassxc") << '\n'
+               << QStringLiteral("StartupWMClass=hisn") << '\n'
                << QStringLiteral("StartupNotify=false") << '\n'
                << QStringLiteral("Terminal=false") << '\n'
                << QStringLiteral("Type=Application") << '\n'
@@ -188,9 +188,9 @@ void NixUtils::setLaunchAtStartup(bool enable)
 
     QMap<QString, QVariant> options;
     options["autostart"] = QVariant(enable);
-    options["reason"] = QVariant("Launch KeePassXC at startup");
+    options["reason"] = QVariant("Launch Hisn at startup");
     int token = QRandomGenerator::global()->bounded(1000, 9999);
-    options["handle_token"] = QVariant(QString("org/keepassxc/KeePassXC/%1").arg(token));
+    options["handle_token"] = QVariant(QString("org/hisn/Hisn/%1").arg(token));
 
     msg << "" << options;
 
@@ -403,7 +403,7 @@ bool NixUtils::setClipboardText(const QString& text)
 
 bool NixUtils::clearClipboardText(const QString& text)
 {
-    // The remote desktop portal tracks whether KeePassXC owns the selection, so
+    // The remote desktop portal tracks whether Hisn owns the selection, so
     // NixUtils does not need the copied text to decide whether clearing is safe.
     Q_UNUSED(text)
 

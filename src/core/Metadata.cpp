@@ -48,7 +48,7 @@ Metadata::Metadata(QObject* parent)
 
 void Metadata::init()
 {
-    m_data.generator = QStringLiteral("KeePassXC");
+    m_data.generator = QStringLiteral("Hisn");
     m_data.maintenanceHistoryDays = 365;
     m_data.masterKeyChangeRec = -1;
     m_data.masterKeyChangeForce = -1;

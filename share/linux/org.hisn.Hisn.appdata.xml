@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- Copyright 2026 Hisn Project. Based on KeePassXC, Copyright KeePassXC Team <team@keepassxc.org> -->
+<component type="desktop-application">
+  <id>org.hisn.Hisn.desktop</id>
+  <name>حصن</name>
+  <name xml:lang="en">Hisn</name>
+  <summary>حافظ على أسرارك في حصنها — مدير كلمات مرور يعمل دون إنترنت</summary>
+  <summary xml:lang="en">Keep your secrets in their fortress — an offline password manager</summary>
+  <developer id="org.hisn">
+    <name>Hisn Project</name>
+  </developer>
+  <metadata_license>CC-BY-3.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <description>
+    <p xml:lang="ar">«حصن» مدير كلمات مرور حديث وآمن ومفتوح المصدر بهوية عربية، يحفظ أسماء المستخدمين
+      وكلمات المرور والروابط والمرفقات والملاحظات في ملف مشفّر واحد يعيش على جهازك وحده — دون إنترنت.
+      من ميزاته: الكتابة التلقائية في أي نافذة، تكامل المتصفح، مولّد كلمات المرور، البحث المتقدم،
+      تقارير صحة كلمات المرور، رموز TOTP، والمزامنة المحلية بين أجهزتك. مبني على قاعدة KeePassXC
+      المفتوحة ومتوافق تماماً مع ملفات KDBX.</p>
+    <p>Hisn is a modern, secure, and open-source password manager with an Arabic-first identity.
+      It stores usernames, passwords, URLs, attachments, and notes in a single encrypted file that
+      lives on your device alone — fully offline. Features include Auto-Type into any window,
+      browser integration, a password generator, advanced search, password health reports, TOTP,
+      and local device-to-device sync. Built on the KeePassXC codebase and fully compatible with
+      KDBX databases.</p>
+  </description>
+  <launchable type="desktop-id">org.hisn.Hisn.desktop</launchable>
+  <categories>
+    <category>Utility</category>
+    <category>Security</category>
+  </categories>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.1.0" date="2026-08-12">
+      <description>
+        <p xml:lang="ar">الإصدار الأول لمشروع حصن، مبني على قاعدة KeePassXC.</p>
+        <p>First release of the Hisn project, built on the KeePassXC codebase.</p>
+      </description>
+    </release>
+  </releases>
+</component>

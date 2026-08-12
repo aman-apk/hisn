@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     Application app(argc, argv);
-    app.setApplicationName("KeePassXC");
+    app.setApplicationName("Hisn");
     app.setApplicationVersion(KEEPASSXC_VERSION);
     app.setQuitOnLastWindowClosed(false);
     app.setAttribute(Qt::AA_Use96Dpi, true);
@@ -1692,7 +1692,7 @@ void TestGui::testSaveBackupPath_data()
     QTest::newRow("Relative backup path (implicit)") << "other_dir/test.old.kdbx" << "other_dir/test.old.kdbx";
     QTest::newRow("Relative backup path (explicit)") << "./other_dir2/test2.old.kdbx" << "other_dir2/test2.old.kdbx";
 
-    QTest::newRow("Path with placeholders") << "{DB_FILENAME}.old.kdbx" << "KeePassXC.old.kdbx";
+    QTest::newRow("Path with placeholders") << "{DB_FILENAME}.old.kdbx" << "Hisn.old.kdbx";
     // empty path should be replaced with default pattern
     QTest::newRow("Empty path") << QString("") << config()->getDefault(Config::BackupFilePathPattern).toString();
     // {DB_FILENAME} should be replaced with database filename

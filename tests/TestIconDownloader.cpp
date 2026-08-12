@@ -71,10 +71,10 @@ void TestIconDownloader::testIconDownloader_data()
                        "https://user:password@keepassxc.org:2021/favicon.ico",
                        keepassxc_favicon};
     QTest::newRow("2nd level domain (.co.uk special case), with subdomain")
-        << "https://login.keepassxc.co.uk"
-        << QStringList{"https://login.keepassxc.co.uk/favicon.ico", "https://keepassxc.co.uk/favicon.ico"};
+        << "https://login.hisn.co.uk"
+        << QStringList{"https://login.hisn.co.uk/favicon.ico", "https://hisn.co.uk/favicon.ico"};
     QTest::newRow("2nd level domain .co.uk special case")
-        << "https://keepassxc.co.uk" << QStringList{"https://keepassxc.co.uk/favicon.ico"};
+        << "https://hisn.co.uk" << QStringList{"https://hisn.co.uk/favicon.ico"};
     QTest::newRow("2nd level domain with several subdomains")
         << "https://de.login.keepassxc.org"
         << QStringList{"https://de.login.keepassxc.org/favicon.ico", keepassxc_favicon};

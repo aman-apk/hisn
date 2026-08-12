@@ -38,7 +38,7 @@
 
 Q_GLOBAL_STATIC(BrowserPasskeys, s_browserPasskeys);
 
-// KeePassXC AAGUID: fdb141b2-5d84-443e-8a35-4698c205a502
+// Hisn AAGUID: fdb141b2-5d84-443e-8a35-4698c205a502
 const QString BrowserPasskeys::AAGUID = QStringLiteral("fdb141b25d84443e8a354698c205a502");
 
 // Authenticator capabilities

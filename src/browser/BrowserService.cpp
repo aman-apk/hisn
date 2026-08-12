@@ -99,7 +99,7 @@ BrowserService* BrowserService::instance()
 void BrowserService::setEnabled(bool enabled)
 {
     if (enabled) {
-        // Update KeePassXC/keepassxc-proxy binary paths to Native Messaging scripts
+        // Update Hisn/hisn-proxy binary paths to Native Messaging scripts
         if (browserSettings()->updateBinaryPath()) {
             browserSettings()->updateBinaryPaths();
         }
@@ -288,7 +288,7 @@ QJsonObject BrowserService::createNewGroup(const QString& groupName, bool isPass
     }
 
     auto dialogResult = MessageBox::warning(m_currentDatabaseWidget,
-                                            tr("KeePassXC - Create a new group"),
+                                            tr("Hisn - Create a new group"),
                                             tr("A request for creating a new group \"%1\" has been received.\n"
                                                "Do you want to create this group?\n")
                                                 .arg(groupName),
@@ -581,7 +581,7 @@ QString BrowserService::storeKey(const QString& key)
     do {
         QInputDialog keyDialog(m_currentDatabaseWidget);
         connect(m_currentDatabaseWidget, SIGNAL(databaseLockRequested()), &keyDialog, SLOT(reject()));
-        keyDialog.setWindowTitle(tr("KeePassXC - New key association request"));
+        keyDialog.setWindowTitle(tr("Hisn - New key association request"));
         keyDialog.setLabelText(tr("You have received an association request for the following database:\n%1\n\n"
                                   "Give the connection a unique name or ID, for example:\nchrome-laptop.")
                                    .arg(db->metadata()->name().toHtmlEscaped()));
@@ -604,7 +604,7 @@ QString BrowserService::storeKey(const QString& key)
             db->metadata()->customData()->contains(CustomData::getKeyWithPrefix(CustomData::BrowserKeyPrefix, id));
         if (contains) {
             dialogResult = MessageBox::warning(m_currentDatabaseWidget,
-                                               tr("KeePassXC - Overwrite existing key?"),
+                                               tr("Hisn - Overwrite existing key?"),
                                                tr("A shared encryption key with the name \"%1\" "
                                                   "already exists.\nDo you want to overwrite it?")
                                                    .arg(id),
@@ -689,7 +689,7 @@ QJsonObject BrowserService::showPasskeysRegisterPrompt(const QJsonObject& public
                                                                      publicKeyCredentials.credentialId,
                                                                      userId,
                                                                      publicKeyCredentials.key,
-                                                                     tr("KeePassXC - Passkey credentials"),
+                                                                     tr("Hisn - Passkey credentials"),
                                                                      tr("Register a new passkey to this entry:"),
                                                                      tr("Register"));
                 if (!result) {
@@ -846,7 +846,7 @@ void BrowserService::addPasskeyToEntry(Entry* entry,
     // Ask confirmation if entry already contains a Passkey
     if (entry->hasPasskey()) {
         if (MessageBox::question(m_currentDatabaseWidget,
-                                 tr("KeePassXC - Update passkey"),
+                                 tr("Hisn - Update passkey"),
                                  tr("Entry already has a passkey.\nDo you want to overwrite the passkey in %1 - %2?")
                                      .arg(entry->title(), passkeyUtils()->getUsernameFromEntry(entry)),
                                  MessageBox::Overwrite | MessageBox::Cancel,
@@ -950,7 +950,7 @@ bool BrowserService::updateEntry(const EntryParameters& entryParameters, const Q
         if (!browserSettings()->alwaysAllowUpdate()) {
             raiseWindow();
             dialogResult = MessageBox::question(m_currentDatabaseWidget,
-                                                tr("KeePassXC - Update Entry"),
+                                                tr("Hisn - Update Entry"),
                                                 tr("Do you want to update the information in %1 - %2?")
                                                     .arg(QUrl(entryParameters.siteUrl).host(), username),
                                                 MessageBox::Save | MessageBox::Cancel,
@@ -986,7 +986,7 @@ bool BrowserService::deleteEntry(const QString& uuid)
     }
 
     auto dialogResult = MessageBox::warning(m_currentDatabaseWidget,
-                                            tr("KeePassXC - Delete entry"),
+                                            tr("Hisn - Delete entry"),
                                             tr("A request for deleting entry \"%1\" has been received.\n"
                                                "Do you want to delete the entry?\n")
                                                 .arg(entry->title()),
@@ -1360,7 +1360,7 @@ bool BrowserService::removeFirstDomain(QString& hostname)
     return false;
 }
 
-/* Test if a search URL matches a custom entry. If the URL has the schema "keepassxc", some special checks will be made.
+/* Test if a search URL matches a custom entry. If the URL has the schema "hisn", some special checks will be made.
  * Otherwise, this simply delegates to handleURL(). */
 bool BrowserService::shouldIncludeEntry(Entry* entry,
                                         const QString& url,

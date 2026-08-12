@@ -333,7 +333,7 @@
        <item>
         <widget class="QCheckBox" name="updateBinaryPath">
          <property name="toolTip">
-          <string>Updates KeePassXC or keepassxc-proxy binary path automatically to native messaging scripts on startup.</string>
+          <string>Updates Hisn or hisn-proxy binary path automatically to native messaging scripts on startup.</string>
          </property>
          <property name="text">
           <string>Update native messaging manifest files at startup</string>
@@ -343,7 +343,7 @@
        <item>
         <widget class="QCheckBox" name="allowGetDatabaseEntriesRequest">
          <property name="toolTip">
-          <string>Allow keepassxc-proxy to list all entries with their title, URL and UUID in connected databases.</string>
+          <string>Allow hisn-proxy to list all entries with their title, URL and UUID in connected databases.</string>
          </property>
          <property name="text">
           <string>Allow limited access to all entries in connected databases (ignores site access restrictions)</string>

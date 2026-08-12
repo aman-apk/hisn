@@ -256,7 +256,7 @@ QString NativeMessageInstaller::getNativeMessagePath(SupportedBrowsers browser) 
 #ifdef KEEPASSXC_DIST_FLATPAK
 /** Constructs a host accessible proxy path for use with flatpak
  *
- * @return path Path to host accessible wrapper script (org.keepassxc.KeePassXC)
+ * @return path Path to host accessible wrapper script (org.hisn.Hisn)
  */
 QString constructFlatpakPath()
 {
@@ -270,10 +270,10 @@ QString constructFlatpakPath()
     QRegularExpressionMatch match = re.match(appPath);
     if (match.hasMatch()) {
         // Construct a proxy path that should work with all flatpak installations
-        path = match.captured(1) + "/exports/bin/" + "org.keepassxc.KeePassXC";
+        path = match.captured(1) + "/exports/bin/" + "org.hisn.Hisn";
     } else {
         // Fallback to the most common and default flatpak installation path
-        path = "/var/lib/flatpak/exports/bin/org.keepassxc.KeePassXC";
+        path = "/var/lib/flatpak/exports/bin/org.hisn.Hisn";
     }
     settings.endGroup();
 
@@ -306,9 +306,9 @@ QString NativeMessageInstaller::getInstalledProxyPath() const
 #elif defined(KEEPASSXC_DIST_FLATPAK)
     path = constructFlatpakPath();
 #elif defined(KEEPASSXC_DIST_SNAP)
-    path = "/snap/bin/keepassxc.proxy";
+    path = "/snap/bin/hisn.proxy";
 #else
-    path = QCoreApplication::applicationDirPath() + QStringLiteral("/keepassxc-proxy");
+    path = QCoreApplication::applicationDirPath() + QStringLiteral("/hisn-proxy");
 #ifdef Q_OS_WIN
     path.append(QStringLiteral(".exe"));
 #endif // #ifdef Q_OS_WIN
@@ -328,7 +328,7 @@ QJsonObject NativeMessageInstaller::constructFile(SupportedBrowsers browser)
 {
     QJsonObject script;
     script["name"] = HOST_NAME;
-    script["description"] = QStringLiteral("KeePassXC integration with native messaging support");
+    script["description"] = QStringLiteral("Hisn integration with native messaging support");
     script["path"] = getProxyPath();
     script["type"] = QStringLiteral("stdio");
 

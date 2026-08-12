@@ -100,7 +100,7 @@ protected:
     /**
      * Whether to draw a native macOS toolbar or fill it with a solid color instead.
      * Can be set to false to avoid mixed themes if the OS theme isn't the same as
-     * the KeePassXC application theme.
+     * the Hisn application theme.
      */
     bool m_drawNativeMacOsToolBar = true;
 #endif

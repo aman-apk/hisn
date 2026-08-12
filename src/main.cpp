@@ -63,16 +63,17 @@ int main(int argc, char** argv)
 
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    QGuiApplication::setDesktopFileName("org.keepassxc.KeePassXC");
+    QGuiApplication::setDesktopFileName("org.hisn.Hisn");
 #if defined(Q_OS_WIN)
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
     Application app(argc, argv);
     // don't set organizationName as that changes the return value of
     // QStandardPaths::writableLocation(QDesktopServices::DataLocation)
-    Application::setApplicationName("KeePassXC");
+    Application::setApplicationName("Hisn");
+    Application::setApplicationDisplayName(QStringLiteral("حصن"));
     Application::setApplicationVersion(KEEPASSXC_VERSION);
-    app.setProperty("KPXC_QUALIFIED_APPNAME", "org.keepassxc.KeePassXC");
+    app.setProperty("KPXC_QUALIFIED_APPNAME", "org.hisn.Hisn");
 
     // HACK: Prevent long-running threads from deadlocking the program with only 1 CPU
     // See https://github.com/keepassxreboot/keepassxc/issues/10391
@@ -83,7 +84,7 @@ int main(int argc, char** argv)
     }
 
     QCommandLineParser parser;
-    parser.setApplicationDescription(QObject::tr("KeePassXC - cross-platform password manager"));
+    parser.setApplicationDescription(QObject::tr("Hisn - cross-platform password manager"));
     parser.addPositionalArgument(
         "filename(s)", QObject::tr("filenames of the password databases to open (*.kdbx)"), "[filename(s)]");
 
@@ -166,13 +167,13 @@ int main(int argc, char** argv)
                 app.sendFileNamesToRunningInstance(fileNames);
             }
 
-            qWarning() << QObject::tr("Another instance of KeePassXC is already running.").toUtf8().constData();
+            qWarning() << QObject::tr("Another instance of Hisn is already running.").toUtf8().constData();
         }
         return EXIT_SUCCESS;
     }
 
     if (parser.isSet(lockOption)) {
-        qWarning() << QObject::tr("KeePassXC is not running. No open database to lock").toUtf8().constData();
+        qWarning() << QObject::tr("Hisn is not running. No open database to lock").toUtf8().constData();
 
         // still return with EXIT_SUCCESS because when used within a script for ensuring that there is no unlocked
         // keepass database (e.g. screen locking) we can consider it as successful
@@ -183,7 +184,7 @@ int main(int argc, char** argv)
         QString error = QObject::tr("Fatal error while testing the cryptographic functions.");
         error.append("\n");
         error.append(Crypto::errorString());
-        MessageBox::critical(nullptr, QObject::tr("KeePassXC - Error"), error);
+        MessageBox::critical(nullptr, QObject::tr("Hisn - Error"), error);
         return EXIT_FAILURE;
     }
 

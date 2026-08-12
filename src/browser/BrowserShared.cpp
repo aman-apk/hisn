@@ -52,7 +52,7 @@ namespace BrowserShared
 
     QString localServerPath()
     {
-        const auto serverName = QStringLiteral("/org.keepassxc.KeePassXC.BrowserServer");
+        const auto serverName = QStringLiteral("/org.hisn.Hisn.BrowserServer");
 #if defined(KEEPASSXC_DIST_SNAP)
         return QProcessEnvironment::systemEnvironment().value("SNAP_USER_COMMON") + serverName;
 #elif defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
@@ -61,7 +61,7 @@ namespace BrowserShared
 
         // Put the socket in a dedicated directory.
         // This directory will be easily mountable by sandbox containers.
-        QString subPath = path + "/app/org.keepassxc.KeePassXC";
+        QString subPath = path + "/app/org.hisn.Hisn";
         QDir().mkpath(subPath);
 
         QString socketPath = subPath + serverName;

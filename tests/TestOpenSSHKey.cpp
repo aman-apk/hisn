@@ -51,7 +51,7 @@ void TestOpenSSHKey::testParse()
     QVERIFY(!key.encrypted());
     QCOMPARE(key.cipherName(), QString("none"));
     QCOMPARE(key.type(), QString("ssh-ed25519"));
-    QCOMPARE(key.comment(), QString("opensshkey-test-parse@keepassxc"));
+    QCOMPARE(key.comment(), QString("opensshkey-test-parse@hisn"));
     QCOMPARE(key.fingerprint(), QString("SHA256:D1fVmA15YXzaJ5sdO9dXxo5coHL/pnNaIfCvokHzTA4"));
     QCOMPARE(key.fingerprint(QCryptographicHash::Md5), QString("MD5:2d:e8:04:09:13:b4:2b:73:5e:87:43:cf:4e:6f:62:f1"));
 
@@ -278,7 +278,7 @@ void TestOpenSSHKey::testParseECDSA256()
     QVERIFY(!key.encrypted());
     QCOMPARE(key.cipherName(), QString("none"));
     QCOMPARE(key.type(), QString("ecdsa-sha2-nistp256"));
-    QCOMPARE(key.comment(), QString("opensshkey-test-ecdsa256@keepassxc"));
+    QCOMPARE(key.comment(), QString("opensshkey-test-ecdsa256@hisn"));
     QCOMPARE(key.fingerprint(), QString("SHA256:nwwovZmQbBeiR3GZRpK4OWHgCUE7E0wFtCN7Ng7eX5g"));
     QCOMPARE(keyString, key.privateKey());
 }
@@ -304,7 +304,7 @@ void TestOpenSSHKey::testParseECDSA384()
     QVERIFY(!key.encrypted());
     QCOMPARE(key.cipherName(), QString("none"));
     QCOMPARE(key.type(), QString("ecdsa-sha2-nistp384"));
-    QCOMPARE(key.comment(), QString("opensshkey-test-ecdsa384@keepassxc"));
+    QCOMPARE(key.comment(), QString("opensshkey-test-ecdsa384@hisn"));
     QCOMPARE(key.fingerprint(), QString("SHA256:B5tLMG976BZ6nyi/oRUmKaTJcaEaFagEjBfOAgru0OY"));
     QCOMPARE(keyString, key.privateKey());
 }
@@ -331,7 +331,7 @@ void TestOpenSSHKey::testParseECDSA521()
     QVERIFY(!key.encrypted());
     QCOMPARE(key.cipherName(), QString("none"));
     QCOMPARE(key.type(), QString("ecdsa-sha2-nistp521"));
-    QCOMPARE(key.comment(), QString("opensshkey-test-ecdsa521@keepassxc"));
+    QCOMPARE(key.comment(), QString("opensshkey-test-ecdsa521@hisn"));
     QCOMPARE(key.fingerprint(), QString("SHA256:m3LtA9MtZW8FN0R3vwA0AAI+YtegbggGCy3EGKWya+s"));
     QCOMPARE(keyString, key.privateKey());
 }
@@ -356,7 +356,7 @@ void TestOpenSSHKey::testDecryptOpenSSHAES256CBC()
     QVERIFY(!key.openKey("incorrectpassphrase"));
     QVERIFY(key.openKey("correctpassphrase"));
     QCOMPARE(key.type(), QString("ssh-ed25519"));
-    QCOMPARE(key.comment(), QString("opensshkey-test-aes256cbc@keepassxc"));
+    QCOMPARE(key.comment(), QString("opensshkey-test-aes256cbc@hisn"));
 
     QByteArray publicKey, privateKey;
     BinaryStream publicStream(&publicKey), privateStream(&privateKey);
@@ -434,7 +434,7 @@ void TestOpenSSHKey::testDecryptOpenSSHAES256CTR()
     QVERIFY(!key.openKey("incorrectpassphrase"));
     QVERIFY(key.openKey("correctpassphrase"));
     QCOMPARE(key.type(), QString("ssh-ed25519"));
-    QCOMPARE(key.comment(), QString("opensshkey-test-aes256ctr@keepassxc"));
+    QCOMPARE(key.comment(), QString("opensshkey-test-aes256ctr@hisn"));
 
     QByteArray publicKey, privateKey;
     BinaryStream publicStream(&publicKey), privateStream(&privateKey);
@@ -513,7 +513,7 @@ void TestOpenSSHKey::testDecryptUTF8()
     QVERIFY(key.openKey("äåéëþüúíóö"));
     QCOMPARE(key.fingerprint(), QString("SHA256:EfUXwvH4rOoys+AlbznCqjMwzIVW8KuhoWu9uT03FYA"));
     QCOMPARE(key.type(), QString("ssh-ed25519"));
-    QCOMPARE(key.comment(), QString("opensshkey-test-utf8@keepassxc"));
+    QCOMPARE(key.comment(), QString("opensshkey-test-utf8@hisn"));
 }
 
 void TestOpenSSHKey::testParseECDSASecurityKey()
@@ -537,7 +537,7 @@ void TestOpenSSHKey::testParseECDSASecurityKey()
     QVERIFY(!key.encrypted());
     QCOMPARE(key.cipherName(), QString("none"));
     QCOMPARE(key.type(), QString("sk-ecdsa-sha2-nistp256@openssh.com"));
-    QCOMPARE(key.comment(), QString("opensshkey-test-ecdsa-sk@keepassxc"));
+    QCOMPARE(key.comment(), QString("opensshkey-test-ecdsa-sk@hisn"));
     QCOMPARE(key.fingerprint(), QString("SHA256:ctOtAsPMqbtumGI41o2oeWfGDah4m1ACILRj+x0gx0E"));
     QCOMPARE(keyString, key.privateKey());
 }
@@ -562,7 +562,7 @@ void TestOpenSSHKey::testParseED25519SecurityKey()
     QVERIFY(!key.encrypted());
     QCOMPARE(key.cipherName(), QString("none"));
     QCOMPARE(key.type(), QString("sk-ssh-ed25519@openssh.com"));
-    QCOMPARE(key.comment(), QString("opensshkey-test-ed25519-sk@keepassxc"));
+    QCOMPARE(key.comment(), QString("opensshkey-test-ed25519-sk@hisn"));
     QCOMPARE(key.fingerprint(), QString("SHA256:PGtS5WvbnYmNqFIeRbzO6cVP9GLh8eEzENgkHp02XIA"));
     QCOMPARE(keyString, key.privateKey());
 }

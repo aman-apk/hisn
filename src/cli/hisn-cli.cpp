@@ -113,7 +113,7 @@ int main(int argc, char** argv)
     }
     QCommandLineParser parser;
 
-    QString description("KeePassXC command line interface.");
+    QString description("Hisn command line interface.");
     description = description.append(QObject::tr("\n\nAvailable commands:\n"));
     for (auto& command : Commands::getCommands()) {
         description = description.append(command->getDescriptionLine());
@@ -157,7 +157,7 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    // Removing the first argument (keepassxc).
+    // Removing the first argument (hisn).
     arguments.removeFirst();
     int exitCode = command->execute(arguments);
 

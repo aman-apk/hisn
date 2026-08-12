@@ -29,7 +29,7 @@
 #endif
 
 #if defined(NDEBUG) && !defined(__cpp_sized_deallocation)
-#warning "KeePassXC is being compiled without sized deallocation support. Deletes may be slow."
+#warning "Hisn is being compiled without sized deallocation support. Deletes may be slow."
 #endif
 
 /**

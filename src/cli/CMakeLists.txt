@@ -65,27 +65,27 @@ target_link_libraries(cli
         PRIVATE ${ZXCVBN_LIBRARIES} text_stream
         PUBLIC Qt6::Core)
 
-add_executable(keepassxc-cli keepassxc-cli.cpp)
-target_link_libraries(keepassxc-cli
+add_executable(hisn-cli hisn-cli.cpp)
+target_link_libraries(hisn-cli
         PRIVATE ${GPGERROR_LIBRARIES} cli keepassxc_core line_reader)
 
-install(TARGETS keepassxc-cli
+install(TARGETS hisn-cli
         BUNDLE DESTINATION . COMPONENT Runtime
         RUNTIME DESTINATION ${CLI_INSTALL_DIR} COMPONENT Runtime)
 
 if(WIN32)
-    target_sources(keepassxc-cli
-        PRIVATE keepassxc-cli.exe.manifest)
+    target_sources(hisn-cli
+        PRIVATE hisn-cli.exe.manifest)
 endif()
 
 if(APPLE AND WITH_APP_BUNDLE)
     set(CLI_APP_DIR "${CMAKE_BINARY_DIR}/src/${CLI_INSTALL_DIR}")
 
-    add_custom_command(TARGET keepassxc-cli
+    add_custom_command(TARGET hisn-cli
             POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/keepassxc-cli ${CLI_APP_DIR}/keepassxc-cli
+            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/hisn-cli ${CLI_APP_DIR}/hisn-cli
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/src
-            COMMENT "Copying keepassxc-cli into app bundle")
+            COMMENT "Copying hisn-cli into app bundle")
     set_property(GLOBAL APPEND PROPERTY
-        _MACDEPLOYQT_EXTRA_BINARIES "${CLI_INSTALL_DIR}/keepassxc-cli")
+        _MACDEPLOYQT_EXTRA_BINARIES "${CLI_INSTALL_DIR}/hisn-cli")
 endif()

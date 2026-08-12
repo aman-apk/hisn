@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     Application app(argc, argv);
-    app.setApplicationName("KeePassXC");
+    app.setApplicationName("Hisn");
     app.setApplicationVersion(KEEPASSXC_VERSION);
     app.setQuitOnLastWindowClosed(false);
     app.setAttribute(Qt::AA_Use96Dpi, true);

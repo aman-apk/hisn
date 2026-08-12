@@ -58,7 +58,7 @@ void MessageBox::initializeButtonDefs()
         {Retry, {stdButtonText(QMessageBox::Retry), QMessageBox::ButtonRole::AcceptRole}},
         {Ignore, {stdButtonText(QMessageBox::Ignore), QMessageBox::ButtonRole::AcceptRole}},
 
-        // KeePassXC Buttons
+        // Hisn Buttons
         {Overwrite, {QMessageBox::tr("Overwrite"), QMessageBox::ButtonRole::AcceptRole}},
         {Delete, {QMessageBox::tr("Delete"), QMessageBox::ButtonRole::AcceptRole}},
         {Move, {QMessageBox::tr("Move"), QMessageBox::ButtonRole::AcceptRole}},

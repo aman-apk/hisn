@@ -53,10 +53,10 @@ void UpdateCheckDialog::showUpdateCheckResponse(bool hasUpdate, const QString& v
     } else if (hasUpdate) {
         m_ui->statusLabel->setText(
             tr("<strong>A new version is available.</strong><br/>"
-               "KeePassXC %1 can be <a href=\"https://keepassxc.org/download/\">downloaded here</a>.")
+               "Hisn %1 can be <a href=\"https://keepassxc.org/download/\">downloaded here</a>.")
                 .arg(version, KEEPASSXC_VERSION));
     } else {
-        m_ui->statusLabel->setText(tr("You have the latest version of KeePassXC"));
+        m_ui->statusLabel->setText(tr("You have the latest version of Hisn"));
     }
 }
 

@@ -1,8 +1,8 @@
 # Freedesktop.org Secret Storage Spec Server Side API
 
-This plugin implements the [Secret Storage specification][secrets] version 0.2. While running KeePassXC, it acts as a
+This plugin implements the [Secret Storage specification][secrets] version 0.2. While running Hisn, it acts as a
 Secret Service server, registered on DBus, so clients like seahorse, python-secretstorage, or other implementations
-can connect and access the exposed database in KeePassXC.
+can connect and access the exposed database in Hisn.
 
 [secrets]: (https://www.freedesktop.org/wiki/Specifications/secret-storage-spec/)
 

@@ -44,7 +44,7 @@ NewDatabaseWizard::NewDatabaseWizard(QWidget* parent)
         addPage(page);
     }
 
-    setWindowTitle(tr("Create a new KeePassXC database…"));
+    setWindowTitle(tr("Create a new Hisn database…"));
 
     Q_INIT_RESOURCE(wizard);
     setPixmap(QWizard::BackgroundPixmap, QPixmap(":/wizard/background-pixmap.png"));

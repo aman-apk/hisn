@@ -26,35 +26,35 @@ if(UNIX AND NOT APPLE AND NOT HAIKU)
     # Flatpak requires all host accessible files to use filenames based upon the app id
     if(KEEPASSXC_DIST_FLATPAK)
         set(APP_ICON_NAME "${APP_ID}")
-        set(MIME_ICON "${APP_ID}-application-x-keepassxc")
-        configure_file(linux/keepassxc.xml.in ${CMAKE_CURRENT_BINARY_DIR}/linux/${APP_ID}.xml @ONLY)
+        set(MIME_ICON "${APP_ID}-application-x-hisn")
+        configure_file(linux/hisn.xml.in ${CMAKE_CURRENT_BINARY_DIR}/linux/${APP_ID}.xml @ONLY)
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/linux/${APP_ID}.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages)
 
         file(GLOB_RECURSE ICON_FILES LIST_DIRECTORIES false
-             "icons/application/*/keepassxc*.png"
-             "icons/application/*/*keepassxc*.svg")
+             "icons/application/*/hisn*.png"
+             "icons/application/*/*hisn*.svg")
         foreach(icon_match ${ICON_FILES})
             get_filename_component(icon_name ${icon_match} NAME)
             get_filename_component(icon_dir ${icon_match} DIRECTORY)
-            # Prefix all icons with application id: "org.keepassxc.KeePassXC"
-            string(REGEX REPLACE "^keepassxc(.*)?(\\.png|\\.svg)$" "${APP_ID}\\1\\2" icon_name ${icon_name})
-            string(REGEX REPLACE "^(application-x-keepassxc\\.svg)$" "${APP_ID}-\\1" icon_name ${icon_name})
+            # Prefix all icons with application id: "org.hisn.Hisn"
+            string(REGEX REPLACE "^hisn(.*)?(\\.png|\\.svg)$" "${APP_ID}\\1\\2" icon_name ${icon_name})
+            string(REGEX REPLACE "^(application-x-hisn\\.svg)$" "${APP_ID}-\\1" icon_name ${icon_name})
             # Find icon sub dir ex. "scalable/mimetypes/"
             file(RELATIVE_PATH icon_subdir ${CMAKE_CURRENT_SOURCE_DIR}/icons/application ${icon_dir})
             install(FILES ${icon_match} DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${icon_subdir}
                     RENAME ${icon_name})
         endforeach()
     else()
-        set(APP_ICON_NAME "keepassxc")
-        set(MIME_ICON "application-x-keepassxc")
-        configure_file(linux/keepassxc.xml.in ${CMAKE_CURRENT_BINARY_DIR}/linux/keepassxc.xml @ONLY)
-        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/linux/keepassxc.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages)
+        set(APP_ICON_NAME "hisn")
+        set(MIME_ICON "application-x-hisn")
+        configure_file(linux/hisn.xml.in ${CMAKE_CURRENT_BINARY_DIR}/linux/hisn.xml @ONLY)
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/linux/hisn.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages)
 
         install(DIRECTORY icons/application/ DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor
                 FILES_MATCHING PATTERN "keepassx*.png" PATTERN "keepassx*.svg"
                 PATTERN "status" EXCLUDE PATTERN "actions" EXCLUDE PATTERN "categories" EXCLUDE)
         install(DIRECTORY icons/application/ DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor
-                FILES_MATCHING PATTERN "application-x-keepassxc.svg" PATTERN "status"
+                FILES_MATCHING PATTERN "application-x-hisn.svg" PATTERN "status"
                 EXCLUDE PATTERN "actions" EXCLUDE PATTERN "categories" EXCLUDE)
     endif(KEEPASSXC_DIST_FLATPAK)
     configure_file(linux/${APP_ID}.desktop.in ${CMAKE_CURRENT_BINARY_DIR}/linux/${APP_ID}.desktop @ONLY)
@@ -71,7 +71,7 @@ if(WIN32)
   install(FILES windows/qt.conf DESTINATION ${BIN_INSTALL_DIR})
 endif()
 
-install(FILES icons/application/256x256/apps/keepassxc.png DESTINATION ${DATA_INSTALL_DIR}/icons/application/256x256/apps)
+install(FILES icons/application/256x256/apps/hisn.png DESTINATION ${DATA_INSTALL_DIR}/icons/application/256x256/apps)
 
 add_custom_target(icons)
 add_custom_command(TARGET icons
@@ -81,10 +81,10 @@ add_custom_command(TARGET icons
 if(APPLE)
     add_custom_command(TARGET icons
             POST_BUILD
-            COMMAND xcrun actool share/macosx/keepassxc.icon
+            COMMAND xcrun actool share/macosx/hisn.icon
                 --compile share/macosx
                 --output-partial-info-plist /dev/null
-                --app-icon keepassxc
+                --app-icon hisn
                 --include-all-app-icons
                 --enable-on-demand-resources NO
                 --target-device mac
@@ -97,6 +97,6 @@ endif()
 # ICO for Windows
 add_custom_command(TARGET icons
     POST_BUILD
-    COMMAND bash ./windows/create-ico.sh icons/application/scalable/apps/keepassxc.svg windows/keepassxc.ico
-    COMMAND bash ./windows/create-ico.sh icons/application/scalable/mimetypes/application-x-keepassxc.svg windows/keepassxc-kdbx.ico
+    COMMAND bash ./windows/create-ico.sh icons/application/scalable/apps/hisn.svg windows/hisn.ico
+    COMMAND bash ./windows/create-ico.sh icons/application/scalable/mimetypes/application-x-hisn.svg windows/hisn-kdbx.ico
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})

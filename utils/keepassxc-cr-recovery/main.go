@@ -145,7 +145,7 @@ func main() {
 	args := os.Args
 
 	if len(args) != 3 {
-		log.Fatalf("usage: %s keepassxc-database keyfile", args[0])
+		log.Fatalf("usage: %s hisn-database keyfile", args[0])
 	}
 
 	dbFilename := args[1]

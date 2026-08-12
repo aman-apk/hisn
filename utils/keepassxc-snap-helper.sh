@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-# KeePassXC Browser Extension Native Messaging Installer Tool
-# Copyright (C) 2017 KeePassXC team <https://keepassxc.org/>
+# Hisn Browser Extension Native Messaging Installer Tool
+# Copyright (C) 2017 Hisn team <https://keepassxc.org/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,18 +23,18 @@ BASE_DIR="."
 INSTALL_DIR=""
 INSTALL_FILE="org.keepassxc.keepassxc_browser.json"
 
-# Early out if the keepassxc.proxy executable cannot be found
-if ! command -v keepassxc.proxy; then
-    echo "Could not find keepassxc.proxy! Ensure the keepassxc snap is installed properly."
+# Early out if the hisn.proxy executable cannot be found
+if ! command -v hisn.proxy; then
+    echo "Could not find hisn.proxy! Ensure the hisn snap is installed properly."
     exit 0
 fi
 
-PROXY_PATH=$(command -v keepassxc.proxy)
+PROXY_PATH=$(command -v hisn.proxy)
 
 JSON_FIREFOX=$(cat << EOF
 {
     "name": "org.keepassxc.keepassxc_browser",
-    "description": "KeePassXC integration with native messaging support",
+    "description": "Hisn integration with native messaging support",
     "path": "${PROXY_PATH}",
     "type": "stdio",
     "allowed_extensions": [
@@ -47,7 +47,7 @@ EOF
 JSON_CHROME=$(cat << EOF
 {
     "name": "org.keepassxc.keepassxc_browser",
-    "description": "KeePassXC integration with native messaging support",
+    "description": "Hisn integration with native messaging support",
     "path": "${PROXY_PATH}",
     "type": "stdio",
     "allowed_origins": [
@@ -105,7 +105,7 @@ setupLibreWolf() {
 
 BROWSER=$(whiptail \
             --title "Browser Selection" \
-            --menu "Choose a browser to integrate with KeePassXC:" \
+            --menu "Choose a browser to integrate with Hisn:" \
             15 60 5 \
             "1" "Firefox" \
             "2" "Chrome" \
@@ -141,7 +141,7 @@ if [[ $exitstatus == 0 ]]; then
 
     whiptail \
         --title "Installation Complete" \
-        --msgbox "You will need to restart your browser in order to connect to KeePassXC" \
+        --msgbox "You will need to restart your browser in order to connect to Hisn" \
         8 50
 else
     whiptail --title "Installation Canceled" --msgbox "No changes were made to your system" 8 50

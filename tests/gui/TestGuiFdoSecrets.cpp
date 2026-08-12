@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     Application app(argc, argv);
-    app.setApplicationName("KeePassXC");
+    app.setApplicationName("Hisn");
     app.setApplicationVersion(KEEPASSXC_VERSION);
     app.setQuitOnLastWindowClosed(false);
     app.setAttribute(Qt::AA_Use96Dpi, true);
@@ -1096,7 +1096,7 @@ void TestGuiFdoSecrets::testDuplicateName()
     VERIFY(service);
 
     // when two databases have the same name, one of it will have part of its uuid suffixed
-    const QString pathNoSuffix = QStringLiteral("/org/freedesktop/secrets/collection/KeePassXC");
+    const QString pathNoSuffix = QStringLiteral("/org/freedesktop/secrets/collection/Hisn");
     DBUS_GET(colls, service->collections());
     COMPARE(colls.size(), 2);
     COMPARE(colls[0].path(), pathNoSuffix);

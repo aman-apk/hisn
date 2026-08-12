@@ -3,7 +3,7 @@
 # Copy icon files from the Material Design icon set.
 #
 # Copyright (C) 2020 Wolfram Rösler
-# Copyright (C) 2020 KeePassXC team <https://keepassxc.org/>
+# Copyright (C) 2020 Hisn team <https://keepassxc.org/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,14 +27,14 @@
 #       $ git clone https://github.com/Templarian/MaterialDesign.git
 #
 # 2. Go to the icon source directory:
-#       $ cd ~/src/keepassxc/share/icons
+#       $ cd ~/src/hisn/share/icons
 #
 # 3. Create the icons:
 #       $ bash ../../utils/makeicons.sh ~/src/MaterialDesign
 #
-# 4. Re-build and run KeePassXC:
-#       $ cd ~/keepassxc/build
-#       $ make keepassxc && src/keepassxc
+# 4. Re-build and run Hisn:
+#       $ cd ~/hisn/build
+#       $ make hisn && src/hisn
 #
 # Material icons: https://materialdesignicons.com/
 
@@ -58,12 +58,12 @@ fi
 # Check destination dir
 DSTDIR=share/icons/application
 if [[ ! -d $DSTDIR ]]; then
-    echo -e "${RED}Please invoke this script from the KeePassXC source root directory.${NC}"
+    echo -e "${RED}Please invoke this script from the Hisn source root directory.${NC}"
     exit 1
 fi
 
-# Map KeePassXC icon names to Material icon names.
-# $1 is the name of the icon file in the KeePassXC source (without
+# Map Hisn icon names to Material icon names.
+# $1 is the name of the icon file in the Hisn source (without
 # path and without extension, e. g. "document-new").
 # Writes the name of the Material icon (without path and without
 # extension, e. g. "folder-plus") to stdout.

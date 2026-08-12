@@ -23,7 +23,7 @@
 class Database;
 
 /**
- * Pure-virtual base class for KeePassXC settings widgets.
+ * Pure-virtual base class for Hisn settings widgets.
  */
 class SettingsWidget : public QWidget
 {

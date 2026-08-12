@@ -146,7 +146,7 @@ void TestTools::testBackupFilePatternSubstitution_data()
     QTest::addColumn<QString>("dbFilePath");
     QTest::addColumn<QString>("expectedSubstitution");
 
-    static const auto DEFAULT_DB_FILE_NAME = QStringLiteral("KeePassXC");
+    static const auto DEFAULT_DB_FILE_NAME = QStringLiteral("Hisn");
     static const auto DEFAULT_DB_FILE_PATH = QStringLiteral("/tmp/") + DEFAULT_DB_FILE_NAME + QStringLiteral(".kdbx");
     static const auto NOW = Clock::currentDateTime();
     auto DEFAULT_FORMATTED_TIME = NOW.toString("dd_MM_yyyy_hh-mm-ss");
@@ -181,7 +181,7 @@ void TestTools::testBackupFilePatternSubstitution_data()
         << "some {DB_FILENAME} thing" << DEFAULT_DB_FILE_PATH
         << QStringLiteral("some ") + DEFAULT_DB_FILE_NAME + QStringLiteral(" thing");
     QTest::newRow("{DB_FILENAME} substitution with multiple extensions")
-        << "some {DB_FILENAME} thing" << "/tmp/KeePassXC.kdbx.ext" << "some KeePassXC.kdbx thing";
+        << "some {DB_FILENAME} thing" << "/tmp/Hisn.kdbx.ext" << "some Hisn.kdbx thing";
     // Not relevant right now, added test anyway
     QTest::newRow("There should be no substitution loops")
         << "{DB_FILENAME}" << "{TIME:'{DB_FILENAME}'}.ext" << "{TIME:'{DB_FILENAME}'}";

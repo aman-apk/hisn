@@ -1,9 +1,9 @@
-# Build and Install KeePassXC
+# Build and Install Hisn
 
-This document will guide you through the steps to build and install KeePassXC from source.
-For more information, see also the [_Building KeePassXC_](https://github.com/keepassxreboot/keepassxc/wiki/Building-KeePassXC) page on the wiki.
+This document will guide you through the steps to build and install Hisn from source.
+For more information, see also the [_Building Hisn_](https://github.com/keepassxreboot/hisn/wiki/Building-Hisn) page on the wiki.
 
-The [QuickStart Guide](https://keepassxc.org/docs/KeePassXC_GettingStarted.html) gets you started using KeePassXC on your Windows, macOS, or Linux computer using pre-compiled binaries from the [downloads page](https://keepassxc.org/download).
+The [QuickStart Guide](https://keepassxc.org/docs/Hisn_GettingStarted.html) gets you started using Hisn on your Windows, macOS, or Linux computer using pre-compiled binaries from the [downloads page](https://keepassxc.org/download).
 
 ## Toolchain and Build Dependencies
 
@@ -19,24 +19,24 @@ The following minimum versions of libraries must exist:
 * botan (>= 2.12.0 or >= 3.0.0)
 * zlib (>= 1.2.0)
 
-* Besides a working C++ toolchain, KeePassXC also has a number of direct build and runtime dependencies. For detailed information about how to install them, please refer to the GitHub wiki:
+* Besides a working C++ toolchain, Hisn also has a number of direct build and runtime dependencies. For detailed information about how to install them, please refer to the GitHub wiki:
 
-* [Set up Build Environment on Linux](https://github.com/keepassxreboot/keepassxc/wiki/Set-up-Build-Environment-on-Linux)
-* [Set up Build Environment on Windows](https://github.com/keepassxreboot/keepassxc/wiki/Set-up-Build-Environment-on-Windows)
-* [Set up Build Environment on macOS](https://github.com/keepassxreboot/keepassxc/wiki/Set-up-Build-Environment-on-macOS)
+* [Set up Build Environment on Linux](https://github.com/keepassxreboot/hisn/wiki/Set-up-Build-Environment-on-Linux)
+* [Set up Build Environment on Windows](https://github.com/keepassxreboot/hisn/wiki/Set-up-Build-Environment-on-Windows)
+* [Set up Build Environment on macOS](https://github.com/keepassxreboot/hisn/wiki/Set-up-Build-Environment-on-macOS)
 
 ## Build Steps
 
-We recommend using the release tool to perform builds, please read up-to-date instructions [on our wiki](https://github.com/keepassxreboot/keepassxc/wiki/Building-KeePassXC#building-using-the-release-tool).
+We recommend using the release tool to perform builds, please read up-to-date instructions [on our wiki](https://github.com/keepassxreboot/hisn/wiki/Building-Hisn#building-using-the-release-tool).
 
 To compile from source, open a **Terminal (Linux/MacOS)**, the **MSVC Tools Command Prompt (Windows)**, or **MSYS2-MinGW shell (Windows)**. For code development on Windows, you can use Visual Studio 2022, Visual Studio Code, or CLion.
 
-1. Download the KeePassXC [source tarball](https://keepassxc.org/download#source) or check out the latest version from our [Git repository](https://github.com/keepassxreboot/keepassxc).
+1. Download the Hisn [source tarball](https://keepassxc.org/download#source) or check out the latest version from our [Git repository](https://github.com/keepassxreboot/hisn).
 
    To clone the project from Git, `cd` to a suitable location and run
 
    ```
-   git clone https://github.com/keepassxreboot/keepassxc.git
+   git clone https://github.com/keepassxreboot/hisn.git
    ```
 
    This will clone the entire contents of the repository and check out the current `develop` branch.
@@ -55,11 +55,11 @@ To compile from source, open a **Terminal (Linux/MacOS)**, the **MSVC Tools Comm
    cmake --build ./build
    ```
 
-If you have `vcpkg` installed, add `-DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake` to the `cmake` command to automatically download and install all required build and runtime dependencies locally to your build directory before compiling KeePassXC. Using `vcpkg` is the preferred way to install dependencies on macOS and required on Windows if using the MSVC toolchain.
+If you have `vcpkg` installed, add `-DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake` to the `cmake` command to automatically download and install all required build and runtime dependencies locally to your build directory before compiling Hisn. Using `vcpkg` is the preferred way to install dependencies on macOS and required on Windows if using the MSVC toolchain.
 
-For more detailed build instructions for each platform, please refer to the [GitHub wiki](https://github.com/keepassxreboot/keepassxc/wiki/Building-KeePassXC).
+For more detailed build instructions for each platform, please refer to the [GitHub wiki](https://github.com/keepassxreboot/hisn/wiki/Building-Hisn).
 
-Note: These steps place the compiled KeePassXC binary inside the `./build/src/` directory (`src/KeePassXC.app/Contents/MacOS` on macOS).
+Note: These steps place the compiled Hisn binary inside the `./build/src/` directory (`src/Hisn.app/Contents/MacOS` on macOS).
 
 ## MacOS Build Notes
 
@@ -75,10 +75,10 @@ If you are using MSYS2, you have to add ```-G "MSYS Makefiles"``` at the beginni
 
 ## Additional CMake Parameters
 
-KeePassXC comes with a variety of build options that can turn on/off features. Each of these build options are supplied at the time of calling cmake:
+Hisn comes with a variety of build options that can turn on/off features. Each of these build options are supplied at the time of calling cmake:
 
 ```
--DKPXC_MINIMAL=[ON|OFF] Build KeePassXC with the minimal feature set required for basic usage (default: OFF)
+-DKPXC_MINIMAL=[ON|OFF] Build Hisn with the minimal feature set required for basic usage (default: OFF)
 -DKPXC_FEATURE_BROWSER=[ON|OFF] Browser integration and passkeys support (default: ON)
 -DKPXC_FEATURE_SSHAGENT=[ON|OFF] SSH Agent integration (default: ON)
 -DKPXC_FEATURE_FDOSECRETS=[ON|OFF] (Linux Only) freedesktop.org Secret Service integration; replace system keyring (default:ON)
@@ -107,7 +107,7 @@ Qt6's network library to use local named pipes on all operating systems.
 
 ## Installation
 
-After you have successfully built KeePassXC, install the binary by executing the following:
+After you have successfully built Hisn, install the binary by executing the following:
 
 ```
 sudo make install
@@ -115,7 +115,7 @@ sudo make install
 
 ## Packaging
 
-You can create a package to redistribute KeePassXC (zip, deb, rpm, dmg, etc..). Refer to [keepassxc-packaging](https://github.com/keepassxreboot/keepassxc-packaging) for packaging scripts.
+You can create a package to redistribute Hisn (zip, deb, rpm, dmg, etc..). Refer to [hisn-packaging](https://github.com/keepassxreboot/hisn-packaging) for packaging scripts.
 
 To package using CMake, run the following command using whichever [generators](https://cmake.org/cmake/help/latest/manual/cpack-generators.7.html) you would like to package with.
 

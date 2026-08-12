@@ -26,6 +26,6 @@ Exit::Exit(const QString& name)
 int Exit::execute(const QStringList& arguments)
 {
     Q_UNUSED(arguments)
-    // A placeholder only, behavior is implemented in keepassxc-cli.cpp.
+    // A placeholder only, behavior is implemented in hisn-cli.cpp.
     return EXIT_SUCCESS;
 }

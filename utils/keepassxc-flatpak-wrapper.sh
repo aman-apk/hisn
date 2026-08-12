@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Flatpak Multiple Commands Wrapper
-# Copyright (C) 2022 KeePassXC team <https://keepassxc.org/>
+# Copyright (C) 2022 Hisn team <https://keepassxc.org/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # This script is a workaround to the limitation of one command per Flatpak
-# manifest. It solves this by redirecting stdio to keepassxc-proxy, as
+# manifest. It solves this by redirecting stdio to hisn-proxy, as
 # necessary, based upon matching command line arguments.
 
 # For format of parsed arguments, see "Connection-based messaging" at:
@@ -31,10 +31,10 @@ readonly arg2='keepassxc-browser@keepassxc.org'
 # Check arguments to see if this was a proxy launch from the browser
 # Use =~ to account for minor variations in the chrome extension
 if [[ "$1" =~ "$arg1" || "$2" == "$arg2" ]]; then
-    exec keepassxc-proxy "$@"
+    exec hisn-proxy "$@"
 elif [[ "$1" == "cli" ]]; then
-    exec keepassxc-cli "${@:2}"
+    exec hisn-cli "${@:2}"
 else
-    # If no arguments are matched or browser integration is off, execute keepassxc
-    exec keepassxc "$@"
+    # If no arguments are matched or browser integration is off, execute hisn
+    exec hisn "$@"
 fi

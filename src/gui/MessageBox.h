@@ -48,7 +48,7 @@ public:
         Retry = 1 << 17,
         Ignore = 1 << 18,
 
-        // KeePassXC Buttons
+        // Hisn Buttons
         Overwrite = 1 << 19,
         Delete = 1 << 20,
         Move = 1 << 21,
@@ -60,7 +60,7 @@ public:
         Continue = 1 << 27,
         ContinueWithWeakPass = 1 << 28,
 
-        // Internal loop markers. Update Last when new KeePassXC button is added
+        // Internal loop markers. Update Last when new Hisn button is added
         First = Ok,
         Last = ContinueWithWeakPass,
     };

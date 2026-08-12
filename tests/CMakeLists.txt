@@ -148,7 +148,7 @@ add_unit_test(NAME testconfig SOURCES TestConfig.cpp
 
 add_unit_test(NAME testcli SOURCES TestCli.cpp
         LIBS testsupport cli ${ZXCVBN_LIBRARIES} ${TEST_LIBRARIES})
-target_compile_definitions(testcli PRIVATE KEEPASSX_CLI_PATH="$<TARGET_FILE:keepassxc-cli>")
+target_compile_definitions(testcli PRIVATE KEEPASSX_CLI_PATH="$<TARGET_FILE:hisn-cli>")
 
 if(KPXC_FEATURE_SSHAGENT)
     add_unit_test(NAME testopensshkey SOURCES TestOpenSSHKey.cpp

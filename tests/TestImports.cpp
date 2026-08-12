@@ -66,10 +66,10 @@ void TestImports::testOPUX()
     QVERIFY(entry->tagList().contains("website"));
 
     // Check attachments
-    entry = db->rootGroup()->findEntryByPath("/Personal/KeePassXC Logo");
+    entry = db->rootGroup()->findEntryByPath("/Personal/Hisn Logo");
     auto attachments = entry->attachments();
     QCOMPARE(attachments->keys().count(), 1);
-    QCOMPARE(attachments->keys()[0], QString("keepassxc.png"));
+    QCOMPARE(attachments->keys()[0], QString("hisn.png"));
 
     // Confirm advanced attributes
     // NOTE: 1PUX does not support an explicit expiration field
@@ -77,7 +77,7 @@ void TestImports::testOPUX()
     QVERIFY(entry);
     auto tmpl = QString("Credit Card Fields_%1");
     auto attr = entry->attributes();
-    QCOMPARE(attr->value(tmpl.arg("cardholder name")), QStringLiteral("KeePassXC"));
+    QCOMPARE(attr->value(tmpl.arg("cardholder name")), QStringLiteral("Hisn"));
     QCOMPARE(attr->value(tmpl.arg("expiry date")), QStringLiteral("202206"));
     QCOMPARE(attr->value(tmpl.arg("verification number")), QStringLiteral("123"));
     QVERIFY(attr->isProtected(tmpl.arg("verification number")));
@@ -107,7 +107,7 @@ void TestImports::testOPUX()
 
 void TestImports::testOPVault()
 {
-    auto opVaultPath = QStringLiteral("%1/%2").arg(KEEPASSX_TEST_DATA_DIR, QStringLiteral("/keepassxc.opvault"));
+    auto opVaultPath = QStringLiteral("%1/%2").arg(KEEPASSX_TEST_DATA_DIR, QStringLiteral("/hisn.opvault"));
 
     auto categories = QStringList({QStringLiteral("Login"),
                                    QStringLiteral("Credit Card"),
@@ -136,13 +136,13 @@ void TestImports::testOPVault()
     QVERIFY(db);
 
     // Confirm specific entry details are valid
-    auto entry = db->rootGroup()->findEntryByPath("/Login/KeePassXC");
+    auto entry = db->rootGroup()->findEntryByPath("/Login/Hisn");
     QVERIFY(entry);
-    QCOMPARE(entry->title(), QStringLiteral("KeePassXC"));
-    QCOMPARE(entry->username(), QStringLiteral("keepassxc"));
+    QCOMPARE(entry->title(), QStringLiteral("Hisn"));
+    QCOMPARE(entry->username(), QStringLiteral("hisn"));
     QCOMPARE(entry->password(), QStringLiteral("opvault"));
     QCOMPARE(entry->url(), QStringLiteral("https://www.keepassxc.org"));
-    QCOMPARE(entry->notes(), QStringLiteral("KeePassXC Account"));
+    QCOMPARE(entry->notes(), QStringLiteral("Hisn Account"));
     // Check extra URL's
     QCOMPARE(entry->attribute("KP2A_URL_1"), QStringLiteral("https://snapshot.keepassxc.org"));
     // Check TOTP
@@ -160,13 +160,13 @@ void TestImports::testOPVault()
     entry = db->rootGroup()->findEntryByPath("/Credit Card/My Credit Card");
     QVERIFY(entry);
     auto attr = entry->attributes();
-    QCOMPARE(attr->value("cardholder name"), QStringLiteral("Team KeePassXC"));
+    QCOMPARE(attr->value("cardholder name"), QStringLiteral("Team Hisn"));
     QVERIFY(!attr->value("valid from").isEmpty());
     QCOMPARE(attr->value("Additional Details_PIN"), QStringLiteral("1234"));
     QVERIFY(attr->isProtected("Additional Details_PIN"));
 
     // Confirm address fields
-    entry = db->rootGroup()->findEntryByPath("/Identity/Team KeePassXC");
+    entry = db->rootGroup()->findEntryByPath("/Identity/Team Hisn");
     QVERIFY(entry);
     attr = entry->attributes();
     QCOMPARE(attr->value("address_street"), QStringLiteral("123 Password Lane"));

@@ -313,9 +313,9 @@ void AutoType::executeAutoTypeActions(const Entry* entry,
         if (!macUtils()->enableAccessibility()) {
             MessageBox::information(nullptr,
                                     tr("Permission Required"),
-                                    tr("KeePassXC requires the Accessibility permission in order to perform entry "
+                                    tr("Hisn requires the Accessibility permission in order to perform entry "
                                        "level Auto-Type. If you already granted permission, you may have to restart "
-                                       "KeePassXC."));
+                                       "Hisn."));
             return;
         }
 
@@ -419,7 +419,7 @@ void AutoType::startGlobalAutoType(const QString& search)
         return;
     }
 
-    // Never Auto-Type into KeePassXC itself
+    // Never Auto-Type into Hisn itself
     if (getMainWindow() && (qApp->activeWindow() || qApp->activeModalWidget())) {
         return;
     }
@@ -427,7 +427,7 @@ void AutoType::startGlobalAutoType(const QString& search)
     m_windowForGlobal = m_platform->activeWindow();
     m_windowTitleForGlobal = m_platform->activeWindowTitle();
 #ifdef Q_OS_MACOS
-    // Determine if the user has given proper permissions to KeePassXC to perform Auto-Type
+    // Determine if the user has given proper permissions to Hisn to perform Auto-Type
     static bool accessibilityChecked = false;
     if (!accessibilityChecked) {
         if (macUtils()->enableAccessibility() && macUtils()->enableScreenRecording()) {
@@ -437,9 +437,9 @@ void AutoType::startGlobalAutoType(const QString& search)
             MessageBox::information(
                 nullptr,
                 tr("Permission Required"),
-                tr("KeePassXC requires the Accessibility and Screen Recorder permission in order to perform global "
+                tr("Hisn requires the Accessibility and Screen Recorder permission in order to perform global "
                    "Auto-Type. Screen Recording is necessary to use the window title to find entries. If you "
-                   "already granted permission, you may have to restart KeePassXC."));
+                   "already granted permission, you may have to restart Hisn."));
             return;
         }
     }

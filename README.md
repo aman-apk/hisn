@@ -1,69 +1,46 @@
-# <img src="https://keepassxc.org/assets/img/keepassxc.svg" width="40" height="40"/> KeePassXC
+<div dir="rtl">
 
-[![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/6326/badge)](https://bestpractices.coreinfrastructure.org/projects/6326)
-[![TeamCity Build Status](https://ci.keepassxc.org/app/rest/builds/buildType:\(project:KeepassXC\)/statusIcon)](https://ci.keepassxc.org/?guest=1)
-[![codecov](https://codecov.io/gh/keepassxreboot/keepassxc/branch/develop/graph/badge.svg)](https://codecov.io/gh/keepassxreboot/keepassxc)
-[![GitHub release](https://img.shields.io/github/release/keepassxreboot/keepassxc)](https://github.com/keepassxreboot/keepassxc/releases/)
+# <img src="share/icons/application/scalable/apps/hisn.svg" width="40" height="40" align="right"/> حِصن — Hisn
 
-[![Matrix community channel](https://img.shields.io/matrix/keepassxc:matrix.org?label=Community%20channel)](https://app.element.io/#/room/#keepassxc:mozilla.org)
-[![Matrix development channel](https://img.shields.io/matrix/keepassxc-dev:matrix.org?label=Development%20channel)](https://app.element.io/#/room/#keepassxc-dev:mozilla.org)
+**«أسرارُك في حِصنها، لا تغادر جهازك»**
 
-[KeePassXC](https://keepassxc.org) is a modern, secure, and open-source password manager that stores and manages your most sensitive information. You can run KeePassXC on Windows, macOS, and Linux systems. KeePassXC is for people with extremely high demands of secure personal data management. It saves many different types of information, such as usernames, passwords, URLs, attachments, and notes in an offline, encrypted file that can be stored in any location, including private and public cloud solutions. For easy identification and management, user-defined titles and icons can be specified for entries. In addition, entries are sorted into customizable groups. An integrated search function allows you to use advanced patterns to easily find any entry in your database. A customizable, fast, and easy-to-use password generator utility allows you to create passwords with any combination of characters or easy to remember passphrases.
+**حِصن** مدير كلمات مرور حديث وآمن ومفتوح المصدر، بهوية عربية، يعمل **دون إنترنت** بالكامل. يحفظ أسماء المستخدمين وكلمات المرور والروابط والمرفقات والملاحظات في ملف واحد مشفّر يعيش على جهازك وحده. يعمل على لينكس وويندوز وماك، وله تطبيق أندرويد مصاحب مع **مزامنة محلية** بين حاسوبك وهاتفك عبر شبكة WiFi المنزلية أو عبر نسخة احتياطية محلية — بلا سحابة ولا خوادم.
 
-## Quick Start
+حِصن مبنيّ على قاعدة **[KeePassXC](https://keepassxc.org)** المفتوحة، ومتوافق تماماً مع صيغة قواعد بيانات **KDBX** (KDBX 3.1 و4)، فتنتقل ملفاتك بين حِصن وKeePassXC وأي تطبيق متوافق دون أي تحويل.
 
-The [QuickStart Guide](https://keepassxc.org/docs/KeePassXC_GettingStarted.html) gets you started using KeePassXC on your Windows, macOS, or Linux computer using pre-compiled binaries from the [downloads page](https://keepassxc.org/download). Additionally, individual Linux distributions may ship their own versions, so please check your distribution's package list to see if KeePassXC is available. Detailed documentation is available in the [User Guide](https://keepassxc.org/docs/KeePassXC_UserGuide.html).
+## الميزات الرئيسية
 
-## Features List
+- إنشاء وفتح وحفظ قواعد بيانات KDBX (متوافق مع KeePass، KDBX4 وKDBX3)
+- تشفير كامل للبيانات أثناء الحفظ، ولا تُكشف خارج البرنامج أبداً
+- تنظيم المدخلات في مجموعات، مع بحث متقدم
+- مولّد كلمات مرور وعبارات مرور قوية
+- توليد وتخزين رموز TOTP
+- الكتابة التلقائية في التطبيقات
+- تكامل المتصفحات (Chrome, Firefox, Edge, Chromium, Brave, Vivaldi, Tor)
+- دعم مفاتيح المرور Passkeys عبر تكامل المتصفح
+- استيراد من CSV و1Password وBitwarden وProton Pass وKeePass1
+- تقارير صحة كلمات المرور (وفحص التسريبات HIBP)
+- **مزامنة محلية دون إنترنت** بين الحاسوب والهاتف
+- تطبيق أندرويد أصيل بالميزات الأساسية
 
-KeePassXC has numerous features for novice and power users alike. Our goal is to create an application that can be used by anyone while still offering advanced features to those that need them.
+## الرخصة والإسناد
 
-### Core Features
+حِصن مشروع مشتقّ من KeePassXC ويخضع لرخصة **GNU GPL** (الإصدار الثاني أو الثالث حسب اختيارك)، ويبقى مفتوح المصدر بالكامل. كل الفضل في المحرّك الأساسي يعود لفريق **KeePassXC** ومجتمعه، وقبله لمشروع **KeePassX** الذي أنشأه debfx. هذا المشروع إعادة تسمية وتعريب وتوسعة، وليس بديلاً رسمياً عنهما ولا مدعوماً منهما.
 
-* Create, open, and save databases in the KDBX format (KeePass-compatible with KDBX4 and KDBX3)
-* All information is encrypted at rest and never exposed outside the program
-* Store sensitive information in entries that are organized by groups
-* Password generator
-* Search for entries
-* TOTP storage and generation
-* YubiKey/OnlyKey challenge-response support
-* Auto-Type passwords into applications
-* Browser integration with Google Chrome, Mozilla Firefox, Microsoft Edge, Chromium, Vivaldi, Brave, and Tor-Browser
-* Support for passkeys using the browser integration
-* Entry icon download
-* Import databases from CSV, 1Password, Bitwarden, Proton Pass, and KeePass1 formats
+الخطوط: Reem Kufi وIBM Plex Sans Arabic برخصة OFL. الشعار عمل أصلي رُسم لهذا المشروع.
 
-### Advanced
-* Database reports (password health, HIBP, and statistics)
-* Database export to CSV, XML, and HTML formats
-* TOTP storage and generation
-* Field references between entries
-* File attachments and custom attributes
-* Entry history and data restoration
-* Command line interface (keepassxc-cli)
-* SSH Agent integration
-* FreeDesktop.org Secret Service (replace Gnome keyring, etc.)
-* Additional encryption choices: Twofish and ChaCha20
+</div>
 
-For a full list of changes, read the [CHANGELOG](CHANGELOG.md) document. \
-For a full list of keyboard shortcuts, see [KeyboardShortcuts.adoc](./docs/topics/KeyboardShortcuts.adoc)
+---
 
-## Building KeePassXC
+# <img src="share/icons/application/scalable/apps/hisn.svg" width="40" height="40"/> Hisn
 
-Detailed instructions are available in the [Build and Install](./INSTALL.md) page and in the [Wiki](https://github.com/keepassxreboot/keepassxc/wiki/Building-KeePassXC).
+**Keep your secrets in their fortress — they never leave your device.**
 
-## Contributing
+**Hisn** is a modern, secure, open-source, **Arabic-first**, fully **offline** password manager. It stores usernames, passwords, URLs, attachments, and notes in a single encrypted file that lives on your device alone. It runs on Linux, Windows, and macOS, and ships with a companion **Android app** featuring **local sync** between your laptop and phone over your home WiFi or via a local backup file — no cloud, no servers.
 
-We are always looking for suggestions on how to improve KeePassXC. If you find any bugs or have an idea for a new feature, please let us know by opening a report in the [issue tracker](https://github.com/keepassxreboot/keepassxc/issues) on GitHub, or join us on [Matrix community channel](https://matrix.to/#/!zUxwGnFkUyycpxeHeM:matrix.org?via=matrix.org) or [Matrix development channel](https://matrix.to/#/!RhJPJPGwQIFVQeXqZa:matrix.org?via=matrix.org), or on IRC in [Libera.Chat](https://web.libera.chat/) channels #keepassxc and #keepassxc-dev.
+Hisn is built on the open **[KeePassXC](https://keepassxc.org)** codebase and is fully compatible with the **KDBX** database format (KDBX 3.1 and 4), so your files move between Hisn, KeePassXC, and any compatible app with no conversion.
 
-You may directly contribute your own code by submitting a pull request. Please read the [CONTRIBUTING](.github/CONTRIBUTING.md) document for further information.
+## Attribution & License
 
-Contributors are required to adhere to the project's [Code of Conduct](CODE-OF-CONDUCT.md).
-
-## Generative AI
-
-Generative AI is fast becoming a first-party feature in most development environments, including GitHub itself. If the majority of a code submission is made using Generative AI (e.g., agent-based or vibe coding) then **we will document that in the pull request.** All code submissions go through a rigorous review process regardless of the development workflow or submitter.
-
-## License
-
-KeePassXC code is licensed under GPL-2 or GPL-3. Additional licensing for third-party files is detailed in [COPYING](./COPYING).
+Hisn is a derivative of KeePassXC, distributed under the **GNU GPL** (v2 or, at your option, v3), and remains fully open source. All credit for the core engine goes to the **KeePassXC** team and community, and before them to the **KeePassX** project created by debfx. This project is a rebrand, Arabic localization, and extension — it is **not** an official KeePassXC product and is not endorsed by or affiliated with the KeePassXC team.

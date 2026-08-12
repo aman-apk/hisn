@@ -16,8 +16,8 @@
 
 cmake_minimum_required(VERSION 3.16.0)
 
-project(KeePassXC)
-set(APP_ID "org.keepassxc.${PROJECT_NAME}")
+project(Hisn)
+set(APP_ID "org.hisn.${PROJECT_NAME}")
 
 # Version Number
 set(KEEPASSXC_VERSION_MAJOR "2")
@@ -51,7 +51,7 @@ option(WITH_CCACHE "Use ccache for build" OFF)
 option(WITH_X11 "Enable building with X11 dependencies" ON)
 
 # Advanced Features Control
-option(KPXC_MINIMAL "Build KeePassXC with the minimal feature set required for basic usage" OFF)
+option(KPXC_MINIMAL "Build Hisn with the minimal feature set required for basic usage" OFF)
 option(KPXC_FEATURE_BROWSER "Browser integration and passkeys support" ON)
 option(KPXC_FEATURE_SSHAGENT "SSH Agent integration" ON)
 option(KPXC_FEATURE_FDOSECRETS "freedesktop.org Secret Service integration; replace system keyring" ON)
@@ -103,9 +103,9 @@ elseif(EXISTS ${CMAKE_SOURCE_DIR}/.gitrev)
 endif()
 message(STATUS "Found Git HEAD Revision: ${GIT_HEAD}\n")
 
-# KeePassXC Versioning and Build Type
-set(OVERRIDE_VERSION "" CACHE STRING "Override the KeePassXC Version for Snapshot builds")
-set(KEEPASSXC_BUILD_TYPE "Snapshot" CACHE STRING "Set KeePassXC build type to distinguish between stable releases and snapshots")
+# Hisn Versioning and Build Type
+set(OVERRIDE_VERSION "" CACHE STRING "Override the Hisn Version for Snapshot builds")
+set(KEEPASSXC_BUILD_TYPE "Snapshot" CACHE STRING "Set Hisn build type to distinguish between stable releases and snapshots")
 set_property(CACHE KEEPASSXC_BUILD_TYPE PROPERTY STRINGS Snapshot Release)
 
 # Check if on a tag or has .version file, if so build as a release
@@ -138,10 +138,10 @@ else()
     set(KEEPASSXC_VERSION "${KEEPASSXC_VERSION}-snapshot")
 endif()
 
-message(STATUS "Setting up build for KeePassXC v${KEEPASSXC_VERSION}\n")
+message(STATUS "Setting up build for Hisn v${KEEPASSXC_VERSION}\n")
 
 # Distribution info
-set(KEEPASSXC_DIST_TYPE "Native" CACHE STRING "KeePassXC Distribution Type")
+set(KEEPASSXC_DIST_TYPE "Native" CACHE STRING "Hisn Distribution Type")
 set_property(CACHE KEEPASSXC_DIST_TYPE PROPERTY STRINGS Snap AppImage Flatpak Native)
 if(KEEPASSXC_DIST_TYPE STREQUAL "Snap")
     set(KEEPASSXC_DIST_SNAP ON)
@@ -371,14 +371,14 @@ if(WIN32)
 endif()
 
 if(WIN32)
-    set(PROGNAME KeePassXC)
+    set(PROGNAME Hisn)
     set(CLI_INSTALL_DIR ".")
     set(PROXY_INSTALL_DIR ".")
     set(BIN_INSTALL_DIR ".")
     set(PLUGIN_INSTALL_DIR ".")
     set(DATA_INSTALL_DIR "share")
 elseif(APPLE AND WITH_APP_BUNDLE)
-    set(PROGNAME KeePassXC)
+    set(PROGNAME Hisn)
     set(BUNDLE_INSTALL_DIR "${PROGNAME}.app/Contents")
     set(CMAKE_INSTALL_MANDIR "${BUNDLE_INSTALL_DIR}/Resources/man")
     set(CLI_INSTALL_DIR "${BUNDLE_INSTALL_DIR}/MacOS")
@@ -389,12 +389,12 @@ elseif(APPLE AND WITH_APP_BUNDLE)
     add_definitions(-DWITH_APP_BUNDLE)
 else()
     include(GNUInstallDirs)
-    set(PROGNAME keepassxc)
+    set(PROGNAME hisn)
     set(CLI_INSTALL_DIR "${CMAKE_INSTALL_BINDIR}")
     set(PROXY_INSTALL_DIR "${CMAKE_INSTALL_BINDIR}")
     set(BIN_INSTALL_DIR "${CMAKE_INSTALL_BINDIR}")
-    set(PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/keepassxc")
-    set(DATA_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/keepassxc")
+    set(PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/hisn")
+    set(DATA_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/hisn")
 endif()
 
 if(WITH_COVERAGE)
@@ -405,13 +405,13 @@ if(WITH_COVERAGE)
     set(COVERAGE_EXCLUDES
             "'^(.+/)?thirdparty/.*'"
             "'^(.+/)?main\\.cpp$$'"
-            "'^(.+/)?cli/keepassxc-cli\\.cpp$$'"
-            "'^(.+/)?proxy/keepassxc-proxy\\.cpp$$'")
+            "'^(.+/)?cli/hisn-cli\\.cpp$$'"
+            "'^(.+/)?proxy/hisn-proxy\\.cpp$$'")
     if(WITH_COVERAGE AND CMAKE_COMPILER_IS_CLANGXX)
         set(MAIN_BINARIES
                 "$<TARGET_FILE:${PROGNAME}>"
-                "$<TARGET_FILE:keepassxc-cli>"
-                "$<TARGET_FILE:keepassxc-proxy>")
+                "$<TARGET_FILE:hisn-cli>"
+                "$<TARGET_FILE:hisn-proxy>")
         setup_target_for_coverage_llvm(
                 NAME coverage
                 BINARY ${MAIN_BINARIES}
@@ -522,7 +522,7 @@ else()
     include_directories(SYSTEM ${ZXCVBN_INCLUDE_DIR})
 endif()
 
-# Add KeePassXC sources and tests
+# Add Hisn sources and tests
 add_subdirectory(src)
 add_subdirectory(share)
 

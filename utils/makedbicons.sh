@@ -24,7 +24,7 @@ fi
 # Check destination directory
 DSTDIR=share/icons/database
 if [[ ! -d $DSTDIR ]]; then
-    echo -e "${RED}Please invoke this script from the KeePassXC source root directory.${NC}"
+    echo -e "${RED}Please invoke this script from the Hisn source root directory.${NC}"
     exit 1
 fi
 

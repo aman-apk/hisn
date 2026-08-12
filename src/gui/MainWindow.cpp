@@ -76,7 +76,7 @@
 #include "mainwindowadaptor.h"
 #endif
 
-const QString MainWindow::BaseWindowTitle = "KeePassXC";
+const QString MainWindow::BaseWindowTitle = "Hisn";
 
 MainWindow* g_MainWindow = nullptr;
 MainWindow* getMainWindow()
@@ -98,8 +98,8 @@ MainWindow::MainWindow()
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS) && !defined(QT_NO_DBUS)
     new MainWindowAdaptor(this);
     QDBusConnection dbus = QDBusConnection::sessionBus();
-    dbus.registerObject("/keepassxc", this);
-    dbus.registerService("org.keepassxc.KeePassXC.MainWindow");
+    dbus.registerObject("/hisn", this);
+    dbus.registerService("org.hisn.Hisn.MainWindow");
 #endif
 
     setAcceptDrops(true);
@@ -621,7 +621,7 @@ MainWindow::MainWindow()
     });
 
     if (config()->get(Config::Messages_HidePreReleaseWarning) != KEEPASSXC_VERSION) {
-        m_ui->globalMessageWidget->showMessage(tr("WARNING: You are using a development snapshot build of KeePassXC.\n"
+        m_ui->globalMessageWidget->showMessage(tr("WARNING: You are using a development snapshot build of Hisn.\n"
                                                   "Maintain a backup of your databases in the event of unknown bugs.\n"
                                                   "This version is not meant for production use."),
                                                MessageWidget::Warning,
@@ -1081,7 +1081,7 @@ void MainWindow::performUpdateCheck()
         auto result =
             MessageBox::question(this,
                                  tr("Check for updates on startup?"),
-                                 tr("Would you like KeePassXC to check for updates on startup?") + "\n\n"
+                                 tr("Would you like Hisn to check for updates on startup?") + "\n\n"
                                      + tr("You can always check for updates manually from the application menu."),
                                  MessageBox::Yes | MessageBox::No,
                                  MessageBox::Yes);
@@ -1142,12 +1142,12 @@ void MainWindow::openBugReportUrl()
 
 void MainWindow::openGettingStartedGuide()
 {
-    customOpenUrl(QString("file:///%1").arg(resources()->dataPath("docs/KeePassXC_GettingStarted.html")));
+    customOpenUrl(QString("file:///%1").arg(resources()->dataPath("docs/Hisn_GettingStarted.html")));
 }
 
 void MainWindow::openUserGuide()
 {
-    customOpenUrl(QString("file:///%1").arg(resources()->dataPath("docs/KeePassXC_UserGuide.html")));
+    customOpenUrl(QString("file:///%1").arg(resources()->dataPath("docs/Hisn_UserGuide.html")));
 }
 
 void MainWindow::openOnlineHelp()
@@ -1157,7 +1157,7 @@ void MainWindow::openOnlineHelp()
 
 void MainWindow::openKeyboardShortcuts()
 {
-    customOpenUrl(QString("file:///%1").arg(resources()->dataPath("docs/KeePassXC_KeyboardShortcuts.html")));
+    customOpenUrl(QString("file:///%1").arg(resources()->dataPath("docs/Hisn_KeyboardShortcuts.html")));
 }
 
 void MainWindow::switchToDatabases()
@@ -1532,12 +1532,12 @@ void MainWindow::updateTrayIcon()
 
             auto* actionToggle = new QAction(tr("Toggle window"), menu);
             menu->addAction(actionToggle);
-            actionToggle->setIcon(icons()->icon("keepassxc-monochrome-dark"));
+            actionToggle->setIcon(icons()->icon("hisn-monochrome-dark"));
 
             menu->addAction(m_ui->actionLockAllDatabases);
 
 #ifdef Q_OS_MACOS
-            auto actionQuit = new QAction(tr("Quit KeePassXC"), menu);
+            auto actionQuit = new QAction(tr("Quit Hisn"), menu);
             connect(actionQuit, SIGNAL(triggered()), SLOT(appExit()));
             menu->addAction(actionQuit);
 #else
@@ -1558,7 +1558,7 @@ void MainWindow::updateTrayIcon()
 
         if (!isTrayIconEnabled() || !QSystemTrayIcon::isSystemTrayAvailable()) {
             // Try to show tray icon after 5 seconds, try 5 times
-            // This can happen if KeePassXC starts before the system tray is available
+            // This can happen if Hisn starts before the system tray is available
             static int trayIconAttempts = 0;
             if (trayIconAttempts < 5) {
                 QTimer::singleShot(5000, this, &MainWindow::updateTrayIcon);

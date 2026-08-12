@@ -23,7 +23,7 @@
 #include <QObject>
 
 #ifndef KPXC_FEATURE_NETWORK
-#error This file requires KeePassXC to be built with network support.
+#error This file requires Hisn to be built with network support.
 #endif
 
 class QNetworkReply;
