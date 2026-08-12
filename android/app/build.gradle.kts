@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -72,10 +71,10 @@ android {
 
     testOptions {
         unitTests {
-            // Stubs out the android.* methods the JVM has no implementation for (android.util.Log
-            // and friends) instead of throwing. Base64 is not left to this: src/test/kotlin has a
-            // real java.util.Base64-backed implementation, because returning a default null there
-            // would quietly corrupt the KDBX round-trip tests.
+            // Stubs out the handful of android.* methods the JVM has no implementation for
+            // (android.util.Log and friends) instead of throwing. The KDBX code deliberately uses
+            // java.util.Base64 rather than android.util.Base64, so the round-trip tests run on real
+            // implementations throughout and this only covers logging.
             isReturnDefaultValues = true
         }
     }
@@ -116,8 +115,11 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    // Not used from Kotlin — it supplies the Theme.Material3 parent that res/values/themes.xml
+    // inherits from, which is what paints the window before Compose takes over.
     implementation(libs.google.material)
     implementation(libs.androidx.activity.compose)
+    // MainActivity is a FragmentActivity because androidx.biometric hosts its prompt in a fragment.
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
@@ -128,33 +130,20 @@ dependencies {
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
-    implementation(libs.compose.material.icons.extended)
+    // No material-icons-extended on purpose: ui/components/HisnIcons.kt draws the app's glyphs, and
+    // the extended set would add tens of megabytes to an unminified APK for a handful of icons.
 
-    // Vault storage: the user picks the .kdbx through the Storage Access Framework.
-    implementation(libs.androidx.documentfile)
     implementation(libs.androidx.datastore.preferences)
-
-    // Unlocking with a fingerprint / device credential.
     implementation(libs.androidx.biometric)
 
-    // QR pairing for LAN sync: CameraX drives the preview, ZXing decodes the frame.
-    implementation(libs.androidx.camera.core)
-    implementation(libs.androidx.camera.camera2)
-    implementation(libs.androidx.camera.lifecycle)
-    implementation(libs.androidx.camera.view)
-    implementation(libs.zxing.core)
-
-    // Argon2, ChaCha20 and Salsa20 — none of which the platform provider offers on API 26.
+    // Argon2, ChaCha20, Salsa20 and Twofish — none of which the platform provider offers on API 26.
     implementation(libs.bouncycastle.prov)
 
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.okio)
 
     debugImplementation(libs.compose.ui.tooling)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.bouncycastle.prov)
 }

@@ -1,0 +1,810 @@
+# Hisn — string resources required by the UI layer
+#
+# Every key below is referenced from Kotlin as R.string.<key>.
+# ar  = values-ar/strings.xml (the Arabic default the app ships in)
+# en  = values/strings.xml (English fallback)
+#
+# Notes for whoever writes the XML:
+#  * Keys marked FORMAT take positional arguments; keep the placeholders and their order.
+#  * Apostrophes and '@' must be escaped in Android XML (\' and \@); the Arabic copy below
+#    uses «» and — which need no escaping.
+#  * Nothing here is a plural resource: the Arabic strings are written so that a single
+#    form reads correctly, which avoids <plurals> and its six Arabic categories.
+
+## Brand ---------------------------------------------------------------------------------
+
+app_name
+  ar: حصن
+  en: Hisn
+
+app_tagline
+  ar: مدير كلمات مرور يعمل دون اتصال
+  en: A password manager that works offline
+
+## Unlock screen -------------------------------------------------------------------------
+
+label_master_password
+  ar: كلمة المرور الرئيسية
+  en: Master password
+
+action_unlock
+  ar: افتح
+  en: Unlock
+
+action_unlocking
+  ar: جارٍ الفتح…
+  en: Unlocking…
+
+action_open_database
+  ar: افتح قاعدة بيانات
+  en: Open a database
+
+action_open_other_database
+  ar: فتح قاعدة بيانات أخرى
+  en: Open a different database
+
+action_choose_key_file
+  ar: اختر ملف مفتاح
+  en: Choose a key file
+
+action_remove_key_file
+  ar: إزالة
+  en: Remove
+
+action_unlock_with_biometric
+  ar: الفتح ببصمة الإصبع
+  en: Unlock with biometrics
+
+unlock_unnamed_database
+  ar: قاعدة بيانات بلا اسم
+  en: Unnamed database
+
+unlock_no_database_title
+  ar: لا توجد قاعدة بيانات بعد
+  en: No database yet
+
+unlock_no_database_message
+  ar: اختر ملف ‎.kdbx‎ من جهازك لتبدأ. يبقى الملف على هاتفك ولا يُرفع إلى أي خادم.
+  en: Pick a .kdbx file from your device to begin. It stays on your phone and is never uploaded.
+
+biometric_prompt_title
+  ar: فتح حصن
+  en: Unlock Hisn
+
+biometric_prompt_subtitle
+  ar: أكِّد هويتك لفتح قاعدة البيانات
+  en: Confirm your identity to open the database
+
+## Entry list ----------------------------------------------------------------------------
+
+search_placeholder
+  ar: ابحث في الإدخالات
+  en: Search entries
+
+action_clear_search
+  ar: مسح البحث
+  en: Clear search
+
+group_all
+  ar: الكل
+  en: All
+
+action_add_entry
+  ar: إضافة إدخال
+  en: Add entry
+
+action_lock
+  ar: إقفال
+  en: Lock
+
+action_settings
+  ar: الإعدادات
+  en: Settings
+
+action_sync
+  ar: مزامنة
+  en: Sync
+
+action_entry_menu
+  ar: خيارات الإدخال
+  en: Entry options
+
+action_copy_username
+  ar: نسخ اسم المستخدم
+  en: Copy username
+
+action_copy_password
+  ar: نسخ كلمة المرور
+  en: Copy password
+
+action_show_totp
+  ar: عرض رمز التحقق
+  en: Show one-time code
+
+entry_untitled
+  ar: بلا عنوان
+  en: Untitled
+
+entry_expired
+  ar: منتهٍ
+  en: Expired
+
+list_empty_title
+  ar: القاعدة فارغة
+  en: The vault is empty
+
+list_empty_message
+  ar: أضف أول إدخال لك لتحفظ كلمة مرور بأمان.
+  en: Add your first entry to keep a password safely.
+
+list_no_results_title
+  ar: لا نتائج
+  en: No results
+
+list_no_results_message   [FORMAT: %1$s = the search term]
+  ar: لم يُعثر على شيء يطابق «%1$s».
+  en: Nothing matches “%1$s”.
+
+list_group_empty_title
+  ar: مجموعة فارغة
+  en: Empty group
+
+list_group_empty_message
+  ar: لا توجد إدخالات في هذه المجموعة.
+  en: There are no entries in this group.
+
+## Entry detail --------------------------------------------------------------------------
+
+entry_details
+  ar: تفاصيل الإدخال
+  en: Entry details
+
+entry_missing_title
+  ar: الإدخال غير موجود
+  en: Entry not found
+
+entry_missing_message
+  ar: ربما حُذف هذا الإدخال أو نُقل في آخر مزامنة.
+  en: It may have been deleted or moved during the last sync.
+
+action_back
+  ar: رجوع
+  en: Back
+
+action_edit
+  ar: تعديل
+  en: Edit
+
+action_delete
+  ar: حذف
+  en: Delete
+
+action_copy
+  ar: نسخ
+  en: Copy
+
+action_open_url
+  ar: فتح الرابط
+  en: Open link
+
+action_copy_notes
+  ar: نسخ الملاحظات
+  en: Copy notes
+
+action_copy_totp
+  ar: نسخ الرمز
+  en: Copy code
+
+action_close
+  ar: إغلاق
+  en: Close
+
+label_username
+  ar: اسم المستخدم
+  en: Username
+
+label_password
+  ar: كلمة المرور
+  en: Password
+
+label_url
+  ar: الرابط
+  en: URL
+
+label_notes
+  ar: ملاحظات
+  en: Notes
+
+label_totp
+  ar: رمز التحقق المؤقت
+  en: One-time code
+
+section_custom_fields
+  ar: حقول مخصّصة
+  en: Custom fields
+
+section_attachments
+  ar: المرفقات
+  en: Attachments
+
+section_metadata
+  ar: معلومات الإدخال
+  en: Entry information
+
+meta_group
+  ar: المجموعة
+  en: Group
+
+meta_created
+  ar: أُنشئ
+  en: Created
+
+meta_modified
+  ar: آخر تعديل
+  en: Last modified
+
+meta_expires
+  ar: ينتهي
+  en: Expires
+
+attachments_desktop_only
+  ar: تُعرض أسماء المرفقات هنا فقط؛ افتحها من تطبيق سطح المكتب.
+  en: Attachment names are listed here only — open them in the desktop app.
+
+totp_unreadable
+  ar: تعذّرت القراءة
+  en: Unreadable
+
+totp_unreadable_explained
+  ar: يحتوي هذا الإدخال على مفتاح رمز تحقق لا يمكن قراءته. عدّل الإدخال وأعد إدخال المفتاح.
+  en: This entry holds a one-time code secret that cannot be read. Edit the entry and enter the secret again.
+
+totp_refreshes_in
+  ar: الثواني المتبقية قبل تغيّر الرمز
+  en: Seconds until the code changes
+
+delete_entry_title
+  ar: حذف الإدخال؟
+  en: Delete entry?
+
+delete_entry_message
+  ar: سيُنقل الإدخال إلى سلة المهملات داخل قاعدة البيانات.
+  en: The entry will be moved to the vault’s recycle bin.
+
+## Entry editor --------------------------------------------------------------------------
+
+edit_title_new
+  ar: إدخال جديد
+  en: New entry
+
+edit_title_existing
+  ar: تعديل الإدخال
+  en: Edit entry
+
+edit_title_required
+  ar: العنوان مطلوب.
+  en: A title is required.
+
+edit_totp_hint
+  ar: ألصق رابط ‎otpauth://‎ أو المفتاح بترميز Base32.
+  en: Paste an otpauth:// link, or the Base32 secret.
+
+edit_group_fixed   [FORMAT: %1$s = group name]
+  ar: المجموعة: %1$s
+  en: Group: %1$s
+
+edit_field_duplicate
+  ar: اسم الحقل مكرّر.
+  en: This field name is already used.
+
+label_title
+  ar: العنوان
+  en: Title
+
+label_group
+  ar: المجموعة
+  en: Group
+
+label_totp_secret
+  ar: مفتاح رمز التحقق
+  en: One-time code secret
+
+label_field_name
+  ar: اسم الحقل
+  en: Field name
+
+label_field_value
+  ar: القيمة
+  en: Value
+
+label_field_protected
+  ar: حقل سرّي
+  en: Secret field
+
+action_add_field
+  ar: إضافة حقل
+  en: Add field
+
+action_remove_field
+  ar: حذف الحقل
+  en: Remove field
+
+action_save
+  ar: حفظ
+  en: Save
+
+action_cancel
+  ar: إلغاء
+  en: Cancel
+
+action_open_generator
+  ar: مولّد كلمات المرور
+  en: Password generator
+
+action_reveal_password
+  ar: إظهار كلمة المرور
+  en: Show password
+
+action_hide_password
+  ar: إخفاء كلمة المرور
+  en: Hide password
+
+## Password generator --------------------------------------------------------------------
+
+generator_title
+  ar: مولّد كلمات المرور
+  en: Password generator
+
+generator_length
+  ar: الطول
+  en: Length
+
+generator_lowercase
+  ar: حروف صغيرة (a–z)
+  en: Lowercase (a–z)
+
+generator_uppercase
+  ar: حروف كبيرة (A–Z)
+  en: Uppercase (A–Z)
+
+generator_digits
+  ar: أرقام (0–9)
+  en: Digits (0–9)
+
+generator_symbols
+  ar: رموز (!@#…)
+  en: Symbols (!@#…)
+
+generator_exclude_lookalike
+  ar: استبعاد الحروف المتشابهة
+  en: Exclude look-alike characters
+
+generator_pick_a_class
+  ar: اختر نوع محارف واحدًا على الأقل.
+  en: Pick at least one character type.
+
+generator_use
+  ar: استخدام
+  en: Use
+
+action_regenerate
+  ar: توليد من جديد
+  en: Generate again
+
+## Password strength ---------------------------------------------------------------------
+
+strength_bad
+  ar: لا شيء
+  en: None
+
+strength_poor
+  ar: ضعيفة جدًا
+  en: Very weak
+
+strength_weak
+  ar: ضعيفة
+  en: Weak
+
+strength_good
+  ar: جيدة
+  en: Good
+
+strength_excellent
+  ar: ممتازة
+  en: Excellent
+
+strength_bits   [FORMAT: %1$d = entropy in bits]
+  ar: %1$d بت
+  en: %1$d bits
+
+## Settings ------------------------------------------------------------------------------
+
+settings_title
+  ar: الإعدادات
+  en: Settings
+
+settings_section_security
+  ar: الأمان
+  en: Security
+
+settings_section_appearance
+  ar: المظهر
+  en: Appearance
+
+settings_section_backup
+  ar: النسخ الاحتياطي
+  en: Backup
+
+settings_section_about
+  ar: عن التطبيق
+  en: About
+
+settings_auto_lock
+  ar: الإقفال التلقائي
+  en: Auto-lock
+
+settings_auto_lock_hint
+  ar: يُقفل حصن نفسه بعد مغادرتك التطبيق.
+  en: Hisn locks itself once you leave the app.
+
+settings_clipboard
+  ar: مسح الحافظة
+  en: Clear clipboard
+
+settings_clipboard_hint
+  ar: تُمسح الأسرار المنسوخة بعد هذه المدة.
+  en: Copied secrets are wiped after this long.
+
+settings_biometric
+  ar: الفتح ببصمة الإصبع
+  en: Biometric unlock
+
+settings_biometric_on
+  ar: مُفعّل
+  en: On
+
+settings_biometric_off
+  ar: يتطلّب إدخال كلمة المرور الرئيسية مرة واحدة للتفعيل.
+  en: Enter your master password once to turn it on.
+
+settings_biometric_unavailable
+  ar: لا توجد بصمة مسجّلة على هذا الجهاز.
+  en: No biometrics are enrolled on this device.
+
+settings_export
+  ar: تصدير نسخة احتياطية
+  en: Export a backup
+
+settings_export_hint
+  ar: يحفظ نسخة مشفّرة من قاعدة البيانات حيث تختار.
+  en: Saves an encrypted copy of the vault wherever you choose.
+
+autolock_immediately
+  ar: فورًا
+  en: Immediately
+
+autolock_1
+  ar: بعد دقيقة
+  en: After 1 minute
+
+autolock_5
+  ar: بعد ٥ دقائق
+  en: After 5 minutes
+
+autolock_15
+  ar: بعد ١٥ دقيقة
+  en: After 15 minutes
+
+autolock_30
+  ar: بعد ٣٠ دقيقة
+  en: After 30 minutes
+
+autolock_never
+  ar: أبدًا
+  en: Never
+
+clipboard_10
+  ar: ١٠ ثوانٍ
+  en: 10 seconds
+
+clipboard_30
+  ar: ٣٠ ثانية
+  en: 30 seconds
+
+clipboard_60
+  ar: دقيقة واحدة
+  en: 1 minute
+
+clipboard_120
+  ar: دقيقتان
+  en: 2 minutes
+
+clipboard_never
+  ar: بدون مسح
+  en: Never
+
+theme_system
+  ar: النظام
+  en: System
+
+theme_light
+  ar: فاتح
+  en: Light
+
+theme_dark
+  ar: داكن
+  en: Dark
+
+biometric_enable_title
+  ar: تفعيل الفتح بالبصمة
+  en: Turn on biometric unlock
+
+biometric_enable_message
+  ar: أدخل كلمة المرور الرئيسية مرة واحدة ليحفظها الجهاز في مخزن المفاتيح المحمي.
+  en: Enter your master password once so the device can keep it in its protected keystore.
+
+action_enable
+  ar: تفعيل
+  en: Turn on
+
+## About ---------------------------------------------------------------------------------
+
+about_version   [FORMAT: %1$s = version name]
+  ar: الإصدار %1$s
+  en: Version %1$s
+
+about_credit
+  ar: مبني على KeePassXC، رخصة GPL
+  en: Built on KeePassXC, GPL licensed
+
+about_license
+  ar: يشارك حصن صيغة ملفات KDBX مع KeePassXC، ويُوزَّع بموجب رخصة جنو العمومية.
+  en: Hisn shares the KDBX file format with KeePassXC and is distributed under the GNU General Public License.
+
+about_offline_note
+  ar: يعمل حصن دون اتصال بالكامل؛ لا تغادر بياناتك جهازك.
+  en: Hisn works entirely offline — your data never leaves your device.
+
+## Sync ----------------------------------------------------------------------------------
+
+sync_title
+  ar: المزامنة
+  en: Sync
+
+sync_pair_action
+  ar: اقتران بجهاز جديد
+  en: Pair a new device
+
+sync_pair_hint
+  ar: يعرض تطبيق سطح المكتب رمز QR ونصّه تحته. انسخ ذلك النص وألصقه هنا — لا يحتاج حصن إلى الكاميرا.
+  en: The desktop app shows a QR code with its text underneath. Copy that text and paste it here — Hisn needs no camera access.
+
+sync_pair_title
+  ar: اقتران بجهاز
+  en: Pair a device
+
+sync_pair_message
+  ar: ألصق رمز الاقتران الذي يعرضه تطبيق سطح المكتب.
+  en: Paste the pairing code shown by the desktop app.
+
+label_pairing_code
+  ar: رمز الاقتران
+  en: Pairing code
+
+action_paste_from_clipboard
+  ar: لصق من الحافظة
+  en: Paste from clipboard
+
+action_pair
+  ar: اقتران
+  en: Pair
+
+sync_section_devices
+  ar: الأجهزة المقترنة
+  en: Paired devices
+
+sync_no_devices_title
+  ar: لا أجهزة مقترنة
+  en: No paired devices
+
+sync_no_devices_message
+  ar: اقترن بحاسوبك لمزامنة القاعدة عبر الشبكة المحلية.
+  en: Pair your computer to sync the vault over your local network.
+
+sync_fingerprint   [FORMAT: %1$s = key fingerprint]
+  ar: البصمة: %1$s
+  en: Fingerprint: %1$s
+
+action_sync_now
+  ar: زامن الآن
+  en: Sync now
+
+action_forget
+  ar: نسيان
+  en: Forget
+
+sync_forget_title
+  ar: نسيان الجهاز؟
+  en: Forget device?
+
+sync_forget_message   [FORMAT: %1$s = device name]
+  ar: سيُزال «%1$s» من الأجهزة المقترنة.
+  en: “%1$s” will be removed from your paired devices.
+
+sync_section_local
+  ar: نسخة احتياطية محلية
+  en: Local backup
+
+sync_local_hint
+  ar: البديل بلا شبكة: صدّر الملف وانقله بنفسك، أو استورد ملفًا صدّرته من جهاز آخر.
+  en: The no-network alternative: export the file and move it yourself, or import one you exported elsewhere.
+
+sync_export
+  ar: تصدير
+  en: Export
+
+sync_import
+  ar: استيراد
+  en: Import
+
+sync_import_title
+  ar: استيراد نسخة احتياطية؟
+  en: Import a backup?
+
+sync_import_message
+  ar: ستحلّ النسخة المستوردة محلّ القاعدة الحالية على هذا الجهاز، وسيُطلب منك فتحها من جديد.
+  en: The imported file replaces the current vault on this device, and you will be asked to unlock it again.
+
+action_continue
+  ar: متابعة
+  en: Continue
+
+sync_state_connecting   [FORMAT: %1$s = host]
+  ar: جارٍ الاتصال بـ %1$s
+  en: Connecting to %1$s
+
+sync_state_handshaking
+  ar: جارٍ التحقّق من الجهاز
+  en: Verifying the device
+
+sync_state_transferring
+  ar: جارٍ نقل البيانات
+  en: Transferring data
+
+sync_state_merging   [FORMAT: %1$s = number of changes]
+  ar: جارٍ الدمج (%1$s تغييرًا)
+  en: Merging (%1$s changes)
+
+sync_state_done   [FORMAT: %1$s added, %2$s updated, %3$s deleted]
+  ar: تمّت المزامنة: %1$s مُضاف، %2$s مُحدَّث، %3$s محذوف
+  en: Sync complete: %1$s added, %2$s updated, %3$s deleted
+
+sync_state_failed
+  ar: فشلت المزامنة
+  en: Sync failed
+
+## Confirmations (snackbars) -------------------------------------------------------------
+
+msg_username_copied
+  ar: نُسخ اسم المستخدم
+  en: Username copied
+
+msg_password_copied
+  ar: نُسخت كلمة المرور
+  en: Password copied
+
+msg_totp_copied
+  ar: نُسخ رمز التحقق
+  en: One-time code copied
+
+msg_url_copied
+  ar: نُسخ الرابط
+  en: Link copied
+
+msg_notes_copied
+  ar: نُسخت الملاحظات
+  en: Notes copied
+
+msg_field_copied
+  ar: نُسخت قيمة الحقل
+  en: Field value copied
+
+msg_clipboard_clears_in   [FORMAT: %1$s = seconds; appended after a copy message with " — "]
+  ar: ستُمسح من الحافظة بعد %1$s ثانية
+  en: it will be wiped from the clipboard in %1$s seconds
+
+msg_entry_saved
+  ar: حُفظ الإدخال
+  en: Entry saved
+
+msg_entry_deleted
+  ar: حُذف الإدخال
+  en: Entry deleted
+
+msg_backup_exported
+  ar: صُدِّرت النسخة الاحتياطية
+  en: Backup exported
+
+msg_biometric_enabled
+  ar: فُعّل الفتح بالبصمة
+  en: Biometric unlock is on
+
+msg_device_paired   [FORMAT: %1$s = device name]
+  ar: تمّ الاقتران بـ %1$s
+  en: Paired with %1$s
+
+msg_device_forgotten   [FORMAT: %1$s = device name]
+  ar: أُزيل %1$s
+  en: Removed %1$s
+
+## Errors --------------------------------------------------------------------------------
+# Each of these is shown alone or followed by " — " and the underlying technical detail,
+# so none of them should end with a full stop that would read oddly before that detail.
+
+error_unlock_failed
+  ar: تعذّر فتح القاعدة. تحقّق من كلمة المرور وملف المفتاح
+  en: Could not unlock the vault — check the password and key file
+
+error_credentials_empty
+  ar: أدخل كلمة المرور أو اختر ملف مفتاح
+  en: Enter a password or choose a key file
+
+error_import_failed
+  ar: تعذّرت قراءة هذا الملف كقاعدة بيانات KDBX
+  en: That file could not be read as a KDBX database
+
+error_biometric_unlock_failed
+  ar: تعذّر الفتح بالبصمة، استخدم كلمة المرور الرئيسية
+  en: Biometric unlock failed — use your master password
+
+error_biometric_enable_failed
+  ar: تعذّر تفعيل الفتح بالبصمة
+  en: Biometric unlock could not be turned on
+
+error_save_failed
+  ar: تعذّر حفظ التغييرات على القرص
+  en: The changes could not be written to disk
+
+error_delete_failed
+  ar: تعذّر حذف الإدخال
+  en: The entry could not be deleted
+
+error_entry_missing
+  ar: لم يعد هذا الإدخال موجودًا
+  en: That entry no longer exists
+
+error_no_database
+  ar: لا توجد قاعدة بيانات مفتوحة
+  en: No database is open
+
+error_export_failed
+  ar: تعذّر تصدير النسخة الاحتياطية
+  en: The backup could not be exported
+
+error_nothing_to_copy
+  ar: لا شيء لنسخه
+  en: There is nothing to copy
+
+error_clipboard_unavailable
+  ar: الحافظة غير متاحة على هذا الجهاز
+  en: The clipboard is not available on this device
+
+error_totp_unreadable
+  ar: تعذّرت قراءة مفتاح رمز التحقق
+  en: The one-time code secret could not be read
+
+error_no_browser
+  ar: لا يوجد تطبيق يفتح هذا الرابط
+  en: No app on this device can open the link
+
+error_pairing_code_empty
+  ar: ألصق رمز الاقتران أولًا
+  en: Paste the pairing code first
+
+error_pairing_failed
+  ar: فشل الاقتران بالجهاز
+  en: Pairing with the device failed
+
+error_sync_failed
+  ar: فشلت المزامنة
+  en: The sync failed

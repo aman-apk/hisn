@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android 11 and below (fullBackupContent). Backup is already switched off in the manifest, but
+  these rules are the second lock: a password database, the Keystore-wrapped unlock material and
+  even the preference that records which file was last opened must never be copied off the
+  device by a system backup agent.
+-->
+<full-backup-content>
+    <exclude domain="root" path="." />
+    <exclude domain="file" path="." />
+    <exclude domain="database" path="." />
+    <exclude domain="sharedpref" path="." />
+    <exclude domain="external" path="." />
+</full-backup-content>

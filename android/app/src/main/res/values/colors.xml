@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The Hisn palette: copper gradations plus warm neutrals. There is deliberately no green, blue
+  or violet anywhere in the app — "good" is bright brass and "bad" is deep rust.
+
+  Compose owns the in-app colours (see ui/theme/Color.kt); these exist for the parts of the UI
+  the framework paints for us: the status and navigation bars, the window background behind the
+  first frame, and the launcher icon.
+-->
+<resources>
+    <color name="hisn_copper">#FFC2622B</color>
+    <color name="hisn_copper_strong">#FFA64E1F</color>
+    <color name="hisn_copper_deep">#FF8F451D</color>
+    <color name="hisn_brass">#FFF3DCA8</color>
+    <color name="hisn_brass_strong">#FFC99C3B</color>
+    <color name="hisn_rust">#FFA63D22</color>
+
+    <color name="hisn_bg_dark">#FF211711</color>
+    <color name="hisn_surface_dark">#FF2A1D14</color>
+    <color name="hisn_on_dark">#FFF0E5D8</color>
+
+    <color name="hisn_bg_light">#FFF8F1E5</color>
+    <color name="hisn_surface_light">#FFFFFDF8</color>
+    <color name="hisn_on_light">#FF2B211A</color>
+
+    <color name="hisn_muted">#FFA08D77</color>
+
+    <!-- Icon plate colours, kept here so the launcher art and the in-app logo cannot drift. -->
+    <color name="hisn_icon_shield">#FFC97F48</color>
+    <color name="hisn_icon_merlon">#FFF3DCA8</color>
+</resources>

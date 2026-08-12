@@ -82,11 +82,12 @@ object KdbxReader {
                 "This database uses format version ${versionName(version)}, which this version of Hisn cannot read"
             )
         }
-        if (critical < 0x00030000) {
+        if (critical < FILE_VERSION_2) {
             throw KdbxException(
                 "Database format version ${versionName(version)} is too old; open it once with KeePassXC to upgrade it"
             )
         }
+        // KDBX 2.x shares the KDBX 3 layout apart from the in-XML header hash, so it reads the same way.
         val isKdbx4 = critical >= Kdbx.FILE_VERSION_4
 
         val params = KdbxParams(version = version)
@@ -266,7 +267,7 @@ object KdbxReader {
         val randomStream = InnerRandomStream(inner.streamId, inner.streamKey)
         val xmlBytes = plaintext.copyOfRange(inner.xmlOffset, plaintext.size)
 
-        XmlDocumentReader(params.version, randomStream, db, inner.poolIndex).parse(parseDocument(xmlBytes))
+        XmlDocumentReader(randomStream, db, inner.poolIndex).parse(parseDocument(xmlBytes))
         db.root.relink()
         return db
     }
@@ -274,7 +275,7 @@ object KdbxReader {
     private class InnerHeader(
         val streamId: Int,
         val streamKey: ByteArray,
-        val poolIndex: Map<String, Int>,
+        val poolIndex: MutableMap<String, Int>,
         val xmlOffset: Int,
     )
 
@@ -355,7 +356,7 @@ object KdbxReader {
 
         val db = KdbxDatabase(params = params)
         val randomStream = InnerRandomStream(header.innerRandomStreamId, header.protectedStreamKey!!)
-        val reader = XmlDocumentReader(params.version, randomStream, db, mutableMapOf())
+        val reader = XmlDocumentReader(randomStream, db, mutableMapOf())
         reader.parse(parseDocument(xmlBytes))
 
         val storedHeaderHash = reader.headerHash
@@ -467,7 +468,7 @@ object KdbxReader {
             Kdbx.KDF_PARAM_UUID, Kdbx.KDF_PARAM_SEED, Kdbx.KDF_PARAM_ROUNDS, Kdbx.KDF_PARAM_ITERATIONS,
             Kdbx.KDF_PARAM_MEMORY, Kdbx.KDF_PARAM_PARALLELISM, Kdbx.KDF_PARAM_VERSION,
         )
-        params.kdfExtras = map.filterKeys { it !in modelled }.toMutableMap() as MutableMap<String, VariantValue>
+        params.kdfExtras = map.filterKeys { it !in modelled }.toMutableMap()
         return seed
     }
 
@@ -492,7 +493,6 @@ object KdbxReader {
         setFeatureQuietly(factory, "http://apache.org/xml/features/disallow-doctype-decl", true)
         setFeatureQuietly(factory, "http://xml.org/sax/features/external-general-entities", false)
         setFeatureQuietly(factory, "http://xml.org/sax/features/external-parameter-entities", false)
-        factory.isExpandEntityReferences = false
         return try {
             factory.newDocumentBuilder().parse(ByteArrayInputStream(xmlBytes))
         } catch (e: Exception) {
@@ -571,6 +571,12 @@ private fun serializeElement(element: Element): String =
 
 private val BASE64_PATTERN = Regex("^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$")
 
+/** Custom-data key KeePassXC used for "exclude from reports" before KDBX 4.1 gained QualityCheck. */
+private const val LEGACY_EXCLUDE_FROM_REPORTS_KEY = "KnownBad"
+
+/** Oldest format the reader accepts; 2.x predates [Kdbx.FILE_VERSION_3_1] but is structurally identical. */
+private const val FILE_VERSION_2 = 0x00020000
+
 /**
  * Walks the decrypted XML document into the model.
  *
@@ -579,7 +585,6 @@ private val BASE64_PATTERN = Regex("^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{3}=|[
  * verbatim so a database written by a newer desktop build loses nothing on the way back out.
  */
 private class XmlDocumentReader(
-    private val version: Int,
     private val randomStream: InnerRandomStream,
     private val db: KdbxDatabase,
     private val poolIndex: MutableMap<String, Int>,
@@ -587,8 +592,6 @@ private class XmlDocumentReader(
     /** KDBX 3.1 stores the outer header's SHA-256 inside Meta so the header can be verified. */
     var headerHash: ByteArray? = null
         private set
-
-    private val isKdbx4 = (version and Kdbx.FILE_VERSION_CRITICAL_MASK) >= Kdbx.FILE_VERSION_4
 
     fun parse(document: Document) {
         val root = document.documentElement
@@ -807,9 +810,10 @@ private class XmlDocumentReader(
             }
         }
         if (!uuidSeen) entry.uuid = UUID.randomUUID()
-        // Pre-4.1 databases carried the report-exclusion flag as custom data; fold it into the field.
-        entry.customData.remove("KPXC_EXCLUDE_FROM_REPORTS")?.let { value ->
-            if (entry.qualityCheck == null) entry.qualityCheck = !value.equals("true", ignoreCase = true)
+        // Pre-4.1 databases carried the report-exclusion flag as a "KnownBad" custom data item;
+        // the desktop upgrades it to the QualityCheck element, so do the same and drop the item.
+        entry.customData.remove(LEGACY_EXCLUDE_FROM_REPORTS_KEY)?.let { value ->
+            entry.qualityCheck = !value.equals("true", ignoreCase = true)
         }
         return entry
     }

@@ -6,12 +6,15 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import java.io.IOException
 
 /**
  * A single DataStore instance per process, guaranteed by the property delegate — creating a
@@ -59,7 +62,11 @@ class Prefs(context: Context) {
         Build.MODEL?.takeIf { it.isNotBlank() },
     ).joinToString(" ").ifBlank { "Hisn" }
 
-    val settings: Flow<HisnSettings> = store.data.map { prefs ->
+    val settings: Flow<HisnSettings> = store.data.catch { cause ->
+        // A settings file that cannot be read must not take the app down with it; the defaults
+        // are all safe, and the next write repairs the file.
+        if (cause is IOException) emit(emptyPreferences()) else throw cause
+    }.map { prefs ->
         HisnSettings(
             autoLockSeconds = prefs[Keys.AUTO_LOCK] ?: 60,
             lockOnScreenOff = prefs[Keys.LOCK_ON_SCREEN_OFF] ?: true,

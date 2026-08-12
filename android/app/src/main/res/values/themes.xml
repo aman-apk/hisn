@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The XML theme only has to carry the app until Compose takes over: the window background it
+  paints is what the user sees between tapping the icon and the first composition. Everything
+  after that is styled by HisnTheme in ui/theme/Theme.kt.
+
+  The status bar is the brand's darkest neutral in both light and dark mode — a copper shield on
+  a dark bar is the app's signature, and flipping it to a light bar in day mode would lose it.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.Hisn" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/hisn_copper_strong</item>
+        <item name="colorOnPrimary">@color/hisn_surface_light</item>
+        <item name="colorPrimaryContainer">@color/hisn_brass</item>
+        <item name="colorOnPrimaryContainer">@color/hisn_copper_deep</item>
+        <item name="colorSecondary">@color/hisn_copper_deep</item>
+        <item name="colorOnSecondary">@color/hisn_surface_light</item>
+        <item name="colorError">@color/hisn_rust</item>
+        <item name="colorOnError">@color/hisn_surface_light</item>
+        <item name="android:colorBackground">@color/hisn_bg_light</item>
+        <item name="colorSurface">@color/hisn_surface_light</item>
+        <item name="colorOnSurface">@color/hisn_on_light</item>
+
+        <item name="android:windowBackground">@color/hisn_bg_light</item>
+        <item name="android:statusBarColor">@color/hisn_bg_dark</item>
+        <item name="android:navigationBarColor">@color/hisn_bg_dark</item>
+        <!-- Dark bars, so their icons must stay light. -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+
+        <item name="android:textColorPrimary">@color/hisn_on_light</item>
+        <item name="android:textColorSecondary">@color/hisn_muted</item>
+    </style>
+</resources>

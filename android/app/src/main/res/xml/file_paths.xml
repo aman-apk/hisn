@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The only directories Hisn will ever hand to another app through a content:// URI. Both live
+  inside the app's private storage and are meant to be emptied after the share completes, so a
+  decrypted attachment never lingers where another app could read it.
+
+  Note what is absent: the vault working copy and the cache the reader streams through are not
+  listed, which makes it impossible to grant a URI to them by accident.
+-->
+<paths>
+    <!-- Attachments the user chose to open or share, written just before the intent fires. -->
+    <cache-path
+        name="shared_attachments"
+        path="shared/" />
+    <!-- Databases exported by the user (backup copy, or a vault handed to the desktop app). -->
+    <files-path
+        name="exports"
+        path="exports/" />
+</paths>

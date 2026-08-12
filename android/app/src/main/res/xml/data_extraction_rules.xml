@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android 12 and above. Two separate channels have to be refused:
+
+  cloud-backup   — anything Google would upload. A vault in a cloud backup is a vault outside
+                   the user's control, which defeats the point of an offline password manager.
+  device-transfer — the direct device-to-device copy during setup. Refused as well: the new
+                   device should be paired deliberately through LAN sync, with the master
+                   password typed in, not seeded with a silent copy of the vault.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="root" path="." />
+        <exclude domain="file" path="." />
+        <exclude domain="database" path="." />
+        <exclude domain="sharedpref" path="." />
+        <exclude domain="external" path="." />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="root" path="." />
+        <exclude domain="file" path="." />
+        <exclude domain="database" path="." />
+        <exclude domain="sharedpref" path="." />
+        <exclude domain="external" path="." />
+    </device-transfer>
+</data-extraction-rules>

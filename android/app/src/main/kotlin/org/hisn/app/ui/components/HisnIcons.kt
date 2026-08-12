@@ -176,6 +176,8 @@ object HisnIcons {
             "M7.5 7.5h4v4h-4v-4zM12.5 12.5h4v4h-4v-4z",
     )
 
+    val Caret = icon("Caret", "M7 10l5 5 5-5z")
+
     val Shield = icon(
         "Shield",
         "M4 3h3v2h2V3h6v2h2V3h3v9c0 4.5-4.2 7.6-8 9-3.8-1.4-8-4.5-8-9V3z",

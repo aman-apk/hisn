@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Foreground layer of the adaptive icon: a copper shield whose top edge is castle merlons,
+  with a keyhole cut clean through it.
+
+  The whole drawing sits inside a circle of radius 33 around the canvas centre (54,54) — the
+  adaptive-icon safe zone — so no mask, however aggressive, clips a merlon or the shield tip.
+  The keyhole is a subpath of the shield with evenOdd filling, which makes it a real hole: the
+  dark background layer shows through instead of a painted-on shape.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <path
+        android:fillColor="#C97F48"
+        android:fillType="evenOdd"
+        android:pathData="M32,32 L42,32 L42,38.5 L49,38.5 L49,32 L59,32 L59,38.5 L66,38.5 L66,32 L76,32 L76,58 C76,70 67,76.5 54,82 C41,76.5 32,70 32,58 Z M54,47 C50.7,47 48,49.7 48,53 C48,55.1 49.1,57 50.8,58 L49.2,69 L58.8,69 L57.2,58 C58.9,57 60,55.1 60,53 C60,49.7 57.3,47 54,47 Z" />
+
+    <!-- Centre merlon, lit in pale brass — the one detail that reads at launcher size. -->
+    <path
+        android:fillColor="#F3DCA8"
+        android:pathData="M49,32 L59,32 L59,38.5 L49,38.5 Z" />
+</vector>

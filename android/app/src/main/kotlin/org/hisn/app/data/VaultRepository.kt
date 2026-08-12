@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.SystemClock
 import android.provider.OpenableColumns
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -52,6 +53,8 @@ enum class VaultError {
     InvalidCredentials,
     CorruptFile,
     NotFound,
+    /** The request itself does not make sense, e.g. deleting the root group. */
+    Invalid,
     Io,
     SaveFailed,
     MergeFailed,
@@ -119,6 +122,13 @@ class VaultRepository(context: Context) {
 
     private var lastActivityElapsed = SystemClock.elapsedRealtime()
 
+    /**
+     * Mirrors [HisnSettings.searchIncludesRecycleBin]. [search] is synchronous, so the collector
+     * that watches the settings flow pushes the value here instead of reading DataStore per query.
+     */
+    @Volatile
+    var searchIncludesRecycleBin: Boolean = false
+
     val biometricEnabled: Boolean get() = secureStore.isEnrolled
 
     // ------------------------------------------------------------------ import
@@ -142,7 +152,6 @@ class VaultRepository(context: Context) {
             validateContainer(bytes)
 
             vaultDir.mkdirs()
-            if (dbFile.isFile) dbFile.copyTo(bakFile, overwrite = true)
             writeAtomically(bytes)
 
             lockInternal()
@@ -398,18 +407,21 @@ class VaultRepository(context: Context) {
             val db = requireDatabase()
             val group = db.findGroup(uuid)
                 ?: throw VaultException(VaultError.NotFound, "That group is no longer in the database")
-            if (group === db.root) throw VaultException(VaultError.NotFound, "The root group cannot be deleted")
+            if (group === db.root) throw VaultException(VaultError.Invalid, "The root group cannot be deleted")
 
-            if (db.meta.recycleBinEnabled && !db.isInRecycleBin(group)) {
-                val bin = recycleBin(db)
-                if (bin.uuid != group.uuid) {
-                    group.previousParentGroup = group.parent?.uuid
-                    group.parent?.groups?.remove(group)
-                    bin.addGroup(group)
-                    group.times.locationChanged = Times.nowSeconds()
-                }
+            val bin = if (db.meta.recycleBinEnabled) recycleBin(db) else null
+            // Moving a group that contains the bin into the bin would detach the subtree, so
+            // those groups are deleted outright instead.
+            val wouldEnclose = bin != null && group.groupsRecursive().any { it.uuid == bin.uuid }
+
+            if (bin != null && !wouldEnclose && !db.isInRecycleBin(group)) {
+                group.previousParentGroup = group.parent?.uuid
+                group.parent?.groups?.remove(group)
+                bin.addGroup(group)
+                group.times.locationChanged = Times.nowSeconds()
             } else {
-                group.groupsRecursive().forEach { g ->
+                val removed = group.groupsRecursive()
+                removed.forEach { g ->
                     g.entries.forEach { e ->
                         lastSaved.remove(e.uuid)
                         db.addDeletedObject(e.uuid)
@@ -417,7 +429,10 @@ class VaultRepository(context: Context) {
                     db.addDeletedObject(g.uuid)
                 }
                 group.parent?.groups?.remove(group)
-                if (db.meta.recycleBinUuid == group.uuid) db.meta.recycleBinUuid = null
+                if (removed.any { it.uuid == db.meta.recycleBinUuid }) {
+                    db.meta.recycleBinUuid = null
+                    db.meta.recycleBinChanged = Times.nowSeconds()
+                }
             }
             noteActivity()
             saveLocked()
@@ -477,8 +492,7 @@ class VaultRepository(context: Context) {
     fun search(query: String): List<Entry> {
         val db = _database.value ?: return emptyList()
         val terms = normalizeForSearch(query).split(' ').filter { it.isNotEmpty() }
-        val includeBin = false
-        val pool = if (includeBin) db.allEntries() else db.visibleEntries()
+        val pool = if (searchIncludesRecycleBin) db.allEntries() else db.visibleEntries()
         if (terms.isEmpty()) return pool
         return pool.filter { entry ->
             val haystack = normalizeForSearch(
@@ -558,7 +572,7 @@ class VaultRepository(context: Context) {
 
             val remote = try {
                 KdbxReader.read(remoteBytes, key)
-            } catch (e: KdbxException) {
+            } catch (e: Exception) {
                 throw VaultException(
                     VaultError.MergeFailed,
                     "The database sent by the other device does not open with this vault's key",
@@ -637,6 +651,10 @@ class VaultRepository(context: Context) {
                 "The database did not open — check the password and key file (${e.message})",
                 e,
             )
+        } catch (e: Exception) {
+            // A malformed body can fail deep inside the parser with something other than
+            // KdbxException; that is a damaged file, not a wrong password.
+            throw VaultException(VaultError.CorruptFile, "The database file is damaged: ${e.message}", e)
         }
     }
 
@@ -653,9 +671,10 @@ class VaultRepository(context: Context) {
         }
         val version = header.int
         val major = version and Kdbx.FILE_VERSION_CRITICAL_MASK
-        if (major < (Kdbx.FILE_VERSION_3_1 and Kdbx.FILE_VERSION_CRITICAL_MASK) ||
-            major > Kdbx.FILE_VERSION_4
-        ) {
+        // Bind the comparands to locals: `major < (...) || major > ...` parses as type arguments.
+        val oldestSupported = Kdbx.FILE_VERSION_3_1 and Kdbx.FILE_VERSION_CRITICAL_MASK
+        val newestSupported = Kdbx.FILE_VERSION_4
+        if (major < oldestSupported || major > newestSupported) {
             throw VaultException(VaultError.CorruptFile, "This KDBX version is not supported by Hisn")
         }
     }
@@ -694,8 +713,19 @@ class VaultRepository(context: Context) {
         JSONObject(metaFile.readText()).optString("name").takeIf { it.isNotBlank() }
     }.getOrNull()
 
+    /**
+     * Runs [block] off the main thread and converts failures into a [Result].
+     * Cancellation is rethrown rather than reported as a failure, so a cancelled screen does not
+     * look like a broken vault.
+     */
     private suspend fun <T> io(block: suspend () -> T): Result<T> = withContext(Dispatchers.IO) {
-        runCatching { block() }
+        try {
+            Result.success(block())
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Throwable) {
+            Result.failure(e)
+        }
     }
 
     companion object {

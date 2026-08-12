@@ -3,42 +3,41 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!--
-      Hisn is an offline vault: nothing is ever uploaded to a server we run, and there is no
-      analytics, telemetry or crash reporting. INTERNET is nevertheless required because the
-      optional "sync over the local network" feature opens a socket directly to another device
-      on the same Wi-Fi (peer to peer, no intermediary), and Android gates every socket —
-      including a purely local one — behind this permission.
+      Hisn is an offline vault: nothing is uploaded anywhere, and there is no analytics, telemetry
+      or crash reporting. INTERNET is nevertheless required, because the optional "sync over the
+      local network" feature opens a socket straight to another device on the same Wi-Fi — peer to
+      peer, no intermediary — and Android gates every socket, including a purely local one, behind
+      this permission.
     -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!--
-      Used to tell the user *why* LAN sync is unavailable ("you are not on Wi-Fi") instead of
-      failing with a bare timeout, and to pick the Wi-Fi interface to advertise on.
+      Lets sync say *why* it cannot run ("you are not on a Wi-Fi network") instead of failing with
+      a bare timeout, and lets it pick the right interface to listen on.
     -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!--
-      Only for scanning the pairing QR code shown by the other device. No photo is stored and
-      no frame leaves the process; the analyser decodes in memory and the frame is discarded.
-    -->
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <!-- Unlocking the vault with a fingerprint / face / device PIN. -->
+    <!-- Unlocking the vault with a fingerprint, face or device credential. -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <!-- API 26–27 predates USE_BIOMETRIC; BiometricPrompt falls back to this there. -->
     <uses-permission
         android:name="android.permission.USE_FINGERPRINT"
         android:maxSdkVersion="27" />
 
-    <!-- A device with no camera can still use every feature except QR pairing. -->
-    <uses-feature
-        android:name="android.hardware.camera.any"
-        android:required="false" />
+    <!--
+      android.permission.CAMERA is deliberately absent.
+
+      Device pairing was sketched as a QR scan, which would need it, but the implemented flow has
+      the user type a short pairing code instead (ui/screens/SyncScreen.kt). Declaring camera
+      access an app never exercises is exactly what a password manager should not do. Add it back
+      in the same change that adds a scanner, not before.
+    -->
+
+    <!-- Sync is optional, so a device with no Wi-Fi radio is still fully usable. -->
     <uses-feature
         android:name="android.hardware.wifi"
         android:required="false" />
 
     <application
-        android:name=".HisnApplication"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -50,6 +49,18 @@
         android:theme="@style/Theme.Hisn"
         tools:targetApi="33">
 
+        <!--
+          One activity for the whole app; Compose navigation handles the rest.
+
+          singleTask so that returning from the file picker, the biometric prompt or a browser
+          re-enters the running instance instead of stacking a second copy of an unlocked vault.
+          adjustResize so the password field stays visible above the keyboard.
+
+          No ACTION_VIEW filter: databases are opened through the Storage Access Framework, which
+          hands back a persistable URI. A filter here would let a file manager launch Hisn with a
+          one-shot URI it has no permission to keep, and the user would be back at the unlock
+          screen with nothing opened.
+        -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -62,23 +73,12 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <!-- Opening a .kdbx from a file manager or an email attachment. -->
-            <intent-filter android:label="@string/open_database">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="content" />
-                <data android:scheme="file" />
-                <data android:mimeType="*/*" />
-                <data android:host="*" />
-                <data android:pathPattern=".*\\.kdbx" />
-            </intent-filter>
         </activity>
 
         <!--
-          Hands attachments and exported databases to another app as a short-lived content:// URI
-          so no file ever has to be written to shared storage.
+          Hands an exported database or a decrypted attachment to another app as a short-lived
+          content:// URI, so nothing has to be written to shared storage where any app could read
+          it. The two directories it may serve are listed in res/xml/file_paths.xml.
         -->
         <provider
             android:name="androidx.core.content.FileProvider"
