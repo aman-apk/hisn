@@ -1,0 +1,9 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/fonts">
+        <file>Almarai-Light.ttf</file>
+        <file>Almarai-Regular.ttf</file>
+        <file>Almarai-Bold.ttf</file>
+        <file>Almarai-ExtraBold.ttf</file>
+    </qresource>
+</RCC>

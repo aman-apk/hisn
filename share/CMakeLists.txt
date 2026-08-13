@@ -19,6 +19,10 @@ add_subdirectory(translations)
 file(GLOB wordlists_files "wordlists/*.wordlist")
 install(FILES ${wordlists_files} DESTINATION ${DATA_INSTALL_DIR}/wordlists)
 
+# The Almarai typeface is compiled into the binary as a Qt resource; the SIL Open Font License
+# requires its notice to travel with it, so install the licence text next to the app data.
+install(FILES fonts/OFL.txt DESTINATION ${DATA_INSTALL_DIR}/fonts RENAME Almarai-OFL.txt)
+
 # Copy wordlists to build dir for use in tests
 file(COPY "wordlists" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 

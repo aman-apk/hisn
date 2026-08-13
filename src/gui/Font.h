@@ -23,6 +23,15 @@ class QFont;
 class Font
 {
 public:
+    /**
+     * Loads the bundled Almarai family and makes it the application font.
+     *
+     * Called once at startup, before any widget is built. Almarai is bundled rather than taken
+     * from the system so the app reads identically on every machine — most Linux desktops ship no
+     * Arabic UI face at all and fall back to something that renders the script poorly.
+     */
+    static void installApplicationFont();
+
     static QFont defaultFont();
     static QFont fixedFont();
 

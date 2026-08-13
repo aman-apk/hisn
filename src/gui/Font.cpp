@@ -20,6 +20,41 @@
 #include <QFontDatabase>
 #include <QGuiApplication>
 
+void Font::installApplicationFont()
+{
+    // keepassxc_gui is a static library, so the linker discards the generated resource object
+    // unless something references it. This forces the font resource to register itself.
+    Q_INIT_RESOURCE(fonts);
+
+    // Every weight has to be registered: Qt will otherwise synthesise the missing ones, and a
+    // synthesised bold smears the joins and diacritics of Arabic text.
+    const QStringList fonts = {QStringLiteral(":/fonts/Almarai-Light.ttf"),
+                               QStringLiteral(":/fonts/Almarai-Regular.ttf"),
+                               QStringLiteral(":/fonts/Almarai-Bold.ttf"),
+                               QStringLiteral(":/fonts/Almarai-ExtraBold.ttf")};
+
+    QString family;
+    for (const auto& path : fonts) {
+        const int id = QFontDatabase::addApplicationFont(path);
+        if (id < 0) {
+            continue;
+        }
+        const auto families = QFontDatabase::applicationFontFamilies(id);
+        if (family.isEmpty() && !families.isEmpty()) {
+            family = families.first();
+        }
+    }
+
+    if (family.isEmpty()) {
+        // Nothing to do: the resource is missing, so keep whatever font the platform picked.
+        return;
+    }
+
+    auto font = qApp->font();
+    font.setFamily(family);
+    qApp->setFont(font);
+}
+
 QFont Font::defaultFont()
 {
     return qApp->font();

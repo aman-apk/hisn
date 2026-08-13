@@ -21,6 +21,7 @@
 
 #include "core/Bootstrap.h"
 #include "core/Tools.h"
+#include "gui/Font.h"
 #include "gui/MainWindow.h"
 #include "gui/MessageBox.h"
 #include "gui/osutils/OSUtils.h"
@@ -152,6 +153,9 @@ Application::~Application()
 void Application::bootstrap(const QString& uiLanguage)
 {
     Bootstrap::bootstrap(uiLanguage);
+
+    // Before any widget exists, so the whole interface is laid out in the bundled face.
+    Font::installApplicationFont();
 
     osUtils->registerNativeEventFilter();
     MessageBox::initializeButtonDefs();

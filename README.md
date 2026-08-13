@@ -27,7 +27,7 @@
 
 حِصن مشروع مشتقّ من KeePassXC ويخضع لرخصة **GNU GPL** (الإصدار الثاني أو الثالث حسب اختيارك)، ويبقى مفتوح المصدر بالكامل. كل الفضل في المحرّك الأساسي يعود لفريق **KeePassXC** ومجتمعه، وقبله لمشروع **KeePassX** الذي أنشأه debfx. هذا المشروع إعادة تسمية وتعريب وتوسعة، وليس بديلاً رسمياً عنهما ولا مدعوماً منهما.
 
-الخطوط: Reem Kufi وIBM Plex Sans Arabic برخصة OFL. الشعار عمل أصلي رُسم لهذا المشروع.
+الخط: **Almarai** (حقوق النشر 2019 لمؤلفي مشروع Almarai) برخصة SIL Open Font License 1.1، ونصّها الكامل في `share/fonts/OFL.txt`. الشعار عمل أصلي رُسم لهذا المشروع.
 
 </div>
 
@@ -43,4 +43,4 @@ Hisn is built on the open **[KeePassXC](https://keepassxc.org)** codebase and is
 
 ## Attribution & License
 
-Hisn is a derivative of KeePassXC, distributed under the **GNU GPL** (v2 or, at your option, v3), and remains fully open source. All credit for the core engine goes to the **KeePassXC** team and community, and before them to the **KeePassX** project created by debfx. This project is a rebrand, Arabic localization, and extension — it is **not** an official KeePassXC product and is not endorsed by or affiliated with the KeePassXC team.
+Hisn is a derivative of KeePassXC, distributed under the **GNU GPL** (v2 or, at your option, v3), and remains fully open source. All credit for the core engine goes to the **KeePassXC** team and community, and before them to the **KeePassX** project created by debfx. The bundled typeface is **Almarai** (Copyright 2019 The Almarai Project Authors), used under the SIL Open Font License 1.1 — full text in `share/fonts/OFL.txt`. This project is a rebrand, Arabic localization, and extension — it is **not** an official KeePassXC product and is not endorsed by or affiliated with the KeePassXC team.
