@@ -141,6 +141,11 @@ dependencies {
     // No material-icons-extended on purpose: ui/components/HisnIcons.kt draws the app's glyphs, and
     // the extended set would add tens of megabytes to an unminified APK for a handful of icons.
 
+    // Inline autofill suggestions (the IME strip on Android 11+). The platform takes an
+    // androidx-defined Slice for InlinePresentation, so this library is the only supported way to
+    // build one; without it the service can still fall back to RemoteViews dropdowns.
+    implementation(libs.androidx.autofill)
+
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.biometric)
 

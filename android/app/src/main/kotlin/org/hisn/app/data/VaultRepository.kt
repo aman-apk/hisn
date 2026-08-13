@@ -733,6 +733,25 @@ class VaultRepository(context: Context) {
         private const val RECYCLE_BIN_ICON = 43
         private const val MIN_DB_BYTES = 64
 
+        @Volatile
+        private var sharedInstance: VaultRepository? = null
+
+        /**
+         * The one repository for the whole process.
+         *
+         * There must be exactly one: the vault is a single file plus decrypted state in memory, and
+         * two instances would each hold their own copy. The autofill service runs in the same
+         * process as the UI, so a password saved from a fill prompt through one instance would be
+         * invisible to — and overwritable by — the other. Unlocking in one would also leave the
+         * other still locked, which the user experiences as the app forgetting they just unlocked.
+         */
+        fun shared(context: Context): VaultRepository {
+            sharedInstance?.let { return it }
+            return synchronized(this) {
+                sharedInstance ?: VaultRepository(context.applicationContext).also { sharedInstance = it }
+            }
+        }
+
         /**
          * Folds the Arabic forms that users type interchangeably, so search behaves the way an
          * Arabic speaker expects rather than the way Unicode code points happen to compare.

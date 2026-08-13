@@ -76,6 +76,73 @@
         </activity>
 
         <!--
+          ============================================================ autofill
+
+          The Autofill framework binds this service directly, so it must be exported — and
+          android:permission is what makes that safe: only the system, which holds
+          BIND_AUTOFILL_SERVICE, can bind to it. Without that line any app on the device could.
+
+          The user still has to pick Hisn as their autofill service in system settings before a
+          single request arrives; the settings screen has a row that takes them there.
+        -->
+        <service
+            android:name=".autofill.HisnAutofillService"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_AUTOFILL_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.autofill.AutofillService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.autofill"
+                android:resource="@xml/autofill_service" />
+        </service>
+
+        <!--
+          The three screens of the fill flow.
+
+          exported="false" throughout: they are only ever started through a PendingIntent this
+          app created, which carries our identity, so nothing else can invoke them. They are
+          translucent dialogs over whatever app asked to be filled, and excluded from recents
+          because a thumbnail of an open vault in the task switcher would undo FLAG_SECURE. The
+          flag itself is applied in code, reconciled with HisnSettings.blockScreenshots exactly
+          as MainActivity does it.
+
+          No launchMode and no task flags on the two that answer the framework: the platform
+          starts them *for result* from the requesting app's activity, and a new task would make
+          that result come back as "cancelled" before the user had typed anything.
+        -->
+        <activity
+            android:name=".autofill.AutofillUnlockActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|layoutDirection|locale"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.Hisn.Autofill" />
+
+        <activity
+            android:name=".autofill.AutofillPickerActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|layoutDirection|locale"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.Hisn.Autofill" />
+
+        <!--
+          The save prompt is the one that is started on its own, after the platform's own "save
+          this login?" bar has already been accepted, so it gets an empty task affinity: it must
+          not surface inside — or drag forward — the main app's task.
+        -->
+        <activity
+            android:name=".autofill.AutofillSaveActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|layoutDirection|locale"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.Hisn.Autofill" />
+
+        <!--
           Hands an exported database or a decrypted attachment to another app as a short-lived
           content:// URI, so nothing has to be written to shared storage where any app could read
           it. The two directories it may serve are listed in res/xml/file_paths.xml.

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Declares Hisn to the Autofill framework.
+
+  settingsActivity is the screen the system offers behind the gear icon next to "Hisn" in
+  Settings → Passwords & accounts → Autofill service. It points at MainActivity because that is
+  the only exported activity in the app: the three autofill activities are launched exclusively
+  through PendingIntents we create ourselves and stay unexported.
+
+  There is deliberately no <compatibility-package> list. That mechanism asks the platform to run
+  compatibility mode — a virtual view structure scraped from accessibility events — for browsers
+  that do not implement autofill natively. Hisn does not use it: the structure it produces cannot
+  be trusted to say which site is on screen, and the whole matching design here rests on knowing
+  that (see AutofillTarget and BrowserRegistry).
+-->
+<autofill-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:settingsActivity="org.hisn.app.MainActivity" />

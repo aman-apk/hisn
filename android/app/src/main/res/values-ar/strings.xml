@@ -482,4 +482,30 @@
     <string name="settings_search_recycle_bin_hint">يشمل البحثُ المُدخَلات المحذوفة</string>
     <string name="settings_section_search">البحث</string>
 
+    <!-- ======================================================= الملء التلقائي -->
+    <string name="autofill_filling_for">تملأ الآن لـ %1$s</string>
+    <string name="autofill_unlock_title">افتح حصن للملء</string>
+    <string name="autofill_search_in_hisn">بحث في حصن…</string>
+    <string name="autofill_prompt_no_username">بدون اسم مستخدم</string>
+    <string name="autofill_saving_for">بيانات الدخول إلى %1$s</string>
+    <string name="autofill_picker_title">اختر مُدخَلًا للملء</string>
+    <string name="autofill_picker_empty">لا يوجد مُدخَل يطابق بحثك</string>
+    <string name="autofill_row_suggested">مقترح</string>
+    <string name="autofill_no_matches_message">لا يوجد في حصن مُدخَل مرتبط بـ %1$s. ابحث في خزنتك واختر المُدخَل الذي تريد ملأه.</string>
+    <string name="autofill_no_database_message">لا توجد خزنة على هذا الجهاز بعد. افتح حصن واستورد ملف قاعدة بياناتك أولًا.</string>
+    <string name="autofill_open_hisn">افتح حصن</string>
+    <string name="autofill_entry_has_nothing">لا يحتوي هذا المُدخَل على اسم مستخدم أو كلمة سرّ للملء</string>
+    <string name="autofill_save_title">حفظ في حصن؟</string>
+    <string name="autofill_save_new">مُدخَل جديد</string>
+    <string name="autofill_save_update">تحديث مُدخَل موجود</string>
+    <string name="autofill_save_choose_entry">اختر المُدخَل الذي سيُحدَّث</string>
+    <string name="autofill_save_no_candidates">لا يوجد في حصن مُدخَل مرتبط بهذا التطبيق أو الموقع ليُحدَّث.</string>
+    <string name="settings_autofill">الملء التلقائي</string>
+    <string name="settings_autofill_enable">فعِّل حصن كخدمة ملء تلقائي</string>
+    <string name="settings_autofill_active">حصن هو خدمة الملء التلقائي النشطة</string>
+    <string name="settings_autofill_unsupported">لا يدعم هذا الجهاز الملء التلقائي</string>
+
+    <!-- الملء التلقائي: رسالة النظام حين لا يوجد ما يُحفظ -->
+    <string name="autofill_save_nothing">لا توجد كلمة سرّ لحفظها</string>
+
 </resources>

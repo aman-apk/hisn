@@ -120,7 +120,7 @@ sealed interface UiEvent {
 
 class VaultViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repo = VaultRepository(application)
+    private val repo = VaultRepository.shared(application)
     private val syncClient = SyncClient(application, repo)
     private val localBackup = LocalBackup(application, repo)
     private val clipboard = SecretClipboard(application, viewModelScope)

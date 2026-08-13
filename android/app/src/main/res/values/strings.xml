@@ -486,4 +486,30 @@
     <string name="settings_search_recycle_bin_hint">Include deleted entries in search results</string>
     <string name="settings_section_search">Search</string>
 
+    <!-- ============================================================ autofill -->
+    <string name="autofill_filling_for">Filling now for %1$s</string>
+    <string name="autofill_unlock_title">Open Hisn to fill</string>
+    <string name="autofill_search_in_hisn">Search in Hisn…</string>
+    <string name="autofill_prompt_no_username">No username</string>
+    <string name="autofill_saving_for">Sign-in details for %1$s</string>
+    <string name="autofill_picker_title">Choose an entry to fill</string>
+    <string name="autofill_picker_empty">No entry matches your search</string>
+    <string name="autofill_row_suggested">Suggested</string>
+    <string name="autofill_no_matches_message">Hisn has no entry linked to %1$s. Search your vault and choose the entry you want to fill.</string>
+    <string name="autofill_no_database_message">There is no vault on this device yet. Open Hisn and import your database file first.</string>
+    <string name="autofill_open_hisn">Open Hisn</string>
+    <string name="autofill_entry_has_nothing">This entry has no username or password to fill</string>
+    <string name="autofill_save_title">Save in Hisn?</string>
+    <string name="autofill_save_new">New entry</string>
+    <string name="autofill_save_update">Update an entry</string>
+    <string name="autofill_save_choose_entry">Choose the entry to update</string>
+    <string name="autofill_save_no_candidates">Hisn has no entry linked to this app or site to update.</string>
+    <string name="settings_autofill">Autofill</string>
+    <string name="settings_autofill_enable">Set Hisn as your autofill service</string>
+    <string name="settings_autofill_active">Hisn is the active autofill service</string>
+    <string name="settings_autofill_unsupported">This device does not support autofill</string>
+
+    <!-- autofill: the system-side message when there is nothing worth saving -->
+    <string name="autofill_save_nothing">There is no password to save</string>
+
 </resources>

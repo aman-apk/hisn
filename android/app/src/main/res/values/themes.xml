@@ -32,4 +32,27 @@
         <item name="android:textColorPrimary">@color/hisn_on_light</item>
         <item name="android:textColorSecondary">@color/hisn_muted</item>
     </style>
+
+    <!--
+      The three autofill screens. They appear over another app's login form, so the window itself
+      is see-through and the panel — scrim included — is drawn by Compose; that keeps one set of
+      brand colours instead of splitting them between a platform dialog frame and the content.
+
+      The name has no explicit parent on purpose: "Theme.Hisn.Autofill" inherits from whichever
+      "Theme.Hisn" the current configuration resolves, so the night variant still applies.
+
+      The bars are transparent rather than the usual dark copper: this window is a panel over
+      someone else's app, and painting their status bar would be a lie about what is running.
+    -->
+    <style name="Theme.Hisn.Autofill">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
 </resources>

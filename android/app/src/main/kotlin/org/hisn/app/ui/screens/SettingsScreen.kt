@@ -1,7 +1,10 @@
 package org.hisn.app.ui.screens
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.provider.Settings
+import android.view.autofill.AutofillManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.biometric.BiometricManager
@@ -47,6 +50,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import org.hisn.app.R
 import org.hisn.app.data.Prefs
 import org.hisn.app.data.ThemeMode
@@ -170,6 +174,8 @@ fun SettingsScreen(
                 },
             )
 
+            AutofillRow(viewModel)
+
             SectionLabel(stringResource(R.string.settings_section_search))
             SwitchRow(
                 icon = HisnIcons.Search,
@@ -238,6 +244,63 @@ fun SettingsScreen(
             },
         )
     }
+}
+
+/**
+ * Whether Hisn is the device's autofill service, and the one tap that changes it.
+ *
+ * The state is read back from [AutofillManager] rather than remembered, because the system
+ * picker reports `RESULT_CANCELED` whichever way the user leaves it — the only reliable answer
+ * is to ask again afterwards.
+ */
+@Composable
+private fun AutofillRow(viewModel: VaultViewModel) {
+    val context = LocalContext.current
+    val palette = HisnTheme.palette
+    val manager = remember(context) { context.getSystemService(AutofillManager::class.java) }
+    val supported = remember(manager) { manager?.isAutofillSupported() == true }
+    var enabled by remember { mutableStateOf(manager?.hasEnabledAutofillServices() == true) }
+
+    val choose = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        enabled = manager?.hasEnabledAutofillServices() == true
+    }
+
+    SettingRow(
+        icon = HisnIcons.Edit,
+        title = stringResource(R.string.settings_autofill),
+        subtitle = when {
+            !supported -> stringResource(R.string.settings_autofill_unsupported)
+            enabled -> stringResource(R.string.settings_autofill_active)
+            else -> stringResource(R.string.settings_autofill_enable)
+        },
+        onClick = if (!supported) {
+            null
+        } else {
+            {
+                // Some ROMs ship without the autofill settings screen at all; that is a message,
+                // not a crash.
+                val opened = runCatching {
+                    choose.launch(
+                        Intent(Settings.ACTION_REQUEST_SET_AUTOFILL_SERVICE)
+                            .setData("package:${context.packageName}".toUri())
+                    )
+                }.isSuccess
+                if (!opened) viewModel.reportFailure(R.string.settings_autofill_unsupported, null)
+            }
+        },
+        trailing = {
+            if (enabled) {
+                Icon(
+                    imageVector = HisnIcons.Check,
+                    contentDescription = null,
+                    tint = palette.strong,
+                    modifier = Modifier.size(20.dp),
+                )
+            }
+        },
+    )
 }
 
 @Composable
