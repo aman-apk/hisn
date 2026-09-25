@@ -1,3 +1,15 @@
+<p align="center"><img src="share/icons/application/scalable/apps/hisn.svg" width="96" alt="Hisn"></p>
+
+# Hisn — حِصن
+
+Password manager on the KeePass KDBX format (3.1 and 4), built on [KeePassXC](https://keepassxc.org). Desktop (Linux, Windows, macOS) and Android, with autofill, TOTP codes and direct Wi-Fi sync between your phone and your computer. Your vault is one encrypted file that never leaves your devices: no cloud, no server, no account.
+
+Part of the [Aman Labs](https://amanlabs.app/en/) family of Arabic-first privacy apps. Signed builds and verification fingerprints: [aman-releases](https://github.com/aman-apk/aman-releases). License: GPL-2.0 or GPL-3.0, like KeePassXC (see `COPYING`).
+
+The rest of this file is in Arabic.
+
+---
+
 <div dir="rtl">
 
 # <img src="share/icons/application/scalable/apps/hisn.svg" width="40" height="40" align="right"/> حِصن — Hisn
