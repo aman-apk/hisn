@@ -67,12 +67,12 @@ object KdbxReader {
 
     /** Parses signatures, version and outer header without touching the encrypted payload. */
     fun readHeaderOnly(bytes: ByteArray): KdbxHeader {
-        if (bytes.size < 12) throw KdbxException("File is too small to be a KeePass database")
+        if (bytes.size < 12) throw KdbxException("File is too small to be a KDBX database")
 
         val signature1 = bytes.u32(0)
         val signature2 = bytes.u32(4)
         if (signature1 != Kdbx.SIGNATURE_1 || signature2 != Kdbx.SIGNATURE_2) {
-            throw KdbxException("Not a KeePass database file (bad file signature)")
+            throw KdbxException("Not a KDBX database file (bad file signature)")
         }
 
         val version = bytes.u32(8)
@@ -84,7 +84,7 @@ object KdbxReader {
         }
         if (critical < FILE_VERSION_2) {
             throw KdbxException(
-                "Database format version ${versionName(version)} is too old; open it once with KeePassXC to upgrade it"
+                "Database format version ${versionName(version)} is too old; open it once with Hisn on your computer to upgrade it"
             )
         }
         // KDBX 2.x shares the KDBX 3 layout apart from the in-XML header hash, so it reads the same way.
@@ -374,7 +374,7 @@ object KdbxReader {
         if (data.size < 2) throw KdbxException("Variant map is too short")
         val version = data.u16(0) and Kdbx.VARIANTMAP_CRITICAL_MASK
         if (version > (Kdbx.VARIANTMAP_VERSION and Kdbx.VARIANTMAP_CRITICAL_MASK)) {
-            throw KdbxException("Unsupported KeePass variant map version 0x${version.toString(16)}")
+            throw KdbxException("Unsupported KDBX variant map version 0x${version.toString(16)}")
         }
 
         val map = LinkedHashMap<String, VariantValue>()
@@ -448,6 +448,10 @@ object KdbxReader {
             Kdbx.KDF_AES_KDBX4 -> {
                 params.kdfRounds = integerOf(map[Kdbx.KDF_PARAM_ROUNDS])
                     ?: throw KdbxException("AES-KDF parameters do not carry a round count")
+                // A negative Long is a UInt64 above Long.MAX_VALUE — over the ceiling either way.
+                if (params.kdfRounds < 0 || params.kdfRounds > Kdbx.AES_KDF_MAX_ROUNDS) {
+                    throw KdbxException(Kdbx.KDF_LIMIT_MESSAGE)
+                }
             }
 
             Kdbx.KDF_ARGON2D, Kdbx.KDF_ARGON2ID -> {
@@ -459,6 +463,12 @@ object KdbxReader {
                     ?: throw KdbxException("Argon2 parameters do not carry a parallelism degree")
                 params.kdfVersion = integerOf(map[Kdbx.KDF_PARAM_VERSION])?.toInt()
                     ?: throw KdbxException("Argon2 parameters do not carry a version")
+                // Rejected at the header, before the KDF gets a chance to attempt them.
+                if (params.kdfRounds < 0 || params.kdfRounds > Kdbx.ARGON2_MAX_ITERATIONS ||
+                    params.kdfMemory < 0 || params.kdfMemory > Kdbx.ARGON2_MAX_MEMORY
+                ) {
+                    throw KdbxException(Kdbx.KDF_LIMIT_MESSAGE)
+                }
             }
 
             else -> throw KdbxException("Unsupported key derivation function $kdfUuid")

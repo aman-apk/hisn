@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.PathFillType
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -26,15 +27,23 @@ import org.hisn.app.ui.theme.CopperDeep
 import org.hisn.app.ui.theme.HisnTheme
 
 /**
- * The Hisn mark: a copper shield whose top edge is castle crenellations, with a keyhole cut
- * out of the body. Drawn from the same geometry as the desktop icon (a 256×256 artboard) so
- * the two stay identical without shipping a drawable.
+ * علامة حصن — «برج المفتاح» (تعديل المالك 2026-08-14): برجٌ مشرّف على قاعدة،
+ * وفتحته مدخلُ مفتاحٍ مُصغّر. الهندسة نفسها المعتمدة في أيقونة المشغّل (108)
+ * مرفوعةً إلى لوحة 256 — فتبقى العلامتان توأمين بلا drawable إضافي.
  */
 private const val ART = 256f
 
-/** Circle of the keyhole: chord (115,138)→(141,138) with r=26 taking the long way over the top. */
-private val KEYHOLE_CENTER = Offset(128f, 115.483f)
-private const val KEYHOLE_RADIUS = 26f
+/** دائرة مدخل المفتاح: المركز والقطر من هندسة المشغّل ×(256/108). */
+private val KEYHOLE_CENTER = Offset(128f, 118.5f)
+private const val KEYHOLE_RADIUS = 11.85f
+
+// ألوان الهوية المعتمدة — مقفلة، لا تتبع الثيم: هي عين ألوان أيقونة المشغّل.
+private val SkyLight = Color(0xFFE2A275)
+private val SkyMid = Color(0xFFC4764E)
+private val SkyDeep = Color(0xFF8F4E2E)
+private val IvoryMass = Color(0xFFFDF3D8)
+private val LitMerlon = Color(0xFFE5A98A)
+private val DawnWash = Color(0xFFFFF6E0)
 
 @Composable
 fun ShieldLogo(
@@ -42,14 +51,9 @@ fun ShieldLogo(
     withPlate: Boolean = true,
     contentDescription: String? = null,
 ) {
-    val palette = HisnTheme.palette
     val shieldPath = remember { buildShieldPath() }
     val merlonPath = remember { buildMerlonPath() }
-    val shieldBrush = Brush.verticalGradient(
-        colors = listOf(palette.shield, CopperDeep),
-        startY = 48f,
-        endY = 216f,
-    )
+    val threadPath = remember { buildThreadPath() }
 
     val description = contentDescription
     Canvas(
@@ -66,62 +70,106 @@ fun ShieldLogo(
         val scale = size.minDimension / ART
         withTransform({ scale(scale, scale, pivot = Offset.Zero) }) {
             if (withPlate) {
-                drawRoundRect(
-                    color = palette.plate,
-                    size = Size(ART, ART),
-                    cornerRadius = CornerRadius(56f, 56f),
-                )
+                // توحيد الهوية (2026-08-14 بأمر المالك): الشعار الداخلي هو أيقونة المشغّل
+                // ذاتها — سماء النحاس بغسلة الفجر المنشورة ونجمتاها، لا بلاطة ليل ببرج نحاسي.
+                val tile = androidx.compose.ui.graphics.Path().apply {
+                    addRoundRect(
+                        androidx.compose.ui.geometry.RoundRect(
+                            0f, 0f, ART, ART, CornerRadius(56f, 56f),
+                        )
+                    )
+                }
+                clipPath(tile) {
+                    drawRect(
+                        brush = Brush.linearGradient(
+                            colors = listOf(SkyLight, SkyMid, SkyDeep),
+                            start = Offset(47.4f, 0f),
+                            end = Offset(208.6f, 256f),
+                        ),
+                        size = Size(ART, ART),
+                    )
+                    // غسلة الفجر المنشورة — نق 115×(256/108)=272، ذروة .30 وتلاشٍ رباعي.
+                    drawRect(
+                        brush = Brush.radialGradient(
+                            colorStops = arrayOf(
+                                0f to DawnWash.copy(alpha = 0.30f),
+                                0.45f to DawnWash.copy(alpha = 0.14f),
+                                0.85f to DawnWash.copy(alpha = 0.05f),
+                                1f to DawnWash.copy(alpha = 0f),
+                            ),
+                            center = Offset(71f, 47.4f),
+                            radius = 272f,
+                        ),
+                        size = Size(ART, ART),
+                    )
+                    drawCircle(Color.White.copy(alpha = 0.48f), radius = 2.6f, center = Offset(50f, 37.9f))
+                    drawCircle(Color.White.copy(alpha = 0.41f), radius = 2.1f, center = Offset(208.3f, 61.6f))
+                }
             }
-            drawPath(shieldPath, brush = shieldBrush)
-            // Lit rim: the same edge the desktop icon gets from its bevel.
+            drawPath(shieldPath, color = IvoryMass)
+            drawPath(merlonPath, color = LitMerlon)
+            // خيط الضوء على الشرفات — من مذهب صحوة الضوء المعتمد.
             drawPath(
-                shieldPath,
-                color = palette.shieldMerlon.copy(alpha = 0.35f),
-                style = Stroke(width = 3f),
+                threadPath,
+                color = Color(0xFFFFFDF2).copy(alpha = 0.75f),
+                style = Stroke(width = 2.85f),
             )
-            drawPath(merlonPath, color = palette.shieldMerlon)
         }
     }
 }
 
-/** Body plus keyhole in one even-odd path, so the keyhole is a true cut-out. */
+/** خيط الضوء: الحواف العليا للشرفات الثلاث (إحداثيات المشغّل ×2.370). */
+private fun buildThreadPath(): Path = Path().apply {
+    moveTo(97.2f, 64f); lineTo(113.8f, 64f)
+    moveTo(119.7f, 64f); lineTo(136.3f, 64f)
+    moveTo(142.2f, 64f); lineTo(158.8f, 64f)
+}
+
+/** جسد البرج وقاعدته ومدخل المفتاح في مسار even-odd واحد — فالمدخل قصٌّ حقيقي لا رسمٌ فوقه. */
 private fun buildShieldPath(): Path = Path().apply {
     fillType = PathFillType.EvenOdd
 
-    moveTo(56f, 48f)
-    lineTo(88f, 48f)
-    lineTo(88f, 76f)
-    lineTo(112f, 76f)
-    lineTo(112f, 48f)
-    lineTo(144f, 48f)
-    lineTo(144f, 76f)
-    lineTo(168f, 76f)
-    lineTo(168f, 48f)
-    lineTo(200f, 48f)
-    lineTo(200f, 140f)
-    // Two quadratics from the source artwork, written as the equivalent cubics.
-    cubicTo(200f, 172f, 176f, 197.333f, 128f, 216f)
-    cubicTo(80f, 197.333f, 56f, 172f, 56f, 140f)
+    // الشرفات الثلاث ثم الجدران — إحداثيات المشغّل (108) مضروبة في 2.370.
+    moveTo(97.2f, 61.6f)
+    lineTo(113.8f, 61.6f)
+    lineTo(113.8f, 77f)
+    lineTo(119.7f, 77f)
+    lineTo(119.7f, 61.6f)
+    lineTo(136.3f, 61.6f)
+    lineTo(136.3f, 77f)
+    lineTo(142.2f, 77f)
+    lineTo(142.2f, 61.6f)
+    lineTo(158.8f, 61.6f)
+    lineTo(158.8f, 180.1f)
+    lineTo(97.2f, 180.1f)
     close()
 
-    moveTo(115f, 138f)
+    // القاعدة.
+    moveTo(87.7f, 180.1f)
+    lineTo(168.3f, 180.1f)
+    lineTo(168.3f, 189.6f)
+    lineTo(87.7f, 189.6f)
+    close()
+
+    // مدخل المفتاح.
+    moveTo(123.2f, 128.7f)
     arcTo(
         rect = Rect(center = KEYHOLE_CENTER, radius = KEYHOLE_RADIUS),
-        startAngleDegrees = 120f,
-        sweepAngleDegrees = 300f,
+        startAngleDegrees = 115f,
+        sweepAngleDegrees = 310f,
         forceMoveTo = false,
     )
-    lineTo(147f, 182f)
-    lineTo(109f, 182f)
+    lineTo(136.3f, 149.3f)
+    lineTo(119.7f, 149.3f)
     close()
 }
 
-/** The centre merlon, picked out in pale brass. */
+/** الشرفة الوسطى وحدها مضاءة بالنحاس الشاحب — العلامة التي تُقرأ صغيرة. */
 private fun buildMerlonPath(): Path = Path().apply {
-    moveTo(112f, 48f)
-    lineTo(144f, 48f)
-    lineTo(144f, 76f)
-    lineTo(112f, 76f)
+    moveTo(119.7f, 61.6f)
+    lineTo(136.3f, 61.6f)
+    lineTo(136.3f, 77f)
+    lineTo(119.7f, 77f)
     close()
 }
 

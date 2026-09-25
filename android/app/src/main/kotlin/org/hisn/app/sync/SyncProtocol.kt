@@ -286,7 +286,7 @@ data class PairingPayload(
             if (version != SyncWire.VERSION) {
                 throw SyncProtocolException("This pairing code is for a different Hisn version (v$version)")
             }
-            val name = json.optString("n").trim().take(64).ifBlank { "KeePassXC" }
+            val name = json.optString("n").trim().take(64).ifBlank { "حصن على الحاسوب" }
             val host = json.optString("h").trim()
             if (host.isEmpty() || host.length > 255 || host.any { it.isWhitespace() }) {
                 throw SyncProtocolException("The pairing code does not contain a usable address")

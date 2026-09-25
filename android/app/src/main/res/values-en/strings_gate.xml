@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  English mirror of values/strings_gate.xml — key-for-key identical, except the keys marked
+  translatable="false" there (the language names, which stay in their own language everywhere).
+-->
+<resources>
+
+    <!-- ======================================================= welcome gate -->
+    <string name="gate_tagline">The password manager from the Aman family</string>
+
+    <string name="gate_principle_privacy">Your privacy first: no ads, no data collection, and no account asked of you.</string>
+    <string name="gate_principle_format">Your vault is a single encrypted file in the open KDBX standard — opened by Hisn on your computer: Windows and Linux.</string>
+    <string name="gate_principle_offline">No internet — except optional local sync between your own devices.</string>
+
+    <string name="gate_row_language">Language</string>
+    <string name="gate_row_appearance">Appearance</string>
+    <string name="gate_lang_system">Device language</string>
+    <string name="gate_theme_system">System</string>
+    <string name="gate_theme_light">Light</string>
+    <string name="gate_theme_dark">Dark</string>
+
+    <string name="gate_enter">Enter Hisn</string>
+
+    <!-- ==================================================== vault creation -->
+    <string name="action_create_vault">Create a new vault</string>
+    <string name="create_title">New vault</string>
+    <string name="create_intro">The vault is created as a single encrypted file on this device, in the same KDBX format Hisn opens on your computer: Windows and Linux.</string>
+    <string name="create_name_label">Vault name</string>
+    <string name="create_name_default">Hisn</string>
+    <string name="create_name_empty">Give the vault a name</string>
+    <string name="create_confirm_label">Confirm the password</string>
+    <string name="create_password_empty">Enter the master password</string>
+    <string name="create_mismatch">The passwords do not match</string>
+    <string name="create_password_note">The master password is the only key to your vault; if it is forgotten there is no way to recover it or to open the vault.</string>
+    <string name="create_button">Create the vault</string>
+    <string name="create_busy">Creating and encrypting the vault…</string>
+
+    <string name="create_error_encrypt">The new vault could not be encrypted</string>
+    <string name="create_error_store">The vault file could not be written to this device</string>
+    <string name="create_error_open">The vault was created but could not be opened</string>
+
+    <string name="unlock_no_database_message_gate">Create a new vault on this device, or open a .kdbx file copied from your computer.</string>
+
+    <string name="replace_vault_title">Replace the current vault</string>
+    <string name="replace_vault_message">The file you choose will take the place of the current vault on this device. The current vault is kept aside in a separate file inside the app\'s storage and is not deleted.</string>
+
+</resources>

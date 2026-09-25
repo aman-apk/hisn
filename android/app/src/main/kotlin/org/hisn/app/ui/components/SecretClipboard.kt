@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.hisn.app.data.ClipboardClearReceiver
 
 /**
  * Clipboard that forgets.
@@ -47,10 +48,18 @@ class SecretClipboard(
 
         clearJob?.cancel()
         if (clearAfterSeconds > 0) {
+            // Two layers: the coroutine wipes punctually while the process lives, and the
+            // alarm's manifest receiver wipes (approximately) on time even if Android kills
+            // the process first. Whichever fires second finds an already-empty clipboard.
+            ClipboardClearReceiver.schedule(context, clearAfterSeconds * 1000L)
             clearJob = scope.launch {
                 delay(clearAfterSeconds * 1000L)
                 clearIfStillOurs(value)
+                ClipboardClearReceiver.cancel(context)
             }
+        } else {
+            // A copy without a timeout supersedes the previous secret, so its alarm goes too.
+            ClipboardClearReceiver.cancel(context)
         }
         return true
     }
@@ -59,6 +68,7 @@ class SecretClipboard(
     fun clearNow() {
         clearJob?.cancel()
         clearJob = null
+        ClipboardClearReceiver.cancel(context)
         val clipboard = manager ?: return
         wipe(clipboard)
     }

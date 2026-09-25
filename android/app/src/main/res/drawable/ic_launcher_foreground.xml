@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Foreground layer of the adaptive icon: a copper shield whose top edge is castle merlons,
-  with a keyhole cut clean through it.
-
-  The whole drawing sits inside a circle of radius 33 around the canvas centre (54,54) — the
-  adaptive-icon safe zone — so no mask, however aggressive, clips a merlon or the shield tip.
-  The keyhole is a subpath of the shield with evenOdd filling, which makes it a real hole: the
-  dark background layer shows through instead of a painted-on shape.
+  «برج المفتاح» (2026-08-14، تعديل المالك على الدمج): عودةٌ إلى البرج الصريح —
+  برجٌ مشرّف على قاعدة، وفتحتُه مدخلُ مفتاحٍ مُصغّر مقصوصٌ من قلبه قصًّا حقيقيًا
+  (evenOdd والقاطع كله داخل الكتلة)، والشرفة الوسطى وحدها مضاءة بالنحاس الفاتح.
+  الكتلة عاجية #FDF3D8 على سماء النحاس، مجموعة تكبير 0.98 بمحور (54,54)،
+  والنجمتان خارجها. أقصى نصف قطر للحدود ≈31 — داخل دائرة الأمان 33 بهامش.
 -->
+<!-- «صحوة الضوء» (2026-08-14): خيط ضوءٍ على الشرفات ونجيمات أسطع وفق المذهب المعتمد. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-
-    <path
-        android:fillColor="#C97F48"
-        android:fillType="evenOdd"
-        android:pathData="M32,32 L42,32 L42,38.5 L49,38.5 L49,32 L59,32 L59,38.5 L66,38.5 L66,32 L76,32 L76,58 C76,70 67,76.5 54,82 C41,76.5 32,70 32,58 Z M54,47 C50.7,47 48,49.7 48,53 C48,55.1 49.1,57 50.8,58 L49.2,69 L58.8,69 L57.2,58 C58.9,57 60,55.1 60,53 C60,49.7 57.3,47 54,47 Z" />
-
-    <!-- Centre merlon, lit in pale brass — the one detail that reads at launcher size. -->
-    <path
-        android:fillColor="#F3DCA8"
-        android:pathData="M49,32 L59,32 L59,38.5 L49,38.5 Z" />
+    <group android:pivotX="54" android:pivotY="54" android:scaleX="0.98" android:scaleY="0.98">
+        <path
+            android:fillColor="#FDF3D8"
+            android:fillType="evenOdd"
+            android:pathData="M41,26 L48,26 L48,32.5 L50.5,32.5 L50.5,26 L57.5,26 L57.5,32.5 L60,32.5 L60,26 L67,26 L67,76 L41,76 Z M49,50 a5,5 0 1 0 10,0 a5,5 0 1 0 -10,0 Z M52,54.3 L56,54.3 L57.5,63 L50.5,63 Z" />
+        <path
+            android:fillColor="#FDF3D8"
+            android:pathData="M37,76 L71,76 L71,80 L37,80 Z" />
+        <path
+            android:fillColor="#E5A98A"
+            android:pathData="M50.5,26 L57.5,26 L57.5,32.5 L50.5,32.5 Z" />
+        <path
+            android:strokeColor="#FFFDF2"
+            android:strokeAlpha="0.75"
+            android:strokeWidth="1.2"
+            android:fillColor="@android:color/transparent"
+            android:pathData="M41,27 L48,27 M50.5,27 L57.5,27 M60,27 L67,27" />
+    </group>
+    <path android:fillColor="#7AFFFFFF" android:pathData="M20,16 a1.1,1.1 0 1 0 2.2,0 a1.1,1.1 0 1 0 -2.2,0" />
+    <path android:fillColor="#69FFFFFF" android:pathData="M87,26 a0.9,0.9 0 1 0 1.8,0 a0.9,0.9 0 1 0 -1.8,0" />
 </vector>

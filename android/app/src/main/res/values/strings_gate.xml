@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  نصوص بوابة الدخول وإنشاء الخزنة داخل التطبيق — في ملف مستقل عن strings.xml حتى تبقى
+  ملكية كل ملف واضحة. العربية هي الافتراض والمرجع عند اختلاف الصياغة؛ المرآة الإنجليزية
+  values-en/strings_gate.xml مطابقة له مفتاحًا بمفتاح.
+-->
+<resources>
+
+    <!-- ======================================================== بوابة الدخول -->
+    <string name="gate_tagline">مدير كلمات المرور من عائلة أمان</string>
+
+    <!-- مبادئ العائلة الثلاثة بصيغة حصن: كل جملة تقريرية قابلة للتحقق تقنيًا. -->
+    <string name="gate_principle_privacy">خصوصيتك أولًا: لا إعلانات، ولا جمع للبيانات، ولا حساب يُطلب منك.</string>
+    <string name="gate_principle_format">‏خزنتك ملفٌ مشفَّر واحد بمعيار KDBX المفتوح — يفتحه حصن على حاسوبك: ويندوز ولينكس.</string>
+    <string name="gate_principle_offline">لا إنترنت — إلا مزامنة محلية اختيارية بين أجهزتك أنت.</string>
+
+    <!-- صفَّا اللغة والمظهر؛ اسم كل لغة يبقى بلغته في كل الواجهات.
+         «فاتح/داكن» بالتذكير هنا وفاقًا لعنوان الصف «المظهر»، بخلاف «السمة» في الإعدادات. -->
+    <string name="gate_row_language">اللغة</string>
+    <string name="gate_row_appearance">المظهر</string>
+    <string name="gate_lang_system">لغة الجهاز</string>
+    <string name="gate_lang_ar" translatable="false">العربية</string>
+    <string name="gate_lang_en" translatable="false">English</string>
+    <string name="gate_theme_system">حسب النظام</string>
+    <string name="gate_theme_light">فاتح</string>
+    <string name="gate_theme_dark">داكن</string>
+
+    <string name="gate_enter">الدخول إلى حصن</string>
+
+    <!-- ==================================================== إنشاء خزنة جديدة -->
+    <string name="action_create_vault">إنشاء خزنة جديدة</string>
+    <string name="create_title">خزنة جديدة</string>
+    <string name="create_intro">‏تُنشأ الخزنة ملفًا مشفَّرًا واحدًا على هذا الجهاز، بصيغة KDBX نفسها التي يفتحها حصن على حاسوبك: ويندوز ولينكس.</string>
+    <string name="create_name_label">اسم الخزنة</string>
+    <string name="create_name_default">حصن</string>
+    <string name="create_name_empty">أعطِ الخزنة اسمًا</string>
+    <string name="create_confirm_label">تأكيد كلمة السرّ</string>
+    <string name="create_password_empty">أدخل كلمة السرّ الرئيسية</string>
+    <string name="create_mismatch">كلمتا السرّ غير متطابقتين</string>
+    <string name="create_password_note">كلمة السرّ الرئيسية هي مفتاح خزنتك الوحيد؛ إن نُسيت فلا سبيل إلى استرجاعها ولا إلى فتح الخزنة.</string>
+    <string name="create_button">إنشاء الخزنة</string>
+    <string name="create_busy">جارٍ إنشاء الخزنة وتشفيرها…</string>
+
+    <!-- رسائل فشل مرحلية مميّزة: كل رسالة تسمّي المرحلة التي أخفقت. -->
+    <string name="create_error_encrypt">تعذّر تشفير الخزنة الجديدة</string>
+    <string name="create_error_store">تعذّرت كتابة ملف الخزنة على الجهاز</string>
+    <string name="create_error_open">أُنشئت الخزنة لكن تعذّر فتحها</string>
+
+    <!-- الحالة الفارغة في شاشة فتح القفل بعد أن صار الإنشاء ممكنًا داخل التطبيق نفسه. -->
+    <string name="unlock_no_database_message_gate">أنشئ خزنةً جديدة على هذا الجهاز، أو افتح خزنةً منقولة من حاسوبك.</string>
+
+    <!-- تأكيد فتح قاعدة بيانات أخرى من شاشة القفل: الخزنة الحالية تُستبدل وتُحفظ جانبًا. -->
+    <string name="replace_vault_title">استبدال الخزنة الحالية</string>
+    <string name="replace_vault_message">سيحلّ الملف الذي تختاره محلّ الخزنة الحالية على هذا الجهاز. تُحفظ الخزنة الحالية جانبًا في ملفٍ منفصل داخل تخزين التطبيق ولا تُحذف.</string>
+
+</resources>

@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -61,9 +62,15 @@ import org.hisn.app.ui.theme.HisnTheme
 /**
  * The face of the app: the copper shield, the vault's name, and the one field that stands
  * between the user and their secrets.
+ *
+ * @param onCreateVault opens the in-app creation flow — the way out for the user who has no
+ *   .kdbx file anywhere and therefore nothing to import.
  */
 @Composable
-fun UnlockScreen(viewModel: VaultViewModel) {
+fun UnlockScreen(
+    viewModel: VaultViewModel,
+    onCreateVault: () -> Unit,
+) {
     val context = LocalContext.current
     val palette = HisnTheme.palette
     val keyboard = LocalSoftwareKeyboardController.current
@@ -77,6 +84,7 @@ fun UnlockScreen(viewModel: VaultViewModel) {
     var revealed by remember { mutableStateOf(false) }
     var keyFileUri by remember { mutableStateOf<Uri?>(null) }
     var keyFileName by remember { mutableStateOf<String?>(null) }
+    var confirmReplace by remember { mutableStateOf(false) }
 
     val pickDatabase = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocument()
@@ -132,13 +140,25 @@ fun UnlockScreen(viewModel: VaultViewModel) {
         Spacer(Modifier.height(28.dp))
 
         if (status.state == VaultState.NoDatabase) {
+            // Creation first, import second: the user with an existing file knows what to look
+            // for, the user without one must not be left staring at a file picker.
             EmptyState(
                 icon = HisnIcons.Import,
                 title = stringResource(R.string.unlock_no_database_title),
-                message = stringResource(R.string.unlock_no_database_message),
-                actionLabel = stringResource(R.string.action_open_database),
-                onAction = { pickDatabase.launch(LocalBackup.OPEN_MIME_TYPES) },
+                message = stringResource(R.string.unlock_no_database_message_gate),
+                actionLabel = stringResource(R.string.action_create_vault),
+                onAction = onCreateVault,
             )
+            TextButton(
+                onClick = { pickDatabase.launch(LocalBackup.OPEN_MIME_TYPES) },
+                enabled = !busy,
+            ) {
+                Text(
+                    text = stringResource(R.string.action_open_database),
+                    color = palette.muted,
+                    style = MaterialTheme.typography.labelLarge,
+                )
+            }
         } else {
             Text(
                 text = status.databaseName ?: stringResource(R.string.unlock_unnamed_database),
@@ -221,7 +241,9 @@ fun UnlockScreen(viewModel: VaultViewModel) {
 
             Spacer(Modifier.height(18.dp))
             TextButton(
-                onClick = { pickDatabase.launch(LocalBackup.OPEN_MIME_TYPES) },
+                // Opening another database replaces the current vault, and this screen is
+                // reachable without ever proving the vault's password — so confirm first.
+                onClick = { confirmReplace = true },
                 enabled = !busy,
             ) {
                 Text(
@@ -232,6 +254,29 @@ fun UnlockScreen(viewModel: VaultViewModel) {
             }
         }
         Spacer(Modifier.height(24.dp))
+    }
+
+    if (confirmReplace) {
+        AlertDialog(
+            onDismissRequest = { confirmReplace = false },
+            title = { Text(stringResource(R.string.replace_vault_title)) },
+            text = { Text(stringResource(R.string.replace_vault_message)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        confirmReplace = false
+                        pickDatabase.launch(LocalBackup.OPEN_MIME_TYPES)
+                    },
+                ) {
+                    Text(stringResource(R.string.action_continue))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { confirmReplace = false }) {
+                    Text(stringResource(R.string.action_cancel))
+                }
+            },
+        )
     }
 }
 

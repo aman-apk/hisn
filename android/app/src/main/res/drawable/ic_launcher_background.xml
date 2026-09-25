@@ -1,11 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Background layer of the adaptive icon: the brand's darkest warm neutral, edge to edge. -->
+<!--
+  سماء حصن — النحاسي الدمشقي المدّخر في سجل العائلة «لتطبيق خزائن ومفاتيح».
+  هندسة السماوات المقفلة: تدرج خطي userSpace من (20,0) إلى (88,108) بثلاث درجات.
+-->
+<!-- «صحوة الضوء» (2026-08-14): غسلة الفجر المنشورة (نق 115) تعمّ السماء كلها — لا بقعة زاوية (تعديل المالك 2026-08-14). -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <path
-        android:fillColor="#211711"
-        android:pathData="M0,0h108v108h-108z" />
+    <path android:pathData="M0,0h108v108h-108z">
+        <aapt:attr name="android:fillColor" xmlns:aapt="http://schemas.android.com/aapt">
+            <gradient
+                android:type="linear"
+                android:startX="20" android:startY="0"
+                android:endX="88" android:endY="108">
+                <item android:offset="0.0" android:color="#FFE2A275" />
+                <item android:offset="0.5" android:color="#FFC4764E" />
+                <item android:offset="1.0" android:color="#FF8F4E2E" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M0,0h108v108h-108z">
+        <aapt:attr name="android:fillColor" xmlns:aapt="http://schemas.android.com/aapt">
+            <gradient
+                android:type="radial"
+                android:centerX="30" android:centerY="20"
+                android:gradientRadius="115">
+                <item android:offset="0.0" android:color="#4DFFF6E0" />
+                <item android:offset="0.45" android:color="#24FFF6E0" />
+                <item android:offset="0.85" android:color="#0DFFF6E0" />
+                <item android:offset="1.0" android:color="#00FFF6E0" />
+            </gradient>
+        </aapt:attr>
+    </path>
 </vector>

@@ -563,7 +563,9 @@ private class XmlDatabaseWriter(
         xml.open("String")
         text("Key", key)
         if (protect) {
-            val cipherText = randomStream.process(sanitizeXmlText(value.value).toByteArray(Charsets.UTF_8))
+            // A protected value is secret material: silently dropping characters from it would
+            // corrupt the secret without a trace, so an unstorable character is a hard error.
+            val cipherText = randomStream.process(requireXmlStorable(value.value).toByteArray(Charsets.UTF_8))
             xml.leaf("Value", base64Encode(cipherText), listOf("Protected" to "True"))
         } else {
             text("Value", value.value)
@@ -655,6 +657,29 @@ private fun sanitizeXmlText(input: String): String {
         j++
     }
     return sb.toString()
+}
+
+/**
+ * Verifies a protected value carries only codepoints XML 1.0 can represent. Unlike
+ * [sanitizeXmlText] it never mutates: a password with a stray control character must fail
+ * loudly rather than be written back with characters silently removed.
+ */
+private fun requireXmlStorable(input: String): String {
+    var i = 0
+    while (i < input.length) {
+        val ch = input[i]
+        if (ch.isHighSurrogate() && i + 1 < input.length && input[i + 1].isLowSurrogate()) {
+            i += 2
+            continue
+        }
+        if (isInvalidXmlChar(ch)) {
+            throw KdbxException(
+                "A protected value contains a control character that cannot be stored in the database XML"
+            )
+        }
+        i++
+    }
+    return input
 }
 
 private fun isInvalidXmlChar(ch: Char): Boolean {

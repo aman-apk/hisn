@@ -24,6 +24,8 @@ import org.hisn.app.R
 import org.hisn.app.data.HisnSettings
 import org.hisn.app.data.Prefs
 import org.hisn.app.data.ThemeMode
+import org.hisn.app.data.VaultError
+import org.hisn.app.data.VaultException
 import org.hisn.app.data.VaultRepository
 import org.hisn.app.data.VaultState
 import org.hisn.app.data.VaultStatus
@@ -217,6 +219,31 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    /**
+     * Creates a fresh database on the device and leaves it open. Failures name the stage that
+     * broke — encrypting, storing, or opening — because "creation failed" tells the user
+     * nothing about whether their file is at risk.
+     */
+    fun createVault(name: String, password: String, onCreated: () -> Unit) {
+        viewModelScope.launch {
+            _busy.value = true
+            val result = repo.createNew(name, password)
+            _busy.value = false
+            result.onSuccess {
+                _unlockError.value = null
+                bump()
+                onCreated()
+            }.onFailure {
+                val message = when ((it as? VaultException)?.error) {
+                    VaultError.SaveFailed -> R.string.create_error_encrypt
+                    VaultError.Io -> R.string.create_error_store
+                    else -> R.string.create_error_open
+                }
+                emit(UiEvent.Failure(message, it.message))
+            }
+        }
+    }
+
     fun unlock(password: String, keyFileUri: Uri?) {
         if (password.isEmpty() && keyFileUri == null) {
             _unlockError.value = UnlockError(R.string.error_credentials_empty, null)
@@ -333,6 +360,9 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
     fun onAppBackgrounded() {
         idleWatchJob?.cancel()
         idleWatchJob = null
+        // The repository's own watcher is the one that survives this ViewModel being
+        // destroyed while the app is hidden; the countdown below is only a second layer.
+        repo.armBackgroundLock()
         autoLockJob?.cancel()
         autoLockJob = viewModelScope.launch {
             val timeout = prefs.current().autoLockSeconds
@@ -347,7 +377,18 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
     fun onAppForegrounded() {
         autoLockJob?.cancel()
         autoLockJob = null
-        repo.noteActivity()
+        viewModelScope.launch {
+            // Enforce the deadline before touching the idle clock: noting activity first
+            // would hand a stale session a whole new timeout on every return to the app.
+            if (repo.lockIfIdle()) {
+                clipboard.clearNow()
+                _query.value = ""
+                _groupFilter.value = null
+                bump()
+            }
+            repo.noteActivity()
+            repo.disarmBackgroundLock()
+        }
         if (idleWatchJob?.isActive == true) return
         idleWatchJob = viewModelScope.launch {
             while (true) {
@@ -529,6 +570,17 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
     fun setClipboardClearSeconds(seconds: Int) = editSettings { prefs.setClipboardClearSeconds(seconds) }
 
     fun setThemeMode(mode: ThemeMode) = editSettings { prefs.setTheme(mode) }
+
+    /** "system", "ar" or "en" — persisted here, applied by MainActivity.attachBaseContext. */
+    fun setLanguage(tag: String) = editSettings { prefs.setLanguage(tag) }
+
+    // -- Welcome gate ---------------------------------------------------------------------
+
+    /** One-shot read for choosing the start destination before the nav graph exists. */
+    suspend fun hasOnboarded(): Boolean = prefs.isOnboarded()
+
+    /** The gate is shown exactly once; passing it is recorded the moment the user enters. */
+    fun completeOnboarding() = editSettings { prefs.setOnboarded() }
 
     fun setLockOnScreenOff(enabled: Boolean) = editSettings { prefs.setLockOnScreenOff(enabled) }
 

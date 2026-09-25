@@ -13,3 +13,6 @@ local.properties
 # IDE
 .idea/
 *.iml
+
+# مفتاح التوقيع وكلمات سره — لا يدخلان أي مستودع أبدًا
+keystore/

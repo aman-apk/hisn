@@ -32,6 +32,17 @@
       in the same change that adds a scanner, not before.
     -->
 
+    <!--
+      android.permission.POST_NOTIFICATIONS is deliberately absent too.
+
+      The only notification Hisn ever posts is the Aman family's monthly support reminder
+      (support/SupportReminder.kt), and a donation reminder is no reason to ask for a runtime
+      permission — Jezdan's precedent, kept family-wide. Where the platform needs no permission
+      (API 26–32) it fires on its silent, low-importance channel; on Android 13+ the missing
+      permission keeps it quiet for good: areNotificationsEnabled() reports false and nothing
+      is posted. The system's notification settings remain the user's own off-switch.
+    -->
+
     <!-- Sync is optional, so a device with no Wi-Fi radio is still fully usable. -->
     <uses-feature
         android:name="android.hardware.wifi"
@@ -156,6 +167,33 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <!--
+          Dismisses the current support reminder on «لاحقًا». Not exported: it is only ever
+          reached through the explicit PendingIntent the notification itself carries, and it
+          adds no uses-permission. The reminder follows family standards §5: monthly — the
+          first 30 days after first use, then one every 30 days, anchored to the last one
+          actually shown (support/SupportReminder.kt).
+        -->
+        <receiver
+            android:name=".support.SupportReminderReceiver"
+            android:exported="false" />
+
+        <!--
+          Clipboard safety net: wipes the primary clip when the copy timeout arrives after
+          Android has killed the process — the in-process timer cancels the alarm when it wins.
+          Not exported, reached only through the app's own PendingIntent, and it adds no
+          uses-permission: the alarm is an inexact setWindow, which needs no SCHEDULE_EXACT_ALARM.
+        -->
+        <receiver
+            android:name=".data.ClipboardClearReceiver"
+            android:exported="false" />
+        <!-- عقد «باكأب أمان»: قاعدة kdbx (المشفّرة بكلمتها الرئيسية) تُضم للنسخة الموحّدة — بقرار المالك. -->
+        <provider
+            android:name=".backup.FamilyBackupProvider"
+            android:authorities="org.amanlabs.hisn.backup"
+            android:exported="true" />
+
     </application>
 
 </manifest>

@@ -172,14 +172,15 @@ object HisnTheme {
 }
 
 /**
- * @param layoutDirection Hisn is Arabic-first, so the whole tree lays out right-to-left by
- *   default regardless of the device locale; every composable uses start/end so the English
- *   fallback strings still read correctly when this is flipped.
+ * @param layoutDirection Follows the resolved locale by default — Arabic devices lay out
+ *   right-to-left, English ones left-to-right. Hisn is Arabic-first in its copy, not in its
+ *   geometry: every composable uses start/end, so forcing RTL under an English locale would
+ *   only mirror the UI against the language on screen. Overridable for previews.
  */
 @Composable
 fun HisnTheme(
     themeMode: ThemeMode = ThemeMode.System,
-    layoutDirection: LayoutDirection = LayoutDirection.Rtl,
+    layoutDirection: LayoutDirection = LocalLayoutDirection.current,
     content: @Composable () -> Unit,
 ) {
     val dark = when (themeMode) {

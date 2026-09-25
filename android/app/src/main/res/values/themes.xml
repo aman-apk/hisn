@@ -4,8 +4,11 @@
   paints is what the user sees between tapping the icon and the first composition. Everything
   after that is styled by HisnTheme in ui/theme/Theme.kt.
 
-  The status bar is the brand's darkest neutral in both light and dark mode — a copper shield on
-  a dark bar is the app's signature, and flipping it to a light bar in day mode would lose it.
+  The bars are transparent and follow the theme — the family way (enableEdgeToEdge in
+  MainActivity owns them from the first composition on). A fixed dark bar here used to pair
+  with dark icons from MainActivity in light mode on Android <15: invisible icons. The
+  window background is the family's warm paper (#FBF8F2), matching Compose's light ground
+  so there is no colour jump at startup.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
@@ -22,12 +25,13 @@
         <item name="colorSurface">@color/hisn_surface_light</item>
         <item name="colorOnSurface">@color/hisn_on_light</item>
 
-        <item name="android:windowBackground">@color/hisn_bg_light</item>
-        <item name="android:statusBarColor">@color/hisn_bg_dark</item>
-        <item name="android:navigationBarColor">@color/hisn_bg_dark</item>
-        <!-- Dark bars, so their icons must stay light. -->
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <!-- Family warm paper, literal so the first frame cannot drift from Compose. -->
+        <item name="android:windowBackground">#FBF8F2</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <!-- Light ground behind transparent bars, so their icons must be dark. -->
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
 
         <item name="android:textColorPrimary">@color/hisn_on_light</item>
         <item name="android:textColorSecondary">@color/hisn_muted</item>

@@ -2,16 +2,27 @@
 
 <div dir="rtl">
 
-**حصن** مدير كلمات سرّ يعمل دون اتصال، عربيُّ الواجهة أوّلًا. يقرأ صيغة **KDBX** ويكتبها، فالملف
-نفسه يُفتح في KeePassXC على الحاسوب دون تحويل. لا حساب، ولا خادم، ولا تتبّع: كل شيء يبقى في
-ملفٍ واحد على جهازك، والمزامنة — إن أردتها — تجري مباشرة بين جهازين على الشبكة المحلية نفسها.
+**حصن** مدير كلمات سرّ يعمل دون اتصال، عربيُّ الواجهة أوّلًا — وهو التطبيق نفسه على منصّاته
+الثلاث: أندرويد، وويندوز، ولينكس. يقرأ صيغة **KDBX** المفتوحة ويكتبها، فالملف نفسه يفتحه حصن
+على حاسوبك دون تحويل. لا حساب، ولا خادم، ولا تتبّع: كل شيء يبقى في ملفٍ واحد على جهازك،
+والمزامنة — إن أردتها — تجري مباشرة بين جهازين على الشبكة المحلية نفسها.
 
 </div>
 
-**Hisn** is an Arabic-first, offline password manager for Android. It reads and writes the
-**KDBX** format, so the same file opens in KeePassXC on the desktop. No account, no server, no
-telemetry: the vault is one file on your device, and the optional sync runs directly between two
-devices on the same local network.
+**Hisn** is an Arabic-first, offline password manager — the same product on all three of its
+platforms: Android, Windows and Linux. It reads and writes the open **KDBX** format, so the same
+file opens in Hisn on the desktop. No account, no server, no telemetry: the vault is one file on
+your device, and the optional sync runs directly between two devices on the same local network.
+
+<div dir="rtl">
+
+**معرّف التطبيق:** ‏`org.amanlabs.hisn`‏ — هوية عائلة أمان الموحّدة (نسخة التصحيح تحمل اللاحقة
+`.debug`). أسماء الحزم في الشيفرة تبقى `org.hisn.app`؛ فالـnamespace شأن داخلي لا يراه المستخدم.
+
+</div>
+
+**Application id:** `org.amanlabs.hisn` — the unified Aman-family identity (the debug build
+carries a `.debug` suffix). Source packages remain `org.hisn.app`; the namespace is internal.
 
 ---
 
@@ -40,10 +51,10 @@ devices on the same local network.
 `local.properties` must point at the SDK. It is already written for this machine:
 
 ```properties
-sdk.dir=/home/professor/Android/Sdk
+sdk.dir=<your Android SDK path>
 ```
 
-`gradle.properties` pins the build JVM with `org.gradle.java.home`. Change that line if your JDK 17
+JAVA_HOME must point to a JDK 17 (gradle.properties no longer pins a machine-specific path).
 lives somewhere else — Gradle 9 and AGP 8.13 both refuse to run on anything older than 17.
 
 ---
@@ -63,22 +74,28 @@ From inside the `android/` directory:
 ./gradlew :app:assembleDebug
 # ← app/build/outputs/apk/debug/app-debug.apk
 
-# نسخة الإصدار (موقّعة بمفتاح التصحيح، بلا تصغير) · release build
+# نسخة الإصدار (موقّعة بمفتاح الإصدار الحقيقي، بلا تصغير) · release build
 ./gradlew :app:assembleRelease
 # ← app/build/outputs/apk/release/app-release.apk
 ```
 
 <div dir="rtl">
 
-نسخة الإصدار موقَّعة بمفتاح التصحيح (`~/.android/debug.keystore`) والتصغير معطّل فيها، حتى تبقى
-قابلة للتثبيت والتصحيح مباشرة. قبل أي نشر عام، استبدل `signingConfigs` في
-`app/build.gradle.kts` بمفتاح حقيقي.
+نسخة الإصدار موقَّعة بمفتاح العائلة الحقيقي: يقرأ البناء `keystore/keystore.properties` ويوقّع
+بالمخزن `keystore/hisn.p12` (‏PKCS12، الاسم المستعار `hisn`‏). وإن غاب ملف الخصائص فَشِل بناء
+الإصدار برسالة صريحة — لا يُوقَّع الإصدار بمفتاح التصحيح أبدًا. مجلد `keystore/` لا يدخل أي
+مستودع، وفقدانه يعني تعذّر تحديث التطبيق لمن ثبّته؛ راجع ملف التحذير داخله. التصغير يبقى معطّلًا
+عمدًا حتى يبقى أثر التعقّب مقروءًا.
 
 </div>
 
-The release variant is signed with the debug key (`~/.android/debug.keystore`) and R8 is off, so
-the artifact stays installable and readable in a stack trace. Replace the `signingConfigs` block in
-`app/build.gradle.kts` with a real keystore before publishing anywhere.
+The release variant is signed with the real family key: the build reads
+`keystore/keystore.properties` and signs with `keystore/hisn.p12` (PKCS12, alias `hisn`). If the
+properties file is missing, the release build fails with an explicit error — a release is never
+silently signed with the debug key. The `keystore/` folder must never enter a repository, and
+losing it means installed copies can no longer be updated; see the warning file inside it. R8
+stays off on purpose so stack traces remain readable. The debug variant keeps the ordinary debug
+keystore (`~/.android/debug.keystore`).
 
 ### التثبيت · Installing
 
@@ -134,6 +151,7 @@ android/                        ← المشروع كاملًا · the entire An
 ├── gradle/libs.versions.toml   كتالوج الإصدارات · version catalogue
 ├── gradlew · gradlew.bat       غلاف Gradle · Gradle wrapper
 ├── local.properties            مسار SDK (خاص بالجهاز، غير متعقَّب) · SDK path (machine-local, untracked)
+├── keystore/                   مفتاح توقيع الإصدار وخصائصه — لا يدخل أي مستودع · release signing key + properties, never committed
 ├── SYNC-PROTOCOL.md            مواصفة بروتوكول المزامنة · the sync wire spec
 ├── README.md                   هذا الملف · this file
 └── app/
@@ -181,7 +199,10 @@ Sources live in `src/main/kotlin`, not `src/main/java`; the source set is config
 - النسخ الاحتياطي معطّل (`allowBackup="false"`)، وقواعد `data_extraction_rules.xml` تمنع رفع
   الخزنة إلى نسخة سحابية أو نقلها في أثناء إعداد جهاز جديد.
 - إذن الإنترنت مطلوب للمزامنة المحلية فقط: مقبس مباشر بين جهازين على الشبكة نفسها، لا خادم وسيط.
-- إذن الكاميرا يُستعمل حصرًا لقراءة رمز الإقران؛ لا تُحفظ صورة ولا تُرسَل.
+- لا إذن للكاميرا أصلًا: الإقران يجري بكتابة رمز قصير يظهر على الجهاز الآخر — لا مسح لرمز QR،
+  ولا صلاحية تصوير من الأساس.
+- قائمة الأذونات محروسة في البناء نفسه: مهمة Gradle تفحص المانيفست المدموج وتُفشل البناء إن ظهر
+  أي إذن خارج الأربعة المعلنة (الإنترنت، حالة الشبكة، القياسات الحيوية، والبصمة لواجهات ‏26–27).
 
 </div>
 
@@ -189,7 +210,11 @@ Sources live in `src/main/kotlin`, not `src/main/java`; the source set is config
   and device-to-device transfer, so the vault cannot leave the device through the system.
 - The INTERNET permission exists only for local-network sync — a direct socket between two devices
   on the same Wi-Fi, with no intermediary.
-- The camera is used only to read the pairing QR code. No frame is stored or transmitted.
+- There is no camera permission at all: pairing is done by typing a short code shown on the other
+  device — no QR scanning, and no capture capability in the first place.
+- The permission list is enforced by the build itself: a Gradle guard task inspects the merged
+  manifest and fails the build if anything outside the four declared permissions (INTERNET,
+  ACCESS_NETWORK_STATE, USE_BIOMETRIC, and USE_FINGERPRINT for API 26–27) appears.
 
 ---
 

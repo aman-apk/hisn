@@ -229,6 +229,7 @@ object Crypto {
         if (seed.size != 32) throw KdbxException("AES-KDF seed must be 32 bytes, got ${seed.size}")
         if (key.size != 32) throw KdbxException("AES-KDF input key must be 32 bytes, got ${key.size}")
         if (rounds <= 0) throw KdbxException("AES-KDF round count must be positive, got $rounds")
+        if (rounds > Kdbx.AES_KDF_MAX_ROUNDS) throw KdbxException(Kdbx.KDF_LIMIT_MESSAGE)
         val cipher = Cipher.getInstance("AES/ECB/NoPadding")
         cipher.init(Cipher.ENCRYPT_MODE, SecretKeySpec(seed, "AES"))
         val buffer = key.copyOf()
@@ -262,6 +263,11 @@ object Crypto {
         }
         if (iterations < 1 || iterations > Int.MAX_VALUE) {
             throw KdbxException("Argon2 iteration count out of range: $iterations")
+        }
+        // A file's parameters, not the app's: past these ceilings the derivation cannot finish
+        // on a phone, so the file is treated as hostile rather than attempted.
+        if (memoryBytes > Kdbx.ARGON2_MAX_MEMORY || iterations > Kdbx.ARGON2_MAX_ITERATIONS) {
+            throw KdbxException(Kdbx.KDF_LIMIT_MESSAGE)
         }
         if (parallelism < 1 || parallelism > 0xFFFFFF) {
             throw KdbxException("Argon2 parallelism out of range: $parallelism")

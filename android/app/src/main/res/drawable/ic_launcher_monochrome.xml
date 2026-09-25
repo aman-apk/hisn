@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  Themed-icon layer (Android 13+). The launcher tints this silhouette with the user's wallpaper
-  colours, so it must be one flat shape: same shield, same keyhole, no brass highlight.
--->
+<!-- الأحادية: الصورة الظلية البيضاء لبرج المفتاح وقاعدته — لا سماء ولا نجوم ولا شرفة مضاءة. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
-    android:viewportHeight="108">
-    <path
-        android:fillColor="#FFFFFF"
-        android:fillType="evenOdd"
-        android:pathData="M32,32 L42,32 L42,38.5 L49,38.5 L49,32 L59,32 L59,38.5 L66,38.5 L66,32 L76,32 L76,58 C76,70 67,76.5 54,82 C41,76.5 32,70 32,58 Z M54,47 C50.7,47 48,49.7 48,53 C48,55.1 49.1,57 50.8,58 L49.2,69 L58.8,69 L57.2,58 C58.9,57 60,55.1 60,53 C60,49.7 57.3,47 54,47 Z" />
+    android:viewportHeight="108"
+    android:tint="#000000">
+    <group android:pivotX="54" android:pivotY="54" android:scaleX="0.98" android:scaleY="0.98">
+        <path
+            android:fillColor="#FFFFFF"
+            android:fillType="evenOdd"
+            android:pathData="M41,26 L48,26 L48,32.5 L50.5,32.5 L50.5,26 L57.5,26 L57.5,32.5 L60,32.5 L60,26 L67,26 L67,76 L41,76 Z M49,50 a5,5 0 1 0 10,0 a5,5 0 1 0 -10,0 Z M52,54.3 L56,54.3 L57.5,63 L50.5,63 Z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M37,76 L71,76 L71,80 L37,80 Z" />
+    </group>
 </vector>

@@ -93,6 +93,19 @@ object Kdbx {
     const val ARGON2_DEFAULT_PARALLELISM = 2
     const val ARGON2_DEFAULT_ITERATIONS = 10L
     const val ARGON2_VERSION_13 = 0x13
+
+    /**
+     * Hard ceilings for KDF parameters read from a file. A database file is untrusted input:
+     * hostile parameters would otherwise make the phone attempt an allocation or a computation
+     * it cannot finish, which is a denial of service dressed up as a KeePass file. The limits
+     * are far above anything a real benchmark produces on any current device.
+     */
+    const val ARGON2_MAX_MEMORY = 1024L * 1024 * 1024 // 1 GiB
+    const val ARGON2_MAX_ITERATIONS = 10_000_000L
+    const val AES_KDF_MAX_ROUNDS = 100_000_000L
+
+    /** رسالة المستخدم عند تجاوز الحدود؛ هذه الطبقة لا تملك موارد نصوص فتُخزَّن الرسالة هنا. */
+    const val KDF_LIMIT_MESSAGE = "إعدادات اشتقاق المفتاح في هذا الملف تتجاوز ما يستطيع هذا الجهاز حسابه."
 }
 
 /**

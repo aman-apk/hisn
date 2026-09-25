@@ -156,7 +156,9 @@ class SyncClient(context: Context, private val repo: VaultRepository) {
                     try {
                         exchange(session, localBytes)
                     } catch (e: Throwable) {
-                        session.sendError(e.message ?: "sync failed on the phone")
+                        // The peer only needs to know the sync failed; the detail can quote
+                        // vault internals, so it stays on this device.
+                        session.sendError("sync failed on the phone")
                         throw e
                     } finally {
                         session.close()
@@ -333,7 +335,7 @@ class SyncClient(context: Context, private val repo: VaultRepository) {
                 val port = json.optInt("port", -1)
                 if (fingerprint.isBlank() || secret.isBlank() || host.isBlank() || port !in 1..65535) return null
                 return StoredDevice(
-                    name = json.optString("name").ifBlank { "KeePassXC" },
+                    name = json.optString("name").ifBlank { "حصن على الحاسوب" },
                     host = host,
                     port = port,
                     fingerprint = fingerprint,

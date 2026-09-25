@@ -1,515 +1,499 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  English fallback. Arabic in values-ar/ is the product language and is the copy to trust when
-  the two ever disagree; this file exists so a device set to any other locale still gets a
-  complete UI.
-
-  Keep the two files key-for-key identical, including format arguments.
+  العربية — لغة التطبيق الافتراضية، وهذا الملف هو المرجع عند اختلاف الصياغة عن أي ترجمة.
+  يجب أن تبقى المرآة الإنجليزية values-en/strings.xml مطابقة له مفتاحًا بمفتاح، بما في ذلك
+  وسائط التنسيق — باستثناء النصوص المقفلة الموسومة translatable="false" فهي تبقى عربية
+  حرفيًا في كل اللغات، ولذلك لا تظهر في المرآة.
 -->
 <resources>
 
-    <!-- ============================================================ identity -->
-    <string name="app_name">Hisn</string>
-    <string name="app_tagline">Your passwords, on your device alone</string>
+    <!-- ============================================================== الهوية -->
+    <string name="app_name">حصن</string>
+    <string name="app_tagline">كلمات سرّك، على جهازك وحده</string>
 
-    <!-- ============================================================= actions -->
-    <string name="action_ok">OK</string>
-    <string name="action_cancel">Cancel</string>
-    <string name="action_save">Save</string>
-    <string name="action_delete">Delete</string>
-    <string name="action_edit">Edit</string>
-    <string name="action_close">Close</string>
-    <string name="action_back">Back</string>
-    <string name="action_next">Next</string>
-    <string name="action_done">Done</string>
-    <string name="action_retry">Try again</string>
-    <string name="action_dismiss">Dismiss</string>
-    <string name="action_copy">Copy</string>
-    <string name="action_share">Share</string>
-    <string name="action_rename">Rename</string>
-    <string name="action_add">Add</string>
-    <string name="action_remove">Remove</string>
-    <string name="action_confirm">Confirm</string>
-    <string name="action_continue">Continue</string>
-    <string name="action_more">More</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_search">Search</string>
-    <string name="action_clear_search">Clear search</string>
-    <string name="action_sort">Sort</string>
-    <string name="action_filter">Filter</string>
-    <string name="action_undo">Undo</string>
-    <string name="action_select_all">Select all</string>
+    <!-- ================================================ نصوص العائلة المقفلة -->
+    <!-- عقيدة العائلة (2026-08): الخصوصية أولًا. نصوص معتمدة حرفيًا فلا تُعدَّل هنا؛
+         لسطر العائلة مرآة إنجليزية معتمدة، وسطرا اللاربحية والدعم يبقيان عربيين في كل اللغات. -->
+    <string name="about_family_line">من عائلة أمان — خصوصيتك أولًا: لا إعلانات، ولا جمع للبيانات.</string>
+    <string name="about_nonprofit_line" translatable="false">مشروعٌ مستقل لا يقصد الربح؛ يُصنع بعناية، ويستمر بأهله.</string>
+    <string name="support_primary" translatable="false">حصن مجانيٌّ كاملٌ للجميع، ودعمك الاختياري يُبقيه كذلك.</string>
 
-    <string name="action_reveal_password">Show password</string>
-    <string name="action_hide_password">Hide password</string>
-    <string name="action_copy_username">Copy username</string>
-    <string name="action_copy_password">Copy password</string>
-    <string name="action_copy_url">Copy address</string>
-    <string name="action_copy_totp">Copy code</string>
-    <string name="action_open_url">Open address</string>
-    <string name="action_show_totp">Show one-time code</string>
-    <string name="action_entry_menu">Entry options</string>
+    <!-- ============================================================= إجراءات -->
+    <string name="action_ok">حسنًا</string>
+    <string name="action_cancel">إلغاء</string>
+    <string name="action_save">حفظ</string>
+    <string name="action_delete">حذف</string>
+    <string name="action_edit">تعديل</string>
+    <string name="action_close">إغلاق</string>
+    <string name="action_back">رجوع</string>
+    <string name="action_next">التالي</string>
+    <string name="action_done">تمّ</string>
+    <string name="action_retry">أعد المحاولة</string>
+    <string name="action_dismiss">تجاهل</string>
+    <string name="action_copy">نسخ</string>
+    <string name="action_share">مشاركة</string>
+    <string name="action_rename">إعادة تسمية</string>
+    <string name="action_add">إضافة</string>
+    <string name="action_remove">إزالة</string>
+    <string name="action_confirm">تأكيد</string>
+    <string name="action_continue">متابعة</string>
+    <string name="action_more">المزيد</string>
+    <string name="action_settings">الإعدادات</string>
+    <string name="action_search">بحث</string>
+    <string name="action_clear_search">مسح البحث</string>
+    <string name="action_sort">ترتيب</string>
+    <string name="action_filter">تصفية</string>
+    <string name="action_undo">تراجع</string>
+    <string name="action_select_all">تحديد الكل</string>
 
-    <string name="action_lock">Lock</string>
-    <string name="action_unlock">Unlock</string>
-    <string name="action_new_entry">New entry</string>
-    <string name="action_new_group">New group</string>
-    <string name="action_move">Move</string>
-    <string name="action_restore">Restore</string>
-    <string name="action_delete_permanently">Delete permanently</string>
-    <string name="action_empty_recycle_bin">Empty recycle bin</string>
-    <string name="action_generate">Generate</string>
-    <string name="action_regenerate">Generate again</string>
-    <string name="action_select_file">Choose a file</string>
-    <string name="action_create_database">Create a database</string>
-    <string name="action_open_database">Open a database</string>
-    <string name="action_change_password">Change master password</string>
-    <string name="action_export">Export</string>
-    <string name="action_import">Import</string>
-    <string name="action_sync_now">Sync now</string>
-    <string name="action_pair_device">Pair a device</string>
-    <string name="action_scan_qr">Scan the QR code</string>
-    <string name="action_show_qr">Show the QR code</string>
-    <string name="action_add_field">Add a field</string>
-    <string name="action_remove_field">Remove this field</string>
-    <string name="action_attach_file">Attach a file</string>
-    <string name="action_open_attachment">Open</string>
-    <string name="action_save_attachment">Save a copy</string>
-    <string name="action_grant_permission">Grant permission</string>
+    <string name="action_reveal_password">إظهار كلمة السرّ</string>
+    <string name="action_hide_password">إخفاء كلمة السرّ</string>
+    <string name="action_copy_username">نسخ اسم المستخدم</string>
+    <string name="action_copy_password">نسخ كلمة السرّ</string>
+    <string name="action_copy_url">نسخ العنوان</string>
+    <string name="action_copy_totp">نسخ الرمز</string>
+    <string name="action_open_url">فتح العنوان</string>
+    <string name="action_show_totp">عرض الرمز المؤقّت</string>
+    <string name="action_entry_menu">خيارات المُدخَل</string>
 
-    <!-- ============================================================== unlock -->
-    <string name="unlock_title">Unlock the vault</string>
-    <string name="unlock_subtitle">Enter the master password for %1$s</string>
-    <string name="unlock_password_label">Master password</string>
-    <string name="unlock_keyfile_label">Key file</string>
-    <string name="unlock_keyfile_none">No key file</string>
-    <string name="unlock_keyfile_choose">Choose a key file</string>
-    <string name="unlock_keyfile_clear">Remove the key file</string>
-    <string name="unlock_button">Unlock</string>
-    <string name="unlock_biometric_title">Unlock Hisn</string>
-    <string name="unlock_biometric_subtitle">Confirm your identity to open the vault</string>
-    <string name="unlock_biometric_negative">Use the password</string>
-    <string name="unlock_biometric_prompt">Unlock with fingerprint</string>
-    <string name="unlock_biometric_enrol">Set up fingerprint unlock</string>
-    <string name="unlock_biometric_failed">Fingerprint not recognised</string>
-    <string name="unlock_biometric_invalidated">The stored key is no longer valid because the device security settings changed. Enter your master password once to set it up again.</string>
-    <string name="unlock_wrong_credentials">Wrong password or key file</string>
-    <string name="unlock_remember_biometric">Unlock with fingerprint next time</string>
-    <string name="unlock_no_database">No database has been opened yet</string>
-    <string name="unlock_recent_databases">Recent databases</string>
-    <string name="unlock_opening">Opening the database…</string>
+    <string name="action_lock">قفل</string>
+    <string name="action_unlock">فتح القفل</string>
+    <string name="action_new_entry">مُدخَل جديد</string>
+    <string name="action_move">نقل</string>
+    <string name="action_restore">استعادة</string>
+    <string name="action_delete_permanently">حذف نهائي</string>
+    <string name="action_empty_recycle_bin">إفراغ سلّة المهملات</string>
+    <string name="action_generate">توليد</string>
+    <string name="action_regenerate">توليد من جديد</string>
+    <string name="action_select_file">اختيار ملف</string>
+    <string name="action_open_database">فتح قاعدة بيانات</string>
+    <string name="action_change_password">تغيير كلمة السرّ الرئيسية</string>
+    <string name="action_export">تصدير</string>
+    <string name="action_import">استيراد</string>
+    <string name="action_sync_now">مزامنة الآن</string>
+    <string name="action_pair_device">إقران جهاز</string>
+    <string name="action_add_field">إضافة حقل</string>
+    <string name="action_remove_field">إزالة هذا الحقل</string>
+    <string name="action_attach_file">إرفاق ملف</string>
+    <string name="action_open_attachment">فتح</string>
+    <string name="action_save_attachment">حفظ نسخة</string>
+    <string name="action_grant_permission">منح الإذن</string>
 
-    <!-- ============================================================ database -->
-    <string name="db_open_title">Open a database</string>
-    <string name="db_create_title">New database</string>
-    <string name="db_name_label">Database name</string>
-    <string name="db_name_hint">For example: Personal vault</string>
-    <string name="db_password_label">Master password</string>
-    <string name="db_password_confirm_label">Confirm the master password</string>
-    <string name="db_password_mismatch">The two passwords do not match</string>
-    <string name="db_password_empty">Set a master password first</string>
-    <string name="db_password_weak_warning">This password is easy to guess. A vault is only as strong as the password that guards it.</string>
-    <string name="db_location_label">Location</string>
-    <string name="db_format_label">Format</string>
-    <string name="db_cipher_label">Encryption</string>
-    <string name="db_kdf_label">Key derivation</string>
-    <string name="db_kdf_argon2d">Argon2d — recommended</string>
-    <string name="db_kdf_argon2id">Argon2id</string>
-    <string name="db_kdf_aes">AES-KDF — for old files</string>
-    <string name="db_created">Database created</string>
-    <string name="db_saving">Saving…</string>
-    <string name="db_saved">Saved</string>
-    <string name="db_save_failed">Could not save: %1$s</string>
-    <string name="db_locked">The vault is locked</string>
-    <string name="db_lock_now">Lock now</string>
-    <string name="db_unsaved_title">Unsaved changes</string>
-    <string name="db_unsaved_message">You have changes that have not been written to the file yet. Save them before locking?</string>
-    <string name="db_entry_count">Entries: %1$d</string>
+    <!-- ============================================================ فتح القفل -->
+    <string name="unlock_title">افتح الخزنة</string>
+    <string name="unlock_subtitle">أدخل كلمة السرّ الرئيسية لـ %1$s</string>
+    <string name="unlock_password_label">كلمة السرّ الرئيسية</string>
+    <string name="unlock_keyfile_label">ملف المفتاح</string>
+    <string name="unlock_keyfile_none">بلا ملف مفتاح</string>
+    <string name="unlock_keyfile_choose">اختر ملف مفتاح</string>
+    <string name="unlock_keyfile_clear">إزالة ملف المفتاح</string>
+    <string name="unlock_button">فتح</string>
+    <string name="unlock_biometric_title">فتح حصن</string>
+    <string name="unlock_biometric_subtitle">أكّد هويتك لفتح الخزنة</string>
+    <string name="unlock_biometric_negative">استخدم كلمة السرّ</string>
+    <string name="unlock_biometric_prompt">الفتح ببصمة الإصبع</string>
+    <string name="unlock_biometric_enrol">تفعيل الفتح بالبصمة</string>
+    <string name="unlock_biometric_failed">لم يتم التعرّف على البصمة</string>
+    <string name="unlock_biometric_invalidated">لم يعد المفتاح المحفوظ صالحًا بعد تغيّر إعدادات أمان الجهاز. أدخل كلمة السرّ الرئيسية مرة واحدة لإعداده من جديد.</string>
+    <string name="unlock_wrong_credentials">كلمة سرّ أو ملف مفتاح غير صحيح</string>
+    <string name="unlock_remember_biometric">افتح بالبصمة في المرة القادمة</string>
+    <string name="unlock_no_database">لم تُفتح أي قاعدة بيانات بعد</string>
+    <string name="unlock_recent_databases">قواعد البيانات الأخيرة</string>
+    <string name="unlock_opening">جارٍ فتح قاعدة البيانات…</string>
 
-    <!-- ========================================================= entry lists -->
-    <string name="entries_title">Entries</string>
-    <string name="entries_empty_title">The vault is empty</string>
-    <string name="entries_empty_body">Add your first entry and it will appear here.</string>
-    <string name="entry_untitled">(untitled)</string>
-    <string name="entry_expired">Expired</string>
-    <string name="entry_no_username">No username</string>
-    <string name="search_placeholder">Search entries</string>
-    <string name="search_no_results_title">Nothing found</string>
-    <string name="search_no_results_body">No entry matches “%1$s”.</string>
-    <string name="group_all">All</string>
-    <string name="group_root">Vault</string>
-    <string name="group_recycle_bin">Recycle bin</string>
-    <string name="group_untitled">(unnamed group)</string>
-    <string name="group_name_label">Group name</string>
-    <string name="group_new_title">New group</string>
-    <string name="group_edit_title">Edit group</string>
-    <string name="group_notes_label">Notes</string>
-    <string name="group_delete_title">Delete the group?</string>
-    <string name="group_delete_message">“%1$s” and everything inside it will be moved to the recycle bin.</string>
+    <!-- ======================================================= قاعدة البيانات -->
+    <string name="db_open_title">فتح قاعدة بيانات</string>
+    <string name="db_saving">جارٍ الحفظ…</string>
+    <string name="db_saved">تمّ الحفظ</string>
+    <string name="db_save_failed">تعذّر الحفظ: %1$s</string>
+    <string name="db_locked">الخزنة مقفلة</string>
+    <string name="db_lock_now">اقفل الآن</string>
+    <string name="db_unsaved_title">تغييرات غير محفوظة</string>
+    <string name="db_unsaved_message">لديك تغييرات لم تُكتب في الملف بعد. أتريد حفظها قبل القفل؟</string>
+    <string name="db_entry_count">المُدخَلات: %1$d</string>
 
-    <!-- =============================================================== entry -->
-    <string name="entry_new_title">New entry</string>
-    <string name="entry_edit_title">Edit entry</string>
-    <string name="entry_title_label">Title</string>
-    <string name="entry_username_label">Username</string>
-    <string name="entry_password_label">Password</string>
-    <string name="entry_url_label">Address</string>
-    <string name="entry_notes_label">Notes</string>
-    <string name="entry_tags_label">Tags</string>
-    <string name="entry_group_label">Group</string>
-    <string name="entry_expires_label">Expires</string>
-    <string name="entry_expiry_date_label">Expiry date</string>
-    <string name="entry_custom_fields_title">Additional fields</string>
-    <string name="entry_custom_field_name">Field name</string>
-    <string name="entry_custom_field_value">Value</string>
-    <string name="entry_protect_field">Protect this field</string>
-    <string name="entry_attachments_title">Attachments</string>
-    <string name="entry_no_attachments">No attachments</string>
+    <!-- ====================================================== قوائم المُدخَلات -->
+    <string name="entries_title">المُدخَلات</string>
+    <string name="entries_empty_title">الخزنة فارغة</string>
+    <string name="entries_empty_body">أضف أول مُدخَل وسيظهر هنا.</string>
+    <string name="entry_untitled">(بلا عنوان)</string>
+    <string name="entry_expired">منتهي الصلاحية</string>
+    <string name="entry_no_username">بلا اسم مستخدم</string>
+    <string name="search_placeholder">ابحث في المُدخَلات</string>
+    <string name="search_no_results_title">لا نتائج</string>
+    <string name="search_no_results_body">لا يوجد مُدخَل يطابق «%1$s».</string>
+    <string name="group_all">الكل</string>
+    <string name="group_root">الخزنة</string>
+    <string name="group_recycle_bin">سلّة المهملات</string>
+    <string name="group_untitled">(مجموعة بلا اسم)</string>
+
+    <!-- ============================================================= المُدخَل -->
+    <string name="entry_new_title">مُدخَل جديد</string>
+    <string name="entry_edit_title">تعديل المُدخَل</string>
+    <string name="entry_title_label">العنوان</string>
+    <string name="entry_username_label">اسم المستخدم</string>
+    <string name="entry_password_label">كلمة السرّ</string>
+    <string name="entry_url_label">العنوان الإلكتروني</string>
+    <string name="entry_notes_label">ملاحظات</string>
+    <string name="entry_group_label">المجموعة</string>
+    <string name="entry_expires_label">تنتهي الصلاحية</string>
+    <string name="entry_expiry_date_label">تاريخ انتهاء الصلاحية</string>
+    <string name="entry_custom_fields_title">حقول إضافية</string>
+    <string name="entry_custom_field_name">اسم الحقل</string>
+    <string name="entry_custom_field_value">القيمة</string>
+    <string name="entry_protect_field">احمِ هذا الحقل</string>
+    <string name="entry_attachments_title">المرفقات</string>
+    <string name="entry_no_attachments">لا مرفقات</string>
     <string name="entry_attachment_size">%1$s</string>
-    <string name="entry_history_title">History</string>
-    <string name="entry_history_empty">No previous versions</string>
-    <string name="entry_created_at">Created: %1$s</string>
-    <string name="entry_modified_at">Modified: %1$s</string>
-    <string name="entry_accessed_at">Last used: %1$s</string>
-    <string name="entry_saved">Entry saved</string>
-    <string name="entry_deleted">Entry deleted</string>
-    <string name="entry_moved_to_recycle_bin">Moved to the recycle bin</string>
-    <string name="entry_restored">Entry restored</string>
-    <string name="entry_delete_title">Delete the entry?</string>
-    <string name="entry_delete_message">“%1$s” will be moved to the recycle bin.</string>
-    <string name="entry_delete_permanent_message">“%1$s” will be deleted for good. This cannot be undone.</string>
-    <string name="entry_discard_title">Discard the changes?</string>
-    <string name="entry_discard_message">What you have typed will be lost.</string>
-    <string name="entry_title_required">Give the entry a title</string>
+    <string name="entry_created_at">أُنشئ: %1$s</string>
+    <string name="entry_modified_at">عُدِّل: %1$s</string>
+    <string name="entry_accessed_at">آخر استخدام: %1$s</string>
+    <string name="entry_saved">حُفظ المُدخَل</string>
+    <string name="entry_deleted">حُذف المُدخَل</string>
+    <string name="entry_moved_to_recycle_bin">نُقل إلى سلّة المهملات</string>
+    <string name="entry_restored">استُعيد المُدخَل</string>
+    <string name="entry_delete_title">حذف المُدخَل؟</string>
+    <string name="entry_delete_message">سيُنقل «%1$s» إلى سلّة المهملات.</string>
+    <string name="entry_delete_permanent_message">سيُحذف «%1$s» نهائيًا، ولا سبيل إلى التراجع.</string>
+    <string name="entry_discard_title">تجاهل التغييرات؟</string>
+    <string name="entry_discard_message">سيضيع ما كتبته.</string>
+    <string name="entry_title_required">أعطِ المُدخَل عنوانًا</string>
 
-    <!-- ============================================================ clipboard -->
-    <string name="clipboard_copied">Copied</string>
-    <string name="clipboard_copied_field">%1$s copied</string>
-    <string name="clipboard_cleared">Clipboard cleared</string>
-    <string name="clipboard_clears_in">Clears in %1$d seconds</string>
+    <!-- ============================================================= الحافظة -->
+    <string name="clipboard_copied">نُسخ</string>
+    <string name="clipboard_copied_field">نُسخ %1$s</string>
+    <string name="clipboard_cleared">مُسحت الحافظة</string>
+    <string name="clipboard_clears_in">تُمسح خلال %1$d ثانية</string>
 
-    <!-- ============================================================ strength -->
-    <string name="strength_title">Strength</string>
-    <string name="strength_bad">Very weak</string>
-    <string name="strength_poor">Weak</string>
-    <string name="strength_weak">Fair</string>
-    <string name="strength_good">Strong</string>
-    <string name="strength_excellent">Excellent</string>
-    <string name="strength_bits">%1$d bits</string>
+    <!-- =============================================================== القوّة -->
+    <string name="strength_title">القوّة</string>
+    <string name="strength_bad">ضعيفة جدًا</string>
+    <string name="strength_poor">ضعيفة</string>
+    <string name="strength_weak">مقبولة</string>
+    <string name="strength_good">قويّة</string>
+    <string name="strength_excellent">ممتازة</string>
+    <string name="strength_bits">%1$d بت</string>
 
-    <!-- =========================================================== generator -->
-    <string name="generator_title">Password generator</string>
-    <string name="generator_length">Length: %1$d</string>
-    <string name="generator_uppercase">Capital letters (A–Z)</string>
-    <string name="generator_lowercase">Small letters (a–z)</string>
-    <string name="generator_digits">Digits (0–9)</string>
-    <string name="generator_special">Symbols (!@#$)</string>
-    <string name="generator_extended">Extended characters</string>
-    <string name="generator_exclude_lookalike">Exclude look-alike characters</string>
-    <string name="generator_ensure_every_group">Use every selected group</string>
-    <string name="generator_type_password">Password</string>
-    <string name="generator_type_passphrase">Passphrase</string>
-    <string name="generator_word_count">Words: %1$d</string>
-    <string name="generator_word_separator">Separator</string>
-    <string name="generator_use_password">Use this password</string>
-    <string name="generator_no_charset">Choose at least one character group</string>
-    <string name="generator_symbols">Symbols</string>
-    <string name="generator_pick_a_class">Choose at least one character group</string>
-    <string name="generator_use">Use</string>
+    <!-- ============================================================== المولّد -->
+    <string name="generator_title">مولّد كلمات السرّ</string>
+    <string name="generator_length">الطول: %1$d</string>
+    <string name="generator_uppercase">حروف كبيرة (A–Z)</string>
+    <string name="generator_lowercase">حروف صغيرة (a–z)</string>
+    <string name="generator_digits">أرقام (0–9)</string>
+    <string name="generator_special">رموز (!@#$)</string>
+    <string name="generator_extended">محارف موسّعة</string>
+    <string name="generator_exclude_lookalike">استبعد المحارف المتشابهة</string>
+    <string name="generator_ensure_every_group">استخدم كل مجموعة مختارة</string>
+    <string name="generator_type_password">كلمة سرّ</string>
+    <string name="generator_type_passphrase">عبارة سرّ</string>
+    <string name="generator_word_count">عدد الكلمات: %1$d</string>
+    <string name="generator_word_separator">الفاصل</string>
+    <string name="generator_use_password">استخدم هذه الكلمة</string>
+    <string name="generator_no_charset">اختر مجموعة محارف واحدة على الأقل</string>
+    <string name="generator_symbols">رموز</string>
+    <string name="generator_pick_a_class">اختر مجموعة محارف واحدة على الأقل</string>
+    <string name="generator_use">استخدام</string>
 
-    <!-- ================================================================ totp -->
-    <string name="totp_title">One-time code</string>
-    <string name="totp_refreshes_in">Refreshes in</string>
-    <string name="totp_unreadable">Unreadable code</string>
-    <string name="totp_secret_label">Secret (Base32)</string>
-    <string name="totp_digits_label">Digits</string>
-    <string name="totp_period_label">Period (seconds)</string>
-    <string name="totp_algorithm_label">Algorithm</string>
-    <string name="totp_setup_title">Set up a one-time code</string>
-    <string name="totp_scan_qr">Scan the QR code</string>
-    <string name="totp_enter_manually">Enter the secret by hand</string>
-    <string name="totp_invalid_secret">This secret is not valid Base32</string>
-    <string name="totp_saved">One-time code saved</string>
-    <string name="totp_removed">One-time code removed</string>
-    <string name="totp_remove_title">Remove the one-time code?</string>
+    <!-- ======================================================= الرمز المؤقّت -->
+    <string name="totp_title">الرمز المؤقّت</string>
+    <string name="totp_refreshes_in">يتجدّد خلال</string>
+    <string name="totp_unreadable">رمز غير مقروء</string>
+    <string name="totp_secret_label">‏السرّ (Base32)</string>
+    <string name="totp_digits_label">عدد الخانات</string>
+    <string name="totp_period_label">المدّة بالثواني</string>
+    <string name="totp_algorithm_label">الخوارزمية</string>
+    <string name="totp_setup_title">إعداد رمز مؤقّت</string>
+    <string name="totp_enter_manually">أدخل السرّ يدويًا</string>
+    <string name="totp_invalid_secret">‏هذا السرّ ليس Base32 صالحًا</string>
+    <string name="totp_saved">حُفظ الرمز المؤقّت</string>
+    <string name="totp_removed">أُزيل الرمز المؤقّت</string>
+    <string name="totp_remove_title">إزالة الرمز المؤقّت؟</string>
 
-    <!-- ============================================================ settings -->
-    <string name="settings_title">Settings</string>
-    <string name="settings_general">General</string>
-    <string name="settings_security">Security</string>
-    <string name="settings_appearance">Appearance</string>
-    <string name="settings_sync">Sync</string>
-    <string name="settings_about">About</string>
-    <string name="settings_language">Language</string>
+    <!-- ============================================================ الإعدادات -->
+    <string name="settings_title">الإعدادات</string>
+    <string name="settings_general">عام</string>
+    <string name="settings_security">الأمان</string>
+    <string name="settings_appearance">المظهر</string>
+    <string name="settings_sync">المزامنة</string>
+    <string name="settings_about">عن التطبيق</string>
+    <string name="settings_language">اللغة</string>
     <string name="settings_language_arabic">العربية</string>
     <string name="settings_language_english">English</string>
-    <string name="settings_language_system">Follow the system</string>
-    <string name="settings_theme">Theme</string>
-    <string name="settings_theme_system">Follow the system</string>
-    <string name="settings_theme_light">Light</string>
-    <string name="settings_theme_dark">Dark</string>
-    <string name="settings_autolock">Lock automatically</string>
-    <string name="settings_autolock_immediately">As soon as I leave the app</string>
-    <string name="settings_autolock_30s">After 30 seconds</string>
-    <string name="settings_autolock_1m">After a minute</string>
-    <string name="settings_autolock_5m">After five minutes</string>
-    <string name="settings_autolock_never">Never</string>
-    <string name="settings_biometric_unlock">Unlock with fingerprint</string>
-    <string name="settings_biometric_unavailable">This device has no fingerprint set up</string>
-    <string name="settings_clipboard_timeout">Clear the clipboard after</string>
-    <string name="settings_clipboard_seconds">%1$d seconds</string>
-    <string name="settings_screenshots">Allow screenshots</string>
-    <string name="settings_screenshots_summary">Off by default, so the vault does not show up in the recent-apps preview.</string>
-    <string name="settings_hide_passwords">Hide passwords in lists</string>
-    <string name="settings_version">Version %1$s</string>
-    <string name="settings_licence">Licence</string>
-    <string name="settings_source">Source code</string>
-    <string name="settings_about_body">Hisn is an offline password manager. It reads and writes the KDBX format, so the same file opens in KeePassXC on a computer. Nothing is sent anywhere: there is no account, no server and no telemetry.</string>
+    <string name="settings_language_system">تبعًا للنظام</string>
+    <string name="settings_theme">السمة</string>
+    <string name="settings_theme_system">تبعًا للنظام</string>
+    <string name="settings_theme_light">فاتحة</string>
+    <string name="settings_theme_dark">داكنة</string>
+    <string name="settings_autolock">القفل التلقائي</string>
+    <string name="settings_autolock_immediately">فور مغادرة التطبيق</string>
+    <string name="settings_autolock_30s">بعد 30 ثانية</string>
+    <string name="settings_autolock_1m">بعد دقيقة</string>
+    <string name="settings_autolock_5m">بعد خمس دقائق</string>
+    <string name="settings_autolock_never">أبدًا</string>
+    <string name="settings_biometric_unlock">الفتح ببصمة الإصبع</string>
+    <string name="settings_biometric_unavailable">لا توجد بصمة مُعدّة على هذا الجهاز</string>
+    <string name="settings_clipboard_timeout">امسح الحافظة بعد</string>
+    <string name="settings_clipboard_seconds">%1$d ثانية</string>
+    <string name="settings_screenshots">السماح بلقطات الشاشة</string>
+    <string name="settings_screenshots_summary">معطّل افتراضيًا، حتى لا تظهر الخزنة في معاينة التطبيقات الأخيرة.</string>
+    <string name="settings_hide_passwords">إخفاء كلمات السرّ في القوائم</string>
+    <string name="settings_version">الإصدار %1$s</string>
+    <string name="settings_licence">الرخصة</string>
+    <string name="settings_source">الشيفرة المصدرية</string>
+    <string name="settings_about_body">حصن مدير كلمات سرّ يعمل دون اتصال. خزنتك ملفٌ مشفَّر واحد بصيغة KDBX المفتوحة، يفتحه حصن على حاسوبك: ويندوز ولينكس. لا يُرسَل شيء إلى أي جهة: لا حساب ولا خادم ولا تتبّع.</string>
 
-    <!-- ================================================================ sync -->
-    <string name="sync_title">Sync over the local network</string>
-    <string name="sync_subtitle">Both devices must be on the same Wi-Fi network. The vault is exchanged directly between them.</string>
-    <string name="sync_start_server">Receive on this device</string>
-    <string name="sync_stop_server">Stop</string>
-    <string name="sync_waiting">Waiting for the other device…</string>
-    <string name="sync_connected">Connected to %1$s</string>
-    <string name="sync_pairing_code">Pairing code</string>
-    <string name="sync_scan_prompt">Point the camera at the code shown on the other device</string>
-    <string name="sync_in_progress">Syncing…</string>
-    <string name="sync_complete">Sync complete</string>
-    <string name="sync_no_changes">Both devices were already up to date</string>
-    <string name="sync_failed">Sync failed: %1$s</string>
-    <string name="sync_last_synced">Last synced: %1$s</string>
-    <string name="sync_no_wifi">You are not connected to a Wi-Fi network</string>
-    <string name="sync_camera_permission_title">Camera permission needed</string>
-    <string name="sync_camera_permission_body">The camera is used only to read the pairing code. No image is stored or sent.</string>
-    <string name="sync_merge_summary">%1$d changes were merged</string>
+    <!-- ============================================================ المزامنة -->
+    <string name="sync_title">المزامنة عبر الشبكة المحلية</string>
+    <string name="sync_subtitle">‏يجب أن يكون الجهازان على شبكة Wi-Fi نفسها، وتُتبادل الخزنة بينهما مباشرة.</string>
+    <string name="sync_start_server">استقبل على هذا الجهاز</string>
+    <string name="sync_stop_server">إيقاف</string>
+    <string name="sync_waiting">في انتظار الجهاز الآخر…</string>
+    <string name="sync_connected">متّصل بـ %1$s</string>
+    <string name="sync_pairing_code">رمز الإقران</string>
+    <string name="sync_in_progress">جارٍ المزامنة…</string>
+    <string name="sync_complete">اكتملت المزامنة</string>
+    <string name="sync_no_changes">الجهازان محدّثان أصلًا</string>
+    <string name="sync_failed">فشلت المزامنة: %1$s</string>
+    <string name="sync_last_synced">آخر مزامنة: %1$s</string>
+    <string name="sync_no_wifi">‏لست متّصلًا بشبكة Wi-Fi</string>
+    <string name="sync_merge_summary">دُمج %1$d تغييرًا</string>
 
-    <!-- ============================================================ snackbars -->
+    <!-- ====================================================== رسائل الإشعار -->
     <!--
-      These are shown by UiEvent.Message / UiEvent.Failure, which carry an optional argument.
-      They deliberately take no format placeholder: the argument is absent in some of the code
-      paths that raise them, and a string with an unfilled %1$s renders the placeholder itself.
-      The two device messages are the exception — those always receive the device name.
+      تُعرض عبر UiEvent.Message و UiEvent.Failure اللذين يحملان وسيطًا اختياريًا، ولذلك لا تحتوي
+      على وسائط تنسيق: بعض مسارات الشيفرة تستدعيها بلا وسيط، والنص الذي يبقى فيه %1$s غير مملوء
+      يُعرض كما هو. تُستثنى رسالتا الجهاز، فهما تتلقّيان اسم الجهاز دائمًا.
     -->
-    <string name="msg_entry_saved">Entry saved</string>
-    <string name="msg_entry_deleted">Entry deleted</string>
-    <string name="msg_username_copied">Username copied</string>
-    <string name="msg_password_copied">Password copied</string>
-    <string name="msg_totp_copied">Code copied</string>
-    <string name="msg_backup_exported">Backup copy saved</string>
-    <string name="msg_biometric_enabled">Fingerprint unlock is on</string>
-    <string name="msg_device_paired">Paired with %1$s</string>
-    <string name="msg_device_forgotten">%1$s was removed</string>
+    <string name="msg_entry_saved">حُفظ المُدخَل</string>
+    <string name="msg_entry_deleted">حُذف المُدخَل</string>
+    <string name="msg_username_copied">نُسخ اسم المستخدم</string>
+    <string name="msg_password_copied">نُسخت كلمة السرّ</string>
+    <string name="msg_totp_copied">نُسخ الرمز</string>
+    <string name="msg_backup_exported">حُفظت نسخة احتياطية</string>
+    <string name="msg_biometric_enabled">فُعّل الفتح بالبصمة</string>
+    <string name="msg_device_paired">تمّ الإقران مع %1$s</string>
+    <string name="msg_device_forgotten">أُزيل %1$s</string>
 
-    <!-- ============================================================== errors -->
-    <string name="error_no_database">No database is open</string>
-    <string name="error_entry_missing">This entry no longer exists</string>
-    <string name="error_credentials_empty">Enter a master password or choose a key file</string>
-    <string name="error_unlock_failed">Could not open the database</string>
-    <string name="error_save_failed">Could not save the changes</string>
-    <string name="error_delete_failed">Could not delete the entry</string>
-    <string name="error_import_failed">Could not import the file</string>
-    <string name="error_export_failed">Could not export the database</string>
-    <string name="error_nothing_to_copy">There is nothing to copy</string>
-    <string name="error_clipboard_unavailable">The clipboard is not available</string>
-    <string name="error_totp_unreadable">The one-time code could not be read</string>
-    <string name="error_biometric_unlock_failed">Fingerprint unlock did not work</string>
-    <string name="error_biometric_enable_failed">Fingerprint unlock could not be turned on</string>
-    <string name="error_pairing_code_empty">Enter the pairing code first</string>
-    <string name="error_pairing_failed">Pairing failed</string>
-    <string name="error_sync_failed">Sync failed</string>
-    <string name="error_generic">Something went wrong: %1$s</string>
-    <string name="error_file_not_found">The file could not be found. It may have been moved or deleted.</string>
-    <string name="error_permission_denied">Hisn is no longer allowed to read this file. Choose it again.</string>
-    <string name="error_wrong_password">Wrong password or key file</string>
-    <string name="error_unsupported_version">This file uses a KDBX version Hisn cannot read.</string>
-    <string name="error_corrupt_file">The file is damaged and could not be read.</string>
-    <string name="error_read_failed">Could not read the database: %1$s</string>
-    <string name="error_write_failed">Could not write the database: %1$s</string>
-    <string name="error_no_app_to_open">No app on this device can open this file.</string>
-    <string name="error_camera_unavailable">The camera could not be started.</string>
-    <string name="error_no_browser">No app on this device can open this address</string>
+    <!-- ============================================================== أخطاء -->
+    <string name="error_no_database">لا توجد قاعدة بيانات مفتوحة</string>
+    <string name="error_entry_missing">لم يعد هذا المُدخَل موجودًا</string>
+    <string name="error_credentials_empty">أدخل كلمة سرّ رئيسية أو اختر ملف مفتاح</string>
+    <string name="error_unlock_failed">تعذّر فتح قاعدة البيانات</string>
+    <string name="error_save_failed">تعذّر حفظ التغييرات</string>
+    <string name="error_delete_failed">تعذّر حذف المُدخَل</string>
+    <string name="error_import_failed">تعذّر استيراد الملف</string>
+    <string name="error_export_failed">تعذّر تصدير قاعدة البيانات</string>
+    <string name="error_nothing_to_copy">لا شيء لنسخه</string>
+    <string name="error_clipboard_unavailable">الحافظة غير متاحة</string>
+    <string name="error_totp_unreadable">تعذّرت قراءة الرمز المؤقّت</string>
+    <string name="error_biometric_unlock_failed">لم ينجح الفتح بالبصمة</string>
+    <string name="error_biometric_enable_failed">تعذّر تفعيل الفتح بالبصمة</string>
+    <string name="error_pairing_code_empty">أدخل رمز الإقران أولًا</string>
+    <string name="error_pairing_failed">فشل الإقران</string>
+    <string name="error_sync_failed">فشلت المزامنة</string>
+    <string name="error_generic">حدث خطأ: %1$s</string>
+    <string name="error_file_not_found">تعذّر العثور على الملف، وربما نُقل أو حُذف.</string>
+    <string name="error_permission_denied">لم يعد مسموحًا لحصن بقراءة هذا الملف. اختره من جديد.</string>
+    <string name="error_wrong_password">كلمة سرّ أو ملف مفتاح غير صحيح</string>
+    <string name="error_unsupported_version">‏يستخدم هذا الملف إصدار KDBX لا يستطيع حصن قراءته.</string>
+    <string name="error_corrupt_file">الملف تالف وتعذّرت قراءته.</string>
+    <string name="error_read_failed">تعذّرت قراءة قاعدة البيانات: %1$s</string>
+    <string name="error_write_failed">تعذّرت كتابة قاعدة البيانات: %1$s</string>
+    <string name="error_no_app_to_open">لا يوجد على هذا الجهاز تطبيق يفتح هذا الملف.</string>
+    <string name="error_no_browser">لا يوجد على هذا الجهاز تطبيق يفتح هذا العنوان</string>
 
-    <!-- ======================================================= screen: unlock -->
-    <string name="unlock_no_database_title">No database yet</string>
-    <string name="unlock_no_database_message">Choose a .kdbx file to open, or create one in KeePassXC on a computer and copy it across.</string>
-    <string name="unlock_unnamed_database">Unnamed database</string>
-    <string name="action_unlocking">Unlocking…</string>
-    <string name="action_unlock_with_biometric">Unlock with fingerprint</string>
-    <string name="action_choose_key_file">Choose a key file</string>
-    <string name="action_remove_key_file">Remove the key file</string>
-    <string name="action_open_other_database">Open another database</string>
-    <string name="label_master_password">Master password</string>
+    <!-- ====================================================== شاشة فتح القفل -->
+    <string name="unlock_no_database_title">لا توجد قاعدة بيانات بعد</string>
+    <string name="unlock_no_database_message">اختر ملف ‎.kdbx‎ لفتحه، أو أنشئ خزنةً جديدة هنا، أو في حصن على حاسوبك وانسخها إلى هذا الجهاز.</string>
+    <string name="unlock_unnamed_database">قاعدة بيانات بلا اسم</string>
+    <string name="action_unlocking">جارٍ الفتح…</string>
+    <string name="action_unlock_with_biometric">افتح بالبصمة</string>
+    <string name="action_choose_key_file">اختر ملف مفتاح</string>
+    <string name="action_remove_key_file">إزالة ملف المفتاح</string>
+    <string name="action_open_other_database">افتح قاعدة بيانات أخرى</string>
+    <string name="label_master_password">كلمة السرّ الرئيسية</string>
 
-    <!-- ==================================================== screen: entry list -->
-    <string name="action_add_entry">Add an entry</string>
-    <string name="action_sync">Sync</string>
-    <string name="list_empty_title">The vault is empty</string>
-    <string name="list_empty_message">Add your first entry and it will appear here.</string>
-    <string name="list_group_empty_title">This group is empty</string>
-    <string name="list_group_empty_message">Nothing has been filed here yet.</string>
-    <string name="list_no_results_title">Nothing found</string>
-    <string name="list_no_results_message">No entry matches “%1$s”.</string>
+    <!-- ==================================================== شاشة قائمة المُدخَلات -->
+    <string name="action_add_entry">أضف مُدخَلًا</string>
+    <string name="action_sync">مزامنة</string>
+    <string name="list_empty_title">الخزنة فارغة</string>
+    <string name="list_empty_message">أضف أول مُدخَل وسيظهر هنا.</string>
+    <string name="list_group_empty_title">هذه المجموعة فارغة</string>
+    <string name="list_group_empty_message">لم يُحفظ فيها شيء بعد.</string>
+    <string name="list_no_results_title">لا نتائج</string>
+    <string name="list_no_results_message">لا يوجد مُدخَل يطابق «%1$s».</string>
 
-    <!-- ================================================== screen: entry detail -->
-    <string name="entry_details">Entry</string>
-    <string name="entry_missing_title">The entry is gone</string>
-    <string name="entry_missing_message">It was deleted or moved while this screen was open.</string>
-    <string name="section_custom_fields">Additional fields</string>
-    <string name="section_attachments">Attachments</string>
-    <string name="section_metadata">Details</string>
-    <string name="meta_group">Group</string>
-    <string name="meta_created">Created</string>
-    <string name="meta_modified">Modified</string>
-    <string name="meta_expires">Expires</string>
-    <string name="attachments_desktop_only">Attachments open in KeePassXC on a computer. Hisn keeps them intact every time it saves.</string>
-    <string name="totp_unreadable_explained">The stored secret is not valid Base32, so no code can be produced. Correct it in the editor.</string>
-    <string name="action_copy_notes">Copy notes</string>
-    <string name="msg_field_copied">Field copied</string>
-    <string name="msg_notes_copied">Notes copied</string>
-    <string name="msg_url_copied">Address copied</string>
-    <string name="delete_entry_title">Delete the entry?</string>
-    <string name="delete_entry_message">It will be moved to the recycle bin, and can still be restored from KeePassXC on a computer.</string>
+    <!-- ===================================================== شاشة تفاصيل المُدخَل -->
+    <string name="entry_details">المُدخَل</string>
+    <string name="entry_missing_title">لم يعد المُدخَل موجودًا</string>
+    <string name="entry_missing_message">حُذف أو نُقل بينما كانت هذه الشاشة مفتوحة.</string>
+    <string name="section_custom_fields">حقول إضافية</string>
+    <string name="section_attachments">المرفقات</string>
+    <string name="section_metadata">تفاصيل</string>
+    <string name="meta_group">المجموعة</string>
+    <string name="meta_created">أُنشئ</string>
+    <string name="meta_modified">عُدِّل</string>
+    <string name="meta_expires">تنتهي الصلاحية</string>
+    <string name="attachments_desktop_only">تُفتح المرفقات في حصن على الحاسوب، ويحفظها التطبيق كما هي في كل مرة يكتب فيها الملف.</string>
+    <string name="totp_unreadable_explained">‏السرّ المحفوظ ليس Base32 صالحًا، فلا يمكن توليد رمز. صحّحه من محرّر المُدخَل.</string>
+    <string name="action_copy_notes">نسخ الملاحظات</string>
+    <string name="msg_field_copied">نُسخ الحقل</string>
+    <string name="msg_notes_copied">نُسخت الملاحظات</string>
+    <string name="msg_url_copied">نُسخ العنوان</string>
+    <string name="delete_entry_title">حذف المُدخَل؟</string>
+    <string name="delete_entry_message">سيُنقل إلى سلّة المهملات، ويمكن استعادته من هنا أو من حصن على الحاسوب.</string>
 
-    <!-- ==================================================== screen: entry edit -->
-    <string name="edit_title_new">New entry</string>
-    <string name="edit_title_existing">Edit entry</string>
-    <string name="edit_title_required">Give the entry a title</string>
-    <string name="edit_field_duplicate">A field with this name already exists</string>
-    <string name="edit_group_fixed">Saved in: %1$s</string>
-    <string name="edit_totp_hint">Paste an otpauth:// link or the Base32 secret</string>
-    <string name="action_open_generator">Open the password generator</string>
-    <string name="action_paste_from_clipboard">Paste from the clipboard</string>
-    <string name="label_title">Title</string>
-    <string name="label_username">Username</string>
-    <string name="label_password">Password</string>
-    <string name="label_url">Address</string>
-    <string name="label_notes">Notes</string>
-    <string name="label_group">Group</string>
-    <string name="label_totp">One-time code</string>
-    <string name="label_totp_secret">Secret or otpauth:// link</string>
-    <string name="label_field_name">Field name</string>
-    <string name="label_field_value">Value</string>
-    <string name="label_field_protected">Protected</string>
+    <!-- ===================================================== شاشة تحرير المُدخَل -->
+    <string name="edit_title_new">مُدخَل جديد</string>
+    <string name="edit_title_existing">تعديل المُدخَل</string>
+    <string name="edit_title_required">أعطِ المُدخَل عنوانًا</string>
+    <string name="edit_field_duplicate">يوجد حقل بهذا الاسم من قبل</string>
+    <string name="edit_group_fixed">يُحفظ في: %1$s</string>
+    <string name="edit_totp_hint">‏الصق رابط otpauth:// أو السرّ بترميز Base32</string>
+    <string name="action_open_generator">افتح مولّد كلمات السرّ</string>
+    <string name="action_paste_from_clipboard">لصق من الحافظة</string>
+    <string name="label_title">العنوان</string>
+    <string name="label_username">اسم المستخدم</string>
+    <string name="label_password">كلمة السرّ</string>
+    <string name="label_url">العنوان الإلكتروني</string>
+    <string name="label_notes">ملاحظات</string>
+    <string name="label_group">المجموعة</string>
+    <string name="label_totp">الرمز المؤقّت</string>
+    <string name="label_totp_secret">‏السرّ أو رابط otpauth://</string>
+    <string name="label_field_name">اسم الحقل</string>
+    <string name="label_field_value">القيمة</string>
+    <string name="label_field_protected">محميّ</string>
 
-    <!-- ===================================================== screen: settings -->
-    <string name="settings_section_security">Security</string>
-    <string name="settings_section_appearance">Appearance</string>
-    <string name="settings_section_backup">Backup</string>
-    <string name="settings_section_about">About</string>
-    <string name="settings_auto_lock">Lock automatically</string>
-    <string name="settings_auto_lock_hint">How long Hisn stays unlocked after you leave it.</string>
-    <string name="settings_biometric">Fingerprint unlock</string>
-    <string name="settings_biometric_on">On</string>
-    <string name="settings_biometric_off">Off</string>
-    <string name="settings_clipboard">Clear the clipboard</string>
-    <string name="settings_clipboard_hint">A copied password is wiped from the clipboard after this long.</string>
-    <string name="settings_export">Export a copy</string>
-    <string name="settings_export_hint">Writes the encrypted .kdbx file wherever you choose.</string>
-    <string name="action_enable">Turn on</string>
+    <!-- ======================================================== شاشة الإعدادات -->
+    <string name="settings_section_security">الأمان</string>
+    <string name="settings_section_appearance">المظهر</string>
+    <string name="settings_section_backup">النسخ الاحتياطي</string>
+    <string name="settings_section_about">عن التطبيق</string>
+    <string name="settings_auto_lock">القفل التلقائي</string>
+    <string name="settings_auto_lock_hint">المدّة التي يبقى فيها حصن مفتوحًا بعد مغادرتك له.</string>
+    <string name="settings_biometric">الفتح ببصمة الإصبع</string>
+    <string name="settings_biometric_on">مفعّل</string>
+    <string name="settings_biometric_off">معطّل</string>
+    <string name="settings_clipboard">مسح الحافظة</string>
+    <string name="settings_clipboard_hint">تُمحى كلمة السرّ المنسوخة من الحافظة بعد هذه المدّة.</string>
+    <string name="settings_export">تصدير نسخة</string>
+    <string name="settings_export_hint">‏يكتب ملف .kdbx المعمّى في المكان الذي تختاره.</string>
+    <string name="action_enable">تفعيل</string>
 
-    <string name="autolock_immediately">Immediately</string>
-    <string name="autolock_1">After a minute</string>
-    <string name="autolock_5">After 5 minutes</string>
-    <string name="autolock_15">After 15 minutes</string>
-    <string name="autolock_30">After 30 minutes</string>
-    <string name="autolock_never">Never</string>
+    <string name="autolock_immediately">فورًا</string>
+    <string name="autolock_1">بعد دقيقة</string>
+    <string name="autolock_5">بعد 5 دقائق</string>
+    <string name="autolock_15">بعد 15 دقيقة</string>
+    <string name="autolock_30">بعد 30 دقيقة</string>
+    <string name="autolock_never">أبدًا</string>
 
-    <string name="clipboard_10">After 10 seconds</string>
-    <string name="clipboard_30">After 30 seconds</string>
-    <string name="clipboard_60">After a minute</string>
-    <string name="clipboard_120">After two minutes</string>
-    <string name="clipboard_never">Never</string>
+    <string name="clipboard_10">بعد 10 ثوانٍ</string>
+    <string name="clipboard_30">بعد 30 ثانية</string>
+    <string name="clipboard_60">بعد دقيقة</string>
+    <string name="clipboard_120">بعد دقيقتين</string>
+    <string name="clipboard_never">أبدًا</string>
 
-    <string name="theme_system">Follow the system</string>
-    <string name="theme_light">Light</string>
-    <string name="theme_dark">Dark</string>
+    <string name="theme_system">تبعًا للنظام</string>
+    <string name="theme_light">فاتحة</string>
+    <string name="theme_dark">داكنة</string>
 
-    <string name="biometric_enable_title">Unlock with a fingerprint?</string>
-    <string name="biometric_enable_message">Hisn will keep the master key in this device\'s hardware keystore and release it only after your fingerprint is verified. The vault file itself does not change.</string>
-    <string name="biometric_prompt_title">Unlock Hisn</string>
-    <string name="biometric_prompt_subtitle">Confirm your identity to open the vault</string>
+    <string name="biometric_enable_title">الفتح ببصمة الإصبع؟</string>
+    <string name="biometric_enable_message">سيحفظ حصن المفتاح الرئيسي في مخزن المفاتيح العتادي لهذا الجهاز، ولا يُفرج عنه إلا بعد التحقّق من بصمتك. أمّا ملف الخزنة نفسه فلا يتغيّر.</string>
+    <string name="biometric_prompt_title">فتح حصن</string>
+    <string name="biometric_prompt_subtitle">أكّد هويتك لفتح الخزنة</string>
 
-    <string name="about_version">Version %1$s</string>
-    <string name="about_credit">Built on the KDBX format of KeePassXC. Hisn is an independent Android app and is not published by the KeePassXC team.</string>
-    <string name="about_license">GNU General Public License, version 2 or 3</string>
-    <string name="about_offline_note">Hisn never opens a connection of its own accord. Your vault stays in one file on this device.</string>
+    <string name="about_version">الإصدار %1$s</string>
+    <string name="about_credit">‏حصن مبنيٌّ على KeePassXC (رخصة GPL)، وهو تطبيق مستقل لا يصدر عن فريقه. خزنتك بصيغة KDBX المفتوحة، المتوافقة مع تطبيقات KeePassXC.</string>
+    <string name="about_license">رخصة جنو العمومية، الإصدار الثاني أو الثالث</string>
+    <string name="about_offline_note">لا يفتح حصن أي اتصال من تلقاء نفسه، وتبقى خزنتك في ملفٍ واحد على هذا الجهاز.</string>
+    <string name="aman_signature">من مختبرات أمان</string>
+    <string name="aman_labs_name">مختبرات أمان</string>
 
-    <!-- ========================================================= screen: sync -->
-    <string name="sync_section_local">Local network</string>
-    <string name="sync_section_devices">Paired devices</string>
-    <string name="sync_local_hint">Both devices must be on the same Wi-Fi network.</string>
-    <string name="sync_export">Send</string>
-    <string name="sync_import">Receive</string>
-    <string name="sync_no_devices_title">No paired devices</string>
-    <string name="sync_no_devices_message">Pair a computer or another phone to sync the vault between them.</string>
-    <string name="sync_pair_action">Pair a device</string>
-    <string name="sync_pair_hint">Enter the code the other device is showing.</string>
-    <string name="sync_pair_title">Pair a device</string>
-    <string name="sync_pair_message">Open Hisn on the other device, choose “Pair”, and type the code it shows here.</string>
-    <string name="action_pair">Pair</string>
-    <string name="action_forget">Forget</string>
-    <string name="sync_fingerprint">Fingerprint: %1$s</string>
-    <string name="sync_forget_title">Forget the device?</string>
-    <string name="sync_forget_message">“%1$s” will have to be paired again before the next sync.</string>
-    <string name="sync_import_title">Receive the vault?</string>
-    <string name="sync_import_message">The incoming vault is merged into yours: the newer version of each entry wins, and nothing already on this device is dropped.</string>
-    <string name="sync_state_connecting">Connecting to %1$s…</string>
-    <string name="sync_state_handshaking">Verifying the other device…</string>
-    <string name="sync_state_transferring">Transferring the vault…</string>
-    <string name="sync_state_merging">Merging %1$s changes…</string>
-    <string name="sync_state_done">Done — %1$s added, %2$s updated, %3$s deleted</string>
-    <string name="sync_state_failed">Sync failed</string>
+    <!-- ========================================================= شاشة المزامنة -->
+    <string name="sync_section_local">الشبكة المحلية</string>
+    <string name="sync_section_devices">الأجهزة المقترنة</string>
+    <string name="sync_local_hint">‏يجب أن يكون الجهازان على شبكة Wi-Fi نفسها.</string>
+    <string name="sync_export">إرسال</string>
+    <string name="sync_import">استقبال</string>
+    <string name="sync_no_devices_title">لا أجهزة مقترنة</string>
+    <string name="sync_no_devices_message">اقرِن حصن على حاسوبك أو هاتفًا آخر لمزامنة الخزنة بينهما.</string>
+    <string name="sync_pair_action">إقران جهاز</string>
+    <string name="sync_pair_hint">أدخل الرمز الذي يعرضه الجهاز الآخر.</string>
+    <string name="sync_pair_title">إقران جهاز</string>
+    <string name="sync_pair_message">افتح حصن على الجهاز الآخر، واختر «إقران»، ثم اكتب هنا الرمز الذي يعرضه.</string>
+    <string name="action_pair">إقران</string>
+    <string name="action_forget">إزالة</string>
+    <string name="sync_fingerprint">البصمة: %1$s</string>
+    <string name="sync_forget_title">إزالة الجهاز؟</string>
+    <string name="sync_forget_message">سيلزم إقران «%1$s» من جديد قبل المزامنة القادمة.</string>
+    <string name="sync_import_title">استقبال الخزنة؟</string>
+    <string name="sync_import_message">تُدمج الخزنة الواردة في خزنتك: تُرجَّح النسخة الأحدث من كل مُدخَل، ولا يُحذف شيء موجود على هذا الجهاز.</string>
+    <string name="sync_state_connecting">جارٍ الاتصال بـ %1$s…</string>
+    <string name="sync_state_handshaking">جارٍ التحقّق من الجهاز الآخر…</string>
+    <string name="sync_state_transferring">جارٍ نقل الخزنة…</string>
+    <string name="sync_state_merging">جارٍ دمج %1$s تغييرًا…</string>
+    <string name="sync_state_done">تمّ — أُضيف %1$s، وعُدِّل %2$s، وحُذف %3$s</string>
+    <string name="sync_state_failed">فشلت المزامنة</string>
 
-    <string name="label_pairing_code">Pairing code</string>
-    <string name="msg_clipboard_clears_in">clears in %1$s seconds</string>
+    <string name="label_pairing_code">رمز الإقران</string>
+    <string name="msg_clipboard_clears_in">تُمسح خلال %1$s ثانية</string>
 
-    <string name="msg_backup_merged">Merged — %1$s added, %2$s updated, %3$s deleted</string>
-    <string name="msg_biometric_disabled">Fingerprint unlock is off</string>
-    <string name="error_import_merge_failed">The imported file could not be merged</string>
-    <string name="error_settings_write_failed">The setting could not be saved</string>
+    <string name="msg_backup_merged">تمّ الدمج — أُضيف %1$s، وعُدِّل %2$s، وحُذف %3$s</string>
+    <string name="msg_biometric_disabled">أُوقف الفتح بالبصمة</string>
+    <string name="error_import_merge_failed">تعذّر دمج الملف المستورد</string>
+    <string name="error_settings_write_failed">تعذّر حفظ الإعداد</string>
 
 
-    <!-- additional settings -->
-    <string name="action_turn_off">Turn off</string>
-    <string name="biometric_disable_message">The stored password will be deleted and you will need to type it every time.</string>
-    <string name="biometric_disable_title">Turn off biometric unlock?</string>
-    <string name="clipboard_15">After 15 seconds</string>
-    <string name="settings_autolock_15m">After 15 minutes</string>
-    <string name="settings_block_screenshots">Block screenshots</string>
-    <string name="settings_block_screenshots_hint">Blocks screenshots and recording, and hides the app from the recents list</string>
-    <string name="settings_hide_passwords_hint">Passwords stay dotted out until you choose to reveal them</string>
-    <string name="settings_lock_on_screen_off">Lock when the screen turns off</string>
-    <string name="settings_lock_on_screen_off_hint">Locks the vault as soon as the screen goes dark</string>
-    <string name="settings_search_recycle_bin">Search the recycle bin</string>
-    <string name="settings_search_recycle_bin_hint">Include deleted entries in search results</string>
-    <string name="settings_section_search">Search</string>
+    <!-- إعدادات إضافية -->
+    <string name="action_turn_off">إيقاف</string>
+    <string name="biometric_disable_message">ستُحذف كلمة السرّ المحفوظة، وستحتاج إلى كتابتها في كل مرة.</string>
+    <string name="biometric_disable_title">إيقاف الفتح بالبصمة؟</string>
+    <string name="clipboard_15">بعد 15 ثانية</string>
+    <string name="settings_autolock_15m">بعد 15 دقيقة</string>
+    <string name="settings_block_screenshots">منع لقطات الشاشة</string>
+    <string name="settings_block_screenshots_hint">يمنع تصوير الشاشة وتسجيلها ويخفي التطبيق من قائمة التطبيقات الأخيرة</string>
+    <string name="settings_hide_passwords_hint">تُعرض كلمات السرّ منقّطة حتى تختار إظهارها</string>
+    <string name="settings_lock_on_screen_off">القفل عند إطفاء الشاشة</string>
+    <string name="settings_lock_on_screen_off_hint">يُقفل الخزنة فور انطفاء شاشة الجهاز</string>
+    <string name="settings_search_recycle_bin">البحث في سلّة المهملات</string>
+    <string name="settings_search_recycle_bin_hint">يشمل البحثُ المُدخَلات المحذوفة</string>
+    <string name="settings_section_search">البحث</string>
 
-    <!-- ============================================================ autofill -->
-    <string name="autofill_filling_for">Filling now for %1$s</string>
-    <string name="autofill_unlock_title">Open Hisn to fill</string>
-    <string name="autofill_search_in_hisn">Search in Hisn…</string>
-    <string name="autofill_prompt_no_username">No username</string>
-    <string name="autofill_saving_for">Sign-in details for %1$s</string>
-    <string name="autofill_picker_title">Choose an entry to fill</string>
-    <string name="autofill_picker_empty">No entry matches your search</string>
-    <string name="autofill_row_suggested">Suggested</string>
-    <string name="autofill_no_matches_message">Hisn has no entry linked to %1$s. Search your vault and choose the entry you want to fill.</string>
-    <string name="autofill_no_database_message">There is no vault on this device yet. Open Hisn and import your database file first.</string>
-    <string name="autofill_open_hisn">Open Hisn</string>
-    <string name="autofill_entry_has_nothing">This entry has no username or password to fill</string>
-    <string name="autofill_save_title">Save in Hisn?</string>
-    <string name="autofill_save_new">New entry</string>
-    <string name="autofill_save_update">Update an entry</string>
-    <string name="autofill_save_choose_entry">Choose the entry to update</string>
-    <string name="autofill_save_no_candidates">Hisn has no entry linked to this app or site to update.</string>
-    <string name="settings_autofill">Autofill</string>
-    <string name="settings_autofill_enable">Set Hisn as your autofill service</string>
-    <string name="settings_autofill_active">Hisn is the active autofill service</string>
-    <string name="settings_autofill_unsupported">This device does not support autofill</string>
+    <!-- ======================================================= الملء التلقائي -->
+    <string name="autofill_filling_for">تملأ الآن لـ %1$s</string>
+    <string name="autofill_unlock_title">افتح حصن للملء</string>
+    <string name="autofill_search_in_hisn">بحث في حصن…</string>
+    <string name="autofill_prompt_no_username">بدون اسم مستخدم</string>
+    <string name="autofill_saving_for">بيانات الدخول إلى %1$s</string>
+    <string name="autofill_picker_title">اختر مُدخَلًا للملء</string>
+    <string name="autofill_picker_empty">لا يوجد مُدخَل يطابق بحثك</string>
+    <string name="autofill_row_suggested">مقترح</string>
+    <string name="autofill_no_matches_message">لا يوجد في حصن مُدخَل مرتبط بـ %1$s. ابحث في خزنتك واختر المُدخَل الذي تريد ملأه.</string>
+    <string name="autofill_no_database_message">لا توجد خزنة على هذا الجهاز بعد. افتح حصن واستورد ملف قاعدة بياناتك أولًا.</string>
+    <string name="autofill_open_hisn">افتح حصن</string>
+    <string name="autofill_entry_has_nothing">لا يحتوي هذا المُدخَل على اسم مستخدم أو كلمة سرّ للملء</string>
+    <string name="autofill_save_title">حفظ في حصن؟</string>
+    <string name="autofill_save_new">مُدخَل جديد</string>
+    <string name="autofill_save_update">تحديث مُدخَل موجود</string>
+    <string name="autofill_save_choose_entry">اختر المُدخَل الذي سيُحدَّث</string>
+    <string name="autofill_save_no_candidates">لا يوجد في حصن مُدخَل مرتبط بهذا التطبيق أو الموقع ليُحدَّث.</string>
+    <string name="settings_autofill">الملء التلقائي</string>
+    <string name="settings_autofill_enable">فعِّل حصن كخدمة ملء تلقائي</string>
+    <string name="settings_autofill_active">حصن هو خدمة الملء التلقائي النشطة</string>
+    <string name="settings_autofill_unsupported">لا يدعم هذا الجهاز الملء التلقائي</string>
 
-    <!-- autofill: the system-side message when there is nothing worth saving -->
-    <string name="autofill_save_nothing">There is no password to save</string>
+    <!-- الملء التلقائي: رسالة النظام حين لا يوجد ما يُحفظ -->
+    <string name="autofill_save_nothing">لا توجد كلمة سرّ لحفظها</string>
+
+    <!-- ========================================================= تذكير الدعم -->
+    <!--
+      تذكير الدعم العائلي الشهري (support/SupportReminder.kt) — نصوصه مقفلة بموجب معايير
+      عائلة أمان §5 فتبقى عربية حرفيًا في كل اللغات، ولذلك لا مرآة لها في values-en.
+    -->
+    <string name="support_channel_name" translatable="false">دعم أمان</string>
+    <string name="support_notification_title" translatable="false">ادعم أمان</string>
+    <string name="support_notification_body" translatable="false">حصن مجانيٌّ كاملٌ للجميع، ودعمك الاختياري يُبقيه كذلك.</string>
+    <string name="support_action_support" translatable="false">ادعم</string>
+    <string name="support_action_later" translatable="false">لاحقًا</string>
 
 </resources>

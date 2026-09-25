@@ -5,10 +5,16 @@ import android.net.Uri
 import android.os.SystemClock
 import android.provider.OpenableColumns
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -21,15 +27,20 @@ import org.hisn.app.kdbx.KdbxException
 import org.hisn.app.kdbx.KdbxReader
 import org.hisn.app.kdbx.KdbxWriter
 import org.hisn.app.kdbx.Merger
+import org.hisn.app.kdbx.Meta
 import org.hisn.app.kdbx.Times
+import org.hisn.app.support.SupportReminder
 import org.json.JSONObject
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import java.nio.channels.FileChannel
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
+import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 import java.util.UUID
 
@@ -123,6 +134,17 @@ class VaultRepository(context: Context) {
     private var lastActivityElapsed = SystemClock.elapsedRealtime()
 
     /**
+     * Repository-owned scope for the auto-lock watcher. It must not be a viewModelScope: the
+     * Activity — and every ViewModel with it — can be destroyed while the app sits in the
+     * background, and the vault must still lock when its deadline passes. The repository is a
+     * process-scoped singleton, so this scope lives exactly as long as the decrypted state does.
+     */
+    private val lockScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
+    /** The armed background-lock watcher; see [armBackgroundLock]. */
+    private var relockJob: Job? = null
+
+    /**
      * Mirrors [HisnSettings.searchIncludesRecycleBin]. [search] is synchronous, so the collector
      * that watches the settings flow pushes the value here instead of reading DataStore per query.
      */
@@ -152,10 +174,17 @@ class VaultRepository(context: Context) {
             validateContainer(bytes)
 
             vaultDir.mkdirs()
+            // The import happens on the *locked* screen, without proof the user can open the
+            // current vault, so that vault is never destroyed by a replacement: it is kept
+            // aside under a timestamped name the .bak rotation never touches.
+            if (dbFile.isFile) {
+                copyWithSync(dbFile, File(vaultDir, "$DB_NAME.replaced-${System.currentTimeMillis() / 1000L}"))
+            }
             writeAtomically(bytes)
 
             lockInternal()
             secureStore.clear()
+            prefs.setBiometricUnlock(false)
             keyFileCopy.delete()
             writeStoredMeta(displayNameOf(uri) ?: dbFile.name, hasKeyFile = false)
 
@@ -166,6 +195,75 @@ class VaultRepository(context: Context) {
                 hasBiometric = false,
                 dirty = false,
             )
+        }
+    }
+
+    // ------------------------------------------------------------------ create
+
+    /**
+     * Creates a brand-new database on the device, for the user who has no .kdbx to import.
+     *
+     * The file is KDBX4 with the writer's default parameters ([org.hisn.app.kdbx.KdbxParams]:
+     * 4.1, AES-256, Argon2d) and a root group named like the vault, so KeePassXC opens it as
+     * if the desktop had created it. Written with the same scratch-then-rename dance as every
+     * other save; any previous database is kept as the .bak, exactly like [importDatabase].
+     *
+     * The vault is left open on success — asking the user to retype the password they chose
+     * seconds ago helps no-one — so the caller can navigate straight to the entry list.
+     */
+    suspend fun createNew(name: String, password: String): Result<Unit> = io {
+        mutex.withLock {
+            val displayName = name.trim()
+            if (displayName.isEmpty()) {
+                throw VaultException(VaultError.Invalid, "The new database needs a name")
+            }
+            if (password.isEmpty()) {
+                throw VaultException(VaultError.InvalidCredentials, "The new database needs a master password")
+            }
+
+            val db = KdbxDatabase(
+                meta = Meta(databaseName = displayName, databaseNameChanged = Times.nowSeconds()),
+                root = Group(name = displayName),
+            )
+            val key = CompositeKey.build(password)
+
+            val bytes = try {
+                KdbxWriter.write(db, key)
+            } catch (e: KdbxException) {
+                throw VaultException(VaultError.SaveFailed, "The new database could not be encrypted: ${e.message}", e)
+            }
+            if (bytes.size < MIN_DB_BYTES) {
+                throw VaultException(VaultError.SaveFailed, "Refusing to write a suspiciously small database")
+            }
+
+            try {
+                vaultDir.mkdirs()
+                writeAtomically(bytes)
+            } catch (e: IOException) {
+                throw VaultException(VaultError.Io, "The new database could not be written: ${e.message}", e)
+            }
+
+            // A new vault means a new key: whatever biometric enrolment or key-file copy the
+            // previous database had cannot apply to this one.
+            lockInternal()
+            secureStore.clear()
+            prefs.setBiometricUnlock(false)
+            keyFileCopy.delete()
+            writeStoredMeta(displayName, hasKeyFile = false)
+
+            compositeKey = key
+            _database.value = db
+            rebuildSnapshot(db)
+            noteActivity()
+            _status.value = VaultStatus(
+                state = VaultState.Unlocked,
+                databaseName = displayName,
+                filePath = dbFile.absolutePath,
+                hasBiometric = false,
+                dirty = false,
+            )
+            // Creating a vault leaves it open — that counts as the first successful unlock.
+            SupportReminder.noteUnlocked(appContext)
         }
     }
 
@@ -204,6 +302,8 @@ class VaultRepository(context: Context) {
                 hasBiometric = secureStore.isEnrolled,
                 dirty = false,
             )
+            // The support reminder never posts before the vault has been opened once.
+            SupportReminder.noteUnlocked(appContext)
         }
     }
 
@@ -296,7 +396,7 @@ class VaultRepository(context: Context) {
             out.flush()
             out.fd.sync()
         }
-        if (dbFile.isFile) dbFile.copyTo(bakFile, overwrite = true)
+        if (dbFile.isFile) copyWithSync(dbFile, bakFile)
         try {
             Files.move(
                 tmpFile.toPath(),
@@ -308,6 +408,28 @@ class VaultRepository(context: Context) {
             if (!tmpFile.renameTo(dbFile)) {
                 throw IOException("Could not replace ${dbFile.name}")
             }
+        }
+        // The rename itself lives in the directory, not the file: without a directory fsync a
+        // power cut can roll the directory entry back to the old inode after the data fsync.
+        fsyncDirectory(vaultDir)
+    }
+
+    /** Copies [source] over [dest] and fsyncs the copy — a backup that may be lost is no backup. */
+    private fun copyWithSync(source: File, dest: File) {
+        FileInputStream(source).use { input ->
+            FileOutputStream(dest).use { out ->
+                input.copyTo(out)
+                out.flush()
+                out.fd.sync()
+            }
+        }
+    }
+
+    private fun fsyncDirectory(dir: File) {
+        try {
+            FileChannel.open(dir.toPath(), StandardOpenOption.READ).use { it.force(true) }
+        } catch (_: Exception) {
+            // Some filesystems refuse to fsync a directory; the data fsyncs above still hold.
         }
     }
 
@@ -626,6 +748,32 @@ class VaultRepository(context: Context) {
         return true
     }
 
+    /**
+     * Arms a repository-scoped watcher that enforces [lockIfIdle] at the auto-lock deadline.
+     *
+     * Called when the app leaves the foreground. The ViewModel keeps its own countdown as a
+     * second layer, but that one dies with the Activity; this watcher runs in [lockScope] and
+     * therefore keeps ticking until the vault is locked or the process itself is gone.
+     */
+    fun armBackgroundLock() {
+        relockJob?.cancel()
+        relockJob = lockScope.launch {
+            while (isActive && _status.value.state == VaultState.Unlocked) {
+                val timeout = prefs.current().autoLockSeconds
+                if (timeout == Prefs.AUTO_LOCK_NEVER) return@launch
+                if (lockIfIdle()) return@launch
+                val remainingMillis = (timeout - idleSeconds()) * 1000L
+                delay(remainingMillis.coerceAtLeast(RELOCK_POLL_MILLIS))
+            }
+        }
+    }
+
+    /** Stands the watcher down; called once the user is back and the ViewModel timers run. */
+    fun disarmBackgroundLock() {
+        relockJob?.cancel()
+        relockJob = null
+    }
+
     // ------------------------------------------------------------------ helpers
 
     private fun requireDatabase(): KdbxDatabase =
@@ -661,13 +809,13 @@ class VaultRepository(context: Context) {
     /** Rejects anything that is not a KDBX 3.1+ container before we spend a KDF on it. */
     private fun validateContainer(bytes: ByteArray) {
         if (bytes.size < 12) {
-            throw VaultException(VaultError.CorruptFile, "That file is too small to be a KeePass database")
+            throw VaultException(VaultError.CorruptFile, "That file is too small to be a KDBX database")
         }
         val header = ByteBuffer.wrap(bytes, 0, 12).order(ByteOrder.LITTLE_ENDIAN)
         val sig1 = header.int
         val sig2 = header.int
         if (sig1 != Kdbx.SIGNATURE_1 || sig2 != Kdbx.SIGNATURE_2) {
-            throw VaultException(VaultError.CorruptFile, "That file is not a KeePass database")
+            throw VaultException(VaultError.CorruptFile, "That file is not a KDBX database")
         }
         val version = header.int
         val major = version and Kdbx.FILE_VERSION_CRITICAL_MASK
@@ -732,6 +880,9 @@ class VaultRepository(context: Context) {
         private const val DB_NAME = "hisn.kdbx"
         private const val RECYCLE_BIN_ICON = 43
         private const val MIN_DB_BYTES = 64
+
+        /** Shortest re-check interval of the background-lock watcher, in milliseconds. */
+        private const val RELOCK_POLL_MILLIS = 1_000L
 
         @Volatile
         private var sharedInstance: VaultRepository? = null

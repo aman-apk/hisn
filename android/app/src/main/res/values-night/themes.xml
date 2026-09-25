@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Dark-mode overrides. Only the surfaces change; the copper accents are already tuned to read
-     on both grounds, and the bars were dark to begin with. -->
+     on both grounds. The window background is the family night (#10121D), literal so the first
+     frame matches Compose's dark ground exactly — no flash at startup. The bars stay transparent
+     with light icons over the night. -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.Hisn" parent="Theme.Material3.DayNight.NoActionBar">
@@ -16,9 +18,9 @@
         <item name="colorSurface">@color/hisn_surface_dark</item>
         <item name="colorOnSurface">@color/hisn_on_dark</item>
 
-        <item name="android:windowBackground">@color/hisn_bg_dark</item>
-        <item name="android:statusBarColor">@color/hisn_bg_dark</item>
-        <item name="android:navigationBarColor">@color/hisn_bg_dark</item>
+        <item name="android:windowBackground">#10121D</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
 
