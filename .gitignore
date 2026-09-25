@@ -7,3 +7,7 @@ aqtinstall.log
 
 # Android build outputs are ignored by android/.gitignore, which keeps that
 # subproject self-contained.
+
+# الحزم المنشورة تعيش في إصدارات GitHub لا في المصدر
+/android/releases/
+/android/dist/
