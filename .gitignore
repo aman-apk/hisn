@@ -11,3 +11,4 @@ aqtinstall.log
 # الحزم المنشورة تعيش في إصدارات GitHub لا في المصدر
 /android/releases/
 /android/dist/
+/releases/
